@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = u'charlesreid1'
 SITENAME = u'A Shrubbery'
-SITEURL = '/a-shrubbery'
+#SITEURL = '/a-shrubbery'
 
 PATH = 'content'
 
@@ -18,12 +18,7 @@ DEFAULT_LANG = u'en'
 
 # --------------8<---------------------
 
-SITETAGLINE = "Tagline"
-
-# this image must be in content/images/
-SITEIMG = "Apollo12ConradSurveyor.jpg" 
-IMGVERTOFFSET = "120px"
-BLOGTITLE = "Dispatches: Space Junk Blog"
+SITETAGLINE = "Building a page of map leaflets using Leaflet.js"
 
 
 # to install this theme:
@@ -32,7 +27,7 @@ BLOGTITLE = "Dispatches: Space Junk Blog"
 THEME = 'a-shrubbery-theme'
 
 
-
+# This is stuff that goes into content/ that's copied into the website 
 STATIC_PATHS = ['images']
 
 DISPLAY_PAGES_ON_MENU = False
@@ -45,7 +40,12 @@ TEMPLATE_PAGES = {'blog.html':'blog.html'}
 
 EXTRA_TEMPLATES_PATHS = ['maps']
 
+# add map stuff
+
+TEMPLATE_PAGES['mapstyles.css'] = 'mapstyles.css'
+
 TEMPLATE_PAGES['nycstreets.html'] = 'nycstreets/index.html'
+TEMPLATE_PAGES['nycstreets.js'] = 'nycstreets.js'
 
 
 
