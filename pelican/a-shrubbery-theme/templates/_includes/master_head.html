@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{{ SITENAME }}{% endblock %}</title>
+    <meta name="author" content="{{ AUTHOR }}">
+
+    {% if FEED_FEEDBURNER %}
+    <link href="http://feeds.feedburner.com/{{ FEED_FEEDBURNER }}" type="application/rss+xml" rel="alternate"
+          title="{{ SITENAME }} RSS Feed" />
+    {% else %}
+    {% if FEED_ATOM %}
+    <link href="{{ FEED_DOMAIN }}/{{ FEED_ATOM }}" type="application/atom+xml" rel="alternate"
+          title="{{ SITENAME }} Atom Feed" />
+    {% endif %}
+    {% if FEED_RSS %}
+    <link href="{{ FEED_DOMAIN }}/{{ FEED_RSS }}" type="application/rss+xml" rel="alternate"
+          title="{{ SITENAME }} RSS Feed" />
+    {% endif %}
+    {% endif %}
+
+    {% if EXTRA_HEADER %}
+      {{ EXTRA_HEADER }}
+    {% endif %}
+
+    <!-- http://t.co/dKP3o1e -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% if article and article.status == 'draft' %}
+      <meta name="robots" content="noindex, nofollow" />
+    {% endif %}
+
+    {% if FAVICON_FILENAME %}
+      <link href="{{ SITEURL }}/{{ FAVICON_FILENAME }}" rel="icon">
+    {% else %}
+      <link href="{{ SITEURL }}/favicon.png" rel="icon">
+    {% endif %}
+
+
+
+    <!--
+    my CSS styles
+    -->
+    <link href="{{ SITEURL }}/theme/css/bootstrap.css"       rel="stylesheet" type="text/css">
+    <link href="{{ SITEURL }}/theme/css/sandstone.css"       rel="stylesheet" type="text/css"/>
+    <link href="{{ SITEURL }}/theme/css/navbar.css"          rel="stylesheet" type="text/css"/>
+    <link href="{{ SITEURL }}/theme/css/main.css"            rel="stylesheet" type="text/css"/>
+
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+          rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+          rel="stylesheet" type="text/css"/>
+    {% if article and article.latex %}
+      {{ article.latex }}
+    {% endif %}
+    {% if page and page.latex %}
+      {{ page.latex }}
+    {% endif %}
+
+    <link href="{{ SITEURL }}/theme/css/pygment.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+
+{% include '_includes/navbar.html' %}
+
+{#
+all pages have the jumbotron. uniform look and feel.
+#}
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <h1>Hello, world!</h1>
+        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+        <p><a class="btn btn-primary btn-lg" href="http://getbootstrap.com/examples/jumbotron/#" role="button">Learn more »</a></p>
+    </div>
+</div>
+
+<div class="container">
+
+
