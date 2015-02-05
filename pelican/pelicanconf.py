@@ -45,8 +45,10 @@ EXTRA_TEMPLATES_PATHS = ['maps']
 TEMPLATE_PAGES['mapstyles.css'] = 'mapstyles.css'
 
 TEMPLATE_PAGES['nycstreets.html'] = 'nycstreets/index.html'
-TEMPLATE_PAGES['nycstreets.js'] = 'nycstreets.js'
+TEMPLATE_PAGES['nycstreets.js']   = 'nycstreets.js'
 
+TEMPLATE_PAGES['shalegasplays.html'] = 'shalegasplays/index.html'
+TEMPLATE_PAGES['shalegasplays.js']   = 'shalegasplays.js'
 
 
 

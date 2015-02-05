@@ -15,3 +15,10 @@ pre {
 li.archive {
     background-color: #000;
 }
+a {
+    /*purp*/
+    color: #7924A3;
+}
+.btn {
+    font-size: 14px;
+}

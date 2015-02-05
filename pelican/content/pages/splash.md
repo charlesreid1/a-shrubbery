@@ -2,4 +2,30 @@ Title: Index
 PageStyle: clear
 save_as: index.html
 
-Stuff
+# EIA Shale Gas Plays Map
+
+**Description**: A map of shale gas plays in the United States, from Shapefile data provided by
+the EIA. This data is provided by a custom Geoserver. The Shapefile data was added to and is
+served up by a [Geoserver instance](http://charlesreid1.com/wiki/Geodroplet), and is visualized using Leaflet.js.
+
+**Data**: The data was originally provided by the EIA, and was then added to the 
+[EIA-Oil-Gas-Maps](https://github.com/talllguy/EIA-Oil-Gas-Maps) repository on GitHub,
+by [@talllguy](http://github.com/talllguy).
+
+<a class="btn btn-primary btn-large" href="shalegasplays/">EIA Shale Gas Plays Map</a>
+
+
+
+# NYC Streets Map
+
+**Description**: My first Leaflet.js map, showing about 100 streets of 
+New York City. The map uses MapBox and a custom 
+Geoserver setup (see [charlesreid1.com for more info](http://charlesreid1.com/wiki/Geodroplet)).
+
+**Data**: The data on this map were provided by a [Geoserver tutorial](http://docs.geoserver.org/stable/en/user/gettingstarted/web-admin-quickstart/index.html).
+
+<a class="btn btn-primary btn-large" href="nycstreets/">NYC Streets Map</a>
+
+
+
+
