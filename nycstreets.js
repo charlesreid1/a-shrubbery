@@ -18,7 +18,8 @@ var map = L.map('map').setView([40.754306, -73.985861], 12);
 // Add MapBox Tiles
 // list of styles:
 // https://www.mapbox.com/developers/api/maps/
-L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.pencil/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{
+//L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.pencil/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{
+L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
     maxZoom: 18
 }).addTo(map);
@@ -38,8 +39,6 @@ L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.pencil/{z}/{x}/{y}.png?access
 
 
 
-
-
 // but the coordinates don't match.
 // coordinates are 
 // 984292
@@ -52,7 +51,7 @@ var defaultParameters = {
     version : '1.0',
     request : 'GetFeature',
     typeName : 'nyc_roads',
-    maxFeatures : '200',
+    maxFeatures : '100',
     outputFormat : 'text/javascript',
     format_options : 'callback:getJson',
     SrsName : 'EPSG:4326'
@@ -91,6 +90,6 @@ $.ajax({
     		    }
     	}).addTo(map);
 
-        //var marker = L.marker([40.7543, -73.9858]).addTo(map);
+        var marker = L.marker([40.7543, -73.9858]).addTo(map);
     }
 });
