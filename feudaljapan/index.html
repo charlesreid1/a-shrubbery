@@ -34,9 +34,23 @@
 
     <link href="/a-shrubbery/theme/css/pygment.css" rel="stylesheet" type="text/css"/>
 
+
+    <!-- jquery -->
     <script src="/a-shrubbery/theme/js/jquery.min.js"></script>
     <script src="/a-shrubbery/theme/js/bootstrap.min.js"></script>
 
+	<!-- load the leaflet library -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+	 <!-- load my style sheet -->
+     <link rel="stylesheet" type="text/css" href="/a-shrubbery/mapstyles.css">
+
+	<!-- load jquery -->
+    <!--
+	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>	
+    -->
 
 </head>
 
@@ -119,35 +133,18 @@
     </div>
 </div>
 
-
 <div class="container">
 
 
-<div>
-	<article role="article">
-    	<header>
-    		<h1 class="entry-title">Blog Tags</h1>
-    	</header>
-
-	<p>
-	</p>
-	</article>
-</div>
+<h2>Feudal Japan</h2>
+<div id="map"></div>
+<script type="text/javascript" src="/a-shrubbery/feudaljapan.js"></script>
 
 
 </div><!--container-->
 
-<div id="footer">
-    <div class="container text-center">
-        <p>&nbsp;</p>
-        <p>
-        Made with <i class="fa fa-fire-extinguisher fa-2x"></i> by <a href="http://charlesreid1.com">charlesreid1</a>.
-        </p>
-        <p>&nbsp;</p>
-    </div>
-</div>
-
 
 </body>
 </html>
+
 
