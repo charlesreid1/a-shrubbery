@@ -1,7 +1,7 @@
 
 // create the map, assign to the mao div, and set it's lat, long, and zoom level (12)
 // NYC
-var map = L.map('map').setView([40.754306, -73.985861], 4);
+var map = L.map('map').setView([40.59, 139.86], 5);
 
 // big thanks to
 // http://gis.stackexchange.com/questions/64406/getting-wfs-data-from-geoserver-into-leaflet
@@ -26,8 +26,8 @@ var defaultParameters = {
     service : 'WFS',
     version : '1.0',
     request : 'GetFeature',
-    typeName : 'feudaljapan1',
-    maxFeatures : '100',
+    typeName : 'oilgas:jp_dmyo_1664',
+    maxFeatures : '500',
     outputFormat : 'text/javascript',
     format_options : 'callback:getJson',
     SrsName : 'EPSG:4008'
@@ -46,7 +46,7 @@ $.ajax({
     //upon success extraction of data
     success: function (data) {
 
-        console.log(data);
+        //console.log(data);
 
         // the data.geometry field contains coordinate/location data.
         //
@@ -59,7 +59,20 @@ $.ajax({
     	    // apply a style 
             style: {"color":"#0000AA","weight":2},
 
+    		onEachFeature: function(feature, layer){
+    			popupText = "";
+    			popupText += "<br />Daimyo: "         + feature.properties.DMYO_RMJI;
+    			popupText += "<br />Daimyo Acreage: " + feature.properties.ACRES;
+    			popupText += "<br />Daimyo Seat: "    + feature.properties.SEAT_RMJI;
+    			popupText += "<br />Present Prefecture Seat: "+ feature.properties.PRESENT_RO;
+                popupText += "<br />ID: "             + feature.properties.DMYO_CODE;
+                popupText += "<br />"
+                layer.bindPopup(popupText);
+                //console.log(feature.properties);
+    		}
+
     	}).addTo(map);
+
 
     }
 });
