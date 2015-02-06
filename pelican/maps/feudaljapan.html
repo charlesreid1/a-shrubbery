@@ -1,0 +1,23 @@
+{% extends 'base_map.html' %}
+
+{% set mytitle="Feudal Japan" %}
+
+{# ----------- title -------------- #}
+
+{% block title %}{{ mytitle }}{% endblock %}
+
+{# ----------- content ------------- #}
+
+{% block content %}
+
+<h2>{{ mytitle }}</h2>
+<div id="map" style="width:800px;"></div>
+<script type="text/javascript" src="{{ SITEURL }}/feudaljapan.js"></script>
+{% endblock %}
+
+{# ----------- footer ------------ #}
+{#
+{% block extra_footer %}
+	 <script type="text/javascript" src="nycstreets.js"></script>
+{% endblock %}
+#}

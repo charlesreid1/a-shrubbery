@@ -50,6 +50,9 @@ TEMPLATE_PAGES['nycstreets.js']   = 'nycstreets.js'
 TEMPLATE_PAGES['shalegasplays.html'] = 'shalegasplays/index.html'
 TEMPLATE_PAGES['shalegasplays.js']   = 'shalegasplays.js'
 
+TEMPLATE_PAGES['feudaljapan.html'] = 'feudaljapan/index.html'
+TEMPLATE_PAGES['feudaljapan.js']   = 'feudaljapan.js'
+
 
 
 
@@ -65,16 +68,6 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
-
-# Blogroll
-LINKS = (('Pelican', 'http://getpelican.com/'),
-         ('Python.org', 'http://python.org/'),
-         ('Jinja2', 'http://jinja.pocoo.org/'),
-         ('You can modify those links in your config file', '#'),)
-
-# Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
 
 DEFAULT_PAGINATION = False
 
