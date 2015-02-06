@@ -26,7 +26,7 @@ var defaultParameters = {
     service : 'WFS',
     version : '1.0',
     request : 'GetFeature',
-    typeName : 'feudaljapan',
+    typeName : 'feudaljapan1',
     maxFeatures : '100',
     outputFormat : 'text/javascript',
     format_options : 'callback:getJson',
