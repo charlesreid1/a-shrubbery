@@ -1,26 +1,55 @@
+// to get information from Jinja into javascript:
+// http://stackoverflow.com/questions/21626048/unable-to-pass-jinja2-variables-into-javascript-snippet
+// 
+// <meta id="my-data" data-name="" data-other="">
+//
+// var djangoData = $('#my-data').data();
+
+
+var jinjaData = $('#jinja-site-url').data();
+
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
-var map = L.map('map').setView([37.8, -96], 4);
+var m = L.map('map').setView([38, -118], 6);
 
 // Add MapBox Tiles
 // https://www.mapbox.com/developers/api/maps/
 L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
     maxZoom: 18
-}).addTo(map);
+}).addTo(m);
 
-//// var owsrootUrl = 'http://104.236.163.66:8080/geoserver/ows';
-//// 
-//// var defaultParameters = {
-////     service : 'WFS',
-////     version : '1.0',
-////     request : 'GetFeature',
-////     typeName : 'oilgas:jp_dmyo_1664',
-////     maxFeatures : '500',
-////     outputFormat : 'text/javascript',
-////     format_options : 'callback:getJson',
-////     SrsName : 'EPSG:4008'
-//// };
 
-var geojsonLayer = new L.GeoJSON.AJAX("carandom.geojson");
-geojsonLayer.addTo(map);
 
+function getColor(d) {
+    // d should be between 0 and 1
+    // 
+    // 6 scale blues
+    var blue = ['rgb(239,243,255)','rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(49,130,189)','rgb(8,81,156)'];
+    return blue[Math.round(d*6)];
+}
+
+
+
+// f = feature, l = layer
+function enhanceLayer(f,l){
+
+    // add popup
+    var out = [];
+    if (f.properties){
+        for(key in f.properties){
+            out.push(key+": "+f.properties[key]);
+        }
+        l.bindPopup(out.join("<br />"));
+
+        // http://leafletjs.com/reference.html#path-options
+        l.setStyle({    
+            fillColor: getColor(f.properties['derived_quantity']/10.0),
+            fillOpacity: 0.75,
+            stroke: false
+        });
+        console.log(f.properties['derived_quantity']/10.0);
+    }
+}
+
+
+var geoj = new L.geoJson.ajax(jinjaData['siteurl']+"/carandom.geojson",{onEachFeature:enhanceLayer}).addTo(m);
