@@ -21,7 +21,6 @@ L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_
 ////     SrsName : 'EPSG:4008'
 //// };
 
-L.geoJson(carandom, {
-    style: {"color":"#0000AA","weight":2}
-}).addTo(map);
+var geojsonLayer = new L.GeoJSON.AJAX("carandom.geojson");
+geojsonLayer.addTo(map);
 
