@@ -140,7 +140,18 @@
 <h2>CA Counties: Random</h2>
 
 <p>This map demonstrates the use of Leaflet and Leaflet layer styling to visualize information
-contained in GeoJSON. More details <a href="http://charlesreid1.com/wiki/Leaflet_Quantile_Map">on the charlesreid1.com wiki</a>.
+contained in GeoJSON.</p>
+
+<p>Python is used together with the Census Reporter API to get GeoJSON information 
+for each of California's counties. A random number between 0 and 10 is then assigned
+to each county, and that random number is used to change the color of each county.
+</p>
+
+<p>But why? Because the next step is to use census data, rather than random numbers,
+to control the style of the GeoJSON layers.
+</p>
+
+<p>More details <a href="http://charlesreid1.com/wiki/Leaflet_Quantile_Map">on the charlesreid1.com wiki</a>.
 </p>
 
 <div id="map" style="width:800px;"></div>
