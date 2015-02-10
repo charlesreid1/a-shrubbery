@@ -39,6 +39,18 @@
 
 
 
+    <!-- map header -->
+
+	<!-- load the leaflet library -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+	 <!-- load my style sheet -->
+     <link rel="stylesheet" type="text/css" href="/a-shrubbery/mapstyles.css">
+
+    <!-- end map header -->
+
+
 </head>
 
 <body>
@@ -125,52 +137,12 @@
 
 
 
+<h2>CA Counties: Random</h2>
 
-    <div class="row" style="height:500px;">
-        <div class="col-md-8">
+<script src="carandom.geojson" type="text/javascript"></script>
 
-                <p>&nbsp;</p>
-                <h1>California Random Map</h1>
-<p><strong>Description</strong>: Map with a random quantity for each California county. This is only a test.</p>
-<p><strong>Data</strong>: The data was obtained from the Census Bureau, delivered 
-via the <a href="https://github.com/censusreporter/censusreporter">Census Reporter API</a>.</p>
-<p><a class="btn btn-primary btn-large" href="carandom/">California Random Map<i class="fa fa-arrow-circle-right"></i></a></p>
-<p><br /></p>
-<h1>California Census Data Visualization</h1>
-<p><strong>Description</strong>: Beginnings of a map of census data for CA counties.</p>
-<p><strong>Data</strong>: The data was obtained from the Census Bureau, delivered 
-via the <a href="https://github.com/censusreporter/censusreporter">Census Reporter API</a>.</p>
-<p><a class="btn btn-primary btn-large" href="cacensus/">California Census Data Map<i class="fa fa-arrow-circle-right"></i></a></p>
-<p><br /></p>
-<h1>Feudal Japan Daimyo Boundaries Map (1664)</h1>
-<p><strong>Description</strong>: A map of the boundaries of daimyos in feudal Japan, 1664 CE. 
-The shapefile was uploaded to and is served up by a <a href="http://charlesreid1.com/wiki/Geodroplet">Geoserver instance</a>, 
-and is visualized on a map using Leaflet.js.</p>
-<p><strong>Data</strong>: The data was obtained from the <a href="http://www.fas.harvard.edu/~chgis/japan/archive/">Tokugawa Japan Data Archive web site</a>
-at Harvard University. </p>
-<p><a class="btn btn-primary btn-large" href="feudaljapan/">Feudal Japan Daimyo Boundaries Map (1664) <i class="fa fa-arrow-circle-right"></i></a></p>
-<p><br /></p>
-<h1>EIA Shale Gas Plays Map</h1>
-<p><strong>Description</strong>: A map of shale gas plays in the United States, from Shapefile data provided by
-the EIA. This data is provided by a custom Geoserver. The Shapefile data was added to and is
-served up by a <a href="http://charlesreid1.com/wiki/Geodroplet">Geoserver instance</a>, and is visualized using Leaflet.js.</p>
-<p><strong>Data</strong>: The data was originally provided by the EIA, and was then added to the 
-<a href="https://github.com/talllguy/EIA-Oil-Gas-Maps">EIA-Oil-Gas-Maps</a> repository on GitHub,
-by <a href="http://github.com/talllguy">@talllguy</a>.</p>
-<p><a class="btn btn-primary btn-large" href="shalegasplays/">EIA Shale Gas Plays Map <i class="fa fa-arrow-circle-right"></i></a></p>
-<p><br /></p>
-<h1>NYC Streets Map</h1>
-<p><strong>Description</strong>: My first Leaflet.js map, showing about 100 streets of 
-New York City. The map uses MapBox and a custom 
-Geoserver setup (see <a href="http://charlesreid1.com/wiki/Geodroplet">charlesreid1.com for more info</a>).</p>
-<p><strong>Data</strong>: The data on this map were provided by a <a href="http://docs.geoserver.org/stable/en/user/gettingstarted/web-admin-quickstart/index.html">Geoserver tutorial</a>.</p>
-<p><a class="btn btn-primary btn-large" href="nycstreets/">NYC Streets Map <i class="fa fa-arrow-circle-right"></i></a></p>
-                <p>&nbsp;</p>
-
-        </div>
-    </div>
-
-
+<div id="map" style="width:800px;"></div>
+<script type="text/javascript" src="/a-shrubbery/carandom.js"></script>
 
 
 </div><!--container-->
