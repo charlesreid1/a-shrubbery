@@ -38,6 +38,19 @@
     <script src="/a-shrubbery/theme/js/bootstrap.min.js"></script>
 
 
+
+    <!-- map header -->
+
+	<!-- load the leaflet library -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+	 <!-- load my style sheet -->
+     <link rel="stylesheet" type="text/css" href="/a-shrubbery/mapstyles.css">
+
+    <!-- end map header -->
+
+
 </head>
 
 <body>
@@ -114,8 +127,8 @@
         <h1>A Shrubbery&nbsp;<i class="fa fa-leaf"></i></h1>
         -->
         <p>Building a page of map leaflets using Leaflet.js</p>
-        <p><a class="btn btn-success btn-lg btn-large" 
-            href="about.html" role="button">Learn More About It &nbsp;&nbsp;&nbsp; <i class="fa fa-arrow-circle-right"></i></a></p>
+        <p><a class="btn btn-primary btn-lg btn-large" 
+            href="/a-shrubbery/about.html" role="button">Learn More About It &nbsp;&nbsp;&nbsp; <i class="fa fa-arrow-circle-right"></i></a></p>
     </div>
 </div>
 
@@ -124,20 +137,10 @@
 
 
 
+<h2>Gray Tiles</h2>
 
-    <div class="row" style="height:500px;">
-        <div class="col-md-8">
-
-                <p>&nbsp;</p>
-                <h1>All Maps</h1>
-<p><a class="btn btn-primary btn-large" href="nycstreets/">NYC Streets Map</a></p>
-<p><a class="btn btn-primary btn-large" href="shalegasplays/">EIA Shale Gas Plays Map</a></p>
-                <p>&nbsp;</p>
-
-        </div>
-    </div>
-
-
+<div id="map" style="width:800px;"></div>
+<script type="text/javascript" src="/a-shrubbery/cacensus.js"></script>
 
 
 </div><!--container-->
