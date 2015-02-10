@@ -53,6 +53,9 @@ TEMPLATE_PAGES['shalegasplays.js']   = 'shalegasplays.js'
 TEMPLATE_PAGES['feudaljapan.html'] = 'feudaljapan/index.html'
 TEMPLATE_PAGES['feudaljapan.js']   = 'feudaljapan.js'
 
+TEMPLATE_PAGES['cacensus.html'] = 'cacensus/index.html'
+TEMPLATE_PAGES['cacensus.js']   = 'cacensus.js'
+
 
 
 

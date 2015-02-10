@@ -8,7 +8,9 @@ This is a page that hosts Leaflet.js maps.
 
 ## What is Leaflet.js?
 
-
+[Leaflet.js](http://leafletjs.com/) is a Javascript library for
+annotating maps. It is capable of parsing GeoJSON information
+and visualizing it on top of different map tile sets.
 
 ## Geoserver Under the Hood
 

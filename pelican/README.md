@@ -1,3 +1,14 @@
+# Adding a Map
+
+This is a step-by-step for adding new maps to A Shrubbery.
+
+The Leaflet map itself is Javascript, and goes in ```mymap.js```.
+The (trivial) HTML page on which the map is embedded will 
+be called ```mymap.html```.
+
+
+
+
 # Pelican Layout 
 
 Here's how I'm using Pelican.

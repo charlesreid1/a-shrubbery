@@ -3,6 +3,19 @@ PageStyle: clear
 save_as: index.html
 
 
+
+
+# California Census Data Visualization 
+
+**Description**: Beginnings of a map of census data for CA counties.
+
+**Data**: The data was obtained from the Census Bureau, delivered 
+via the [Census Reporter API](https://github.com/censusreporter/censusreporter).
+
+<a class="btn btn-primary btn-large" href="cacensus/">California Census Data Map<i class="fa fa-arrow-circle-right"></i></a>
+
+<br />
+
 # Feudal Japan Daimyo Boundaries Map (1664)
 
 **Description**: A map of the boundaries of daimyos in feudal Japan, 1664 CE. 
