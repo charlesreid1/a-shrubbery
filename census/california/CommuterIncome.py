@@ -6,11 +6,90 @@ import numpy as np
 
 def main():
 
+    filename = 'cacommuterincome.geojson'
+    table_id = "B08122"
+
     ca = CaliforniaCounties()
     ca.populate()
 
-    results = ca.lookup_table("B08122")
+
+    results = ca.lookup_table(table_id)
     counties = ca.get_counties_geojson()
+
+    county_names  = [f['properties']['name']  for f in counties['features']]
+    county_geoids = [f['properties']['geoid'] for f in counties['features']]
+
+
+
+    # First, do your calculations.
+
+    properties_to_embed = []
+
+    for ii,county_name in enumerate(county_names):
+
+
+        county_data = {}
+
+        prefix = table_id
+
+        table_fields = {}
+        table_fields['Total']       = [prefix + "%03d"%(j) for j in [2,3,4]]
+        table_fields['DroveAlone']  = [prefix + "%03d"%(j) for j in [6,7,8]]
+        table_fields['DroveCarpool'] = [prefix + "%03d"%(j) for j in [10,11,12]]
+        table_fields['PublicTrans'] = [prefix + "%03d"%(j) for j in [14,15,16]]
+        table_fields['Walked']      = [prefix + "%03d"%(j) for j in [18,19,20]]
+        table_fields['BikeEtc']     = [prefix + "%03d"%(j) for j in [22,23,24]]
+
+
+
+        # Keys 1 = income variable
+        keys_1 = ['A_Below100PovLn',
+                  'B_Btwn100_149PovLn',
+                  'C_Above150PovLn']
+
+        # Keys 2 = commute variable
+        keys_2 = [key for key in table_fields.keys() if key<>'Total']
+
+
+        dat = results['data'][county_geoids[ii]][table_id]['estimate']
+
+
+
+        for ii2,k2 in enumerate(keys_2):
+            for ii1,k1 in enumerate(keys_1):
+
+                final_key = k1+"_"+k2
+                county_data[final_key] = dat[table_fields[k2][ii1]]
+
+                final_pct_key = k1+"_"+k2+"_CountyPct"
+                county_data[final_pct_key] = dat[table_fields[k2][ii1]] / dat[table_fields['Total'][ii1]]
+
+
+
+
+        properties_to_embed.append(county_data)
+
+
+
+
+
+    # Second, assign your calculated value.
+
+    for ii,county_name in enumerate(county_names):
+        
+        county_properties = properties_to_embed[ii]
+
+        for key in county_properties.keys():
+
+            counties['features'][ii]['properties'][key] = county_properties[key]
+
+
+
+    with open(filename,'w') as f:
+        f.write( json.dumps(counties) )
+
+    print "bing! all done!"
+
 
 
 
@@ -293,22 +372,14 @@ def main():
     # We're interested in mapping things at the county level,
     # so let's loop over county entities and perform calculations
     # there.
-
-    n_counties = len(counties['features'])
-    county_names = [f['properties']['name'] for f in counties['features']]
-
-    for ii,conty_names in enumerate(county_names):
-        
-        derived_quantity = np.random.rand()*10
-
-        counties['features'][ii]['properties']['derived_quantity'] = derived_quantity
+    #
+    # for ii,county_name in enumerate(county_names):
+    #   counties['features'][ii]['properties'][' <field name> '] = <field value>
 
 
 
-    with open('ca_derived_quantity.geojson','w') as f:
-        f.write( json.dumps(counties) )
 
-    print "bing! all done!"
+
 
 
 
