@@ -5,16 +5,19 @@ save_as: index.html
 
 
 
-# California Census Data Visualization 
 
-**Description**: Beginnings of a map of census data for CA counties.
+# California County Quantile Map
+
+**Description**: Map visualizing a random quantity for each California county. 
 
 **Data**: The data was obtained from the Census Bureau, delivered 
 via the [Census Reporter API](https://github.com/censusreporter/censusreporter).
 
-<a class="btn btn-primary btn-large" href="cacensus/">California Census Data Map<i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="carandom/">California County Quantile Map<i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
+
+
 
 # Feudal Japan Daimyo Boundaries Map (1664)
 
@@ -25,7 +28,7 @@ and is visualized on a map using Leaflet.js.
 **Data**: The data was obtained from the [Tokugawa Japan Data Archive web site](http://www.fas.harvard.edu/~chgis/japan/archive/)
 at Harvard University. 
 
-<a class="btn btn-primary btn-large" href="feudaljapan/">Feudal Japan Daimyo Boundaries Map (1664) <i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="feudaljapan/">Feudal Japan Daimyo Boundaries Map (1664) <i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
 
@@ -39,9 +42,11 @@ served up by a [Geoserver instance](http://charlesreid1.com/wiki/Geodroplet), an
 [EIA-Oil-Gas-Maps](https://github.com/talllguy/EIA-Oil-Gas-Maps) repository on GitHub,
 by [@talllguy](http://github.com/talllguy).
 
-<a class="btn btn-primary btn-large" href="shalegasplays/">EIA Shale Gas Plays Map <i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="shalegasplays/">EIA Shale Gas Plays Map <i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
+
+
 
 # NYC Streets Map
 
@@ -51,7 +56,7 @@ Geoserver setup (see [charlesreid1.com for more info](http://charlesreid1.com/wi
 
 **Data**: The data on this map were provided by a [Geoserver tutorial](http://docs.geoserver.org/stable/en/user/gettingstarted/web-admin-quickstart/index.html).
 
-<a class="btn btn-primary btn-large" href="nycstreets/">NYC Streets Map <i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="nycstreets/">NYC Streets Map <i class="fa fa-arrow-circle-right"></i></a>
 
 
 

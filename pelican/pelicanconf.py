@@ -56,6 +56,9 @@ TEMPLATE_PAGES['feudaljapan.js']   = 'feudaljapan.js'
 TEMPLATE_PAGES['cacensus.html'] = 'cacensus/index.html'
 TEMPLATE_PAGES['cacensus.js']   = 'cacensus.js'
 
+TEMPLATE_PAGES['carandom.html'] = 'carandom/index.html'
+TEMPLATE_PAGES['carandom.js']   = 'carandom.js'
+TEMPLATE_PAGES['carandom.geojson'] = 'carandom.geojson'
 
 
 

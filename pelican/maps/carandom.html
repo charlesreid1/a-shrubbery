@@ -1,0 +1,35 @@
+{% extends 'base_map.html' %}
+
+{% set mytitle="CA Counties: Random" %}
+
+{# ----------- title -------------- #}
+
+{% block title %}{{ mytitle }}{% endblock %}
+
+{# ----------- content ------------- #}
+
+{% block content %}
+
+<h2>{{ mytitle }}</h2>
+
+<p>This map demonstrates the use of Leaflet and Leaflet layer styling to visualize information
+contained in GeoJSON.
+</p>
+
+<div id="map" style="width:800px;"></div>
+
+<script src="{{ SITEURL }}/theme/js/leaflet.ajax.min.js" type="text/javascript"></script>
+
+<!--
+eventually i'd like to use this
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+-->
+
+<meta id="jinja-site-url" data-siteurl="{{ SITEURL }}"></meta>
+
+<script src="{{ SITEURL }}/carandom.js" type="text/javascript"></script>
+
+{% endblock %}
+
+
