@@ -1,6 +1,7 @@
 // pass variable from Jinja to Javascript
 var jinjaData = $('#jinja-site-url');
-console.log(jinjaData['dataset']['siteurl']);
+//console.log(jinjaData{'dataset'}{'siteurl'});
+console.log(jinjaData('dataset'));
 
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
 var m = L.map('map').setView([38, -118], 6);
