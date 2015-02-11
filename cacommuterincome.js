@@ -57,7 +57,7 @@ function enhanceLayer1(f,l){
     if (f.properties){
         // -----------
         // popup
-        l.bindPopup("Percentage: "+f.properties[key1].toFixed());
+        l.bindPopup("Percentage: "+(f.properties[key1]*10).toFixed());
 
         // -----------
         // style
