@@ -63,5 +63,5 @@ function enhanceLayer(f,l){
     }
 }
 
-
-var geoj = new L.geoJson.ajax("/"+SITEURL+"/carandom.geojson",{onEachFeature:enhanceLayer}).addTo(m);
+// "/"+SITEURL+
+var geoj = new L.geoJson.ajax("/carandom.geojson",{onEachFeature:enhanceLayer}).addTo(m);
