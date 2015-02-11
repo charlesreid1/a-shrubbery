@@ -1,13 +1,6 @@
-// to get information from Jinja into javascript:
-// http://stackoverflow.com/questions/21626048/unable-to-pass-jinja2-variables-into-javascript-snippet
-// 
-// <meta id="my-data" data-name="" data-other="">
-//
-// var djangoData = $('#my-data').data();
-
-
-var jinjaData = $('#jinja-site-url').data();
-console.log(jinjaData);
+// pass variable from Jinja to Javascript
+var jinjaData = $('#jinja-site-url');
+console.log(jinjaData['dataset']['siteurl']);
 
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
 var m = L.map('map').setView([38, -118], 6);
@@ -24,9 +17,19 @@ L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_
 function getColor(d) {
     // d should be between 0 and 1
     // 
-    // 6 scale blues
-    var blue = ['rgb(239,243,255)','rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(49,130,189)','rgb(8,81,156)'];
-    return blue[Math.round(d*6)];
+    // colorbrewer will dump out color scales as js arrays,
+    // so it's easy to copy-and-paste here.
+
+    //// 6 scale blues
+    //var colors = ['rgb(239,243,255)','rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(49,130,189)','rgb(8,81,156)'];
+
+    //// 9 scale OrRd
+    //var colors = ['rgb(255,247,236)','rgb(254,232,200)','rgb(253,212,158)','rgb(253,187,132)','rgb(252,141,89)','rgb(239,101,72)','rgb(215,48,31)','rgb(179,0,0)','rgb(127,0,0)']
+
+    // 9 scale PuBuGn
+    var colors = ['rgb(255,247,251)','rgb(236,226,240)','rgb(208,209,230)','rgb(166,189,219)','rgb(103,169,207)','rgb(54,144,192)','rgb(2,129,138)','rgb(1,108,89)','rgb(1,70,54)']
+
+    return colors[Math.round(d*colors.length)];
 }
 
 
@@ -34,15 +37,23 @@ function getColor(d) {
 // f = feature, l = layer
 function enhanceLayer(f,l){
 
-    // add popup
     var out = [];
     if (f.properties){
+
+        console.log(f.properties.keys());
+
+        // -----------
+        // add popup
         for(key in f.properties){
             out.push(key+": "+f.properties[key]);
         }
         l.bindPopup(out.join("<br />"));
 
+        // -----------
+        // set style based on property
+        //
         // http://leafletjs.com/reference.html#path-options
+        //
         l.setStyle({    
             fillColor: getColor(f.properties['derived_quantity']/10.0),
             fillOpacity: 0.75,
