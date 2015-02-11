@@ -67,7 +67,7 @@ function enhanceLayer1(f,l){
             fillOpacity: 1.00,
             stroke: true,
             color: '#222',
-            weight: 2
+            weight: 1
         });
     }
 }
@@ -81,7 +81,7 @@ function enhanceLayer2(f,l){
             fillOpacity: 1.00,
             stroke: true,
             color: '#222',
-            weight: 2
+            weight: 1
         });
     }
 }
@@ -95,7 +95,7 @@ function enhanceLayer3(f,l){
             fillOpacity: 1.00,
             stroke: true,
             color: '#222',
-            weight: 2
+            weight: 1
         });
     }
 }
