@@ -41,7 +41,6 @@ function enhanceLayer(f,l){
     if (f.properties){
 
         console.log('hello');
-        console.log(f.properties);
 
         //// -----------
         //// add popup
