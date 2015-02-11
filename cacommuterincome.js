@@ -68,7 +68,7 @@ function enhanceLayer1(f,l){
         l.bindPopup("Percentage: "+(f.properties[key1]*100).toFixed());
         l.setStyle({    
             fillColor: getColorBlue(f.properties[key1]),
-            fillOpacity: 1.00,
+            fillOpacity: 0.85,
             stroke: true,
             color: '#222',
             weight: 1
@@ -82,7 +82,7 @@ function enhanceLayer2(f,l){
         l.bindPopup("Percentage: "+(f.properties[key2]*100).toFixed());
         l.setStyle({    
             fillColor: getColorGreen(f.properties[key2]),
-            fillOpacity: 1.00,
+            fillOpacity: 0.85,
             stroke: true,
             color: '#222',
             weight: 1
@@ -96,7 +96,7 @@ function enhanceLayer3(f,l){
         l.bindPopup("Percentage: "+(f.properties[key3]*100).toFixed());
         l.setStyle({    
             fillColor: getColorOrange(f.properties[key3]),
-            fillOpacity: 1.00,
+            fillOpacity: 0.85,
             stroke: true,
             color: '#222',
             weight: 1
