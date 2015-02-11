@@ -79,7 +79,7 @@ function enhanceLayer1(f,l){
 function enhanceLayer2(f,l){
     var out = [];
     if (f.properties){
-        l.bindPopup("County: "+f.properteis['name']+"<br />"+"Percentage: "+(f.properties[key1]*100).toFixed());
+        l.bindPopup("County: "+f.properties['name']+"<br />"+"Percentage: "+(f.properties[key1]*100).toFixed());
         l.setStyle({    
             fillColor: getColorGreen(f.properties[key2]),
             fillOpacity: 0.80,
@@ -93,7 +93,7 @@ function enhanceLayer2(f,l){
 function enhanceLayer3(f,l){
     var out = [];
     if (f.properties){
-        l.bindPopup("County: "+f.properteis['name']+"<br />"+"Percentage: "+(f.properties[key1]*100).toFixed());
+        l.bindPopup("County: "+f.properties['name']+"<br />"+"Percentage: "+(f.properties[key1]*100).toFixed());
         l.setStyle({    
             fillColor: getColorOrange(f.properties[key3]),
             fillOpacity: 0.80,
