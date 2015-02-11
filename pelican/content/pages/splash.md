@@ -3,6 +3,21 @@ PageStyle: clear
 save_as: index.html
 
 
+# My First US Census Data Map: 
+
+## California Counties, Means of Transportation to Work by Poverty Status 
+
+**Description**: This map is my first quantile map using US Census data. 
+This visualizes US Census Table B08122, officially
+titled, "Means of Transportation to Work by Poverty Status," compares two
+variables: means of transportation, and ratio of income to poverty line.
+
+**Data**: The data was obtained from the Census Bureau, delivered 
+via the [Census Reporter API](https://github.com/censusreporter/censusreporter).
+
+<a class="btn btn-info btn-large" href="cacommuterincome/">CA Means of Transportation by Poverty &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<br />
 
 
 
@@ -13,7 +28,7 @@ save_as: index.html
 **Data**: The data was obtained from the Census Bureau, delivered 
 via the [Census Reporter API](https://github.com/censusreporter/censusreporter).
 
-<a class="btn btn-info btn-large" href="carandom/">California County Quantile Map<i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="carandom/">California County Quantile Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
 
@@ -28,7 +43,7 @@ and is visualized on a map using Leaflet.js.
 **Data**: The data was obtained from the [Tokugawa Japan Data Archive web site](http://www.fas.harvard.edu/~chgis/japan/archive/)
 at Harvard University. 
 
-<a class="btn btn-info btn-large" href="feudaljapan/">Feudal Japan Daimyo Boundaries Map (1664) <i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="feudaljapan/">Feudal Japan Daimyo Boundaries Map (1664) &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
 
@@ -42,7 +57,7 @@ served up by a [Geoserver instance](http://charlesreid1.com/wiki/Geodroplet), an
 [EIA-Oil-Gas-Maps](https://github.com/talllguy/EIA-Oil-Gas-Maps) repository on GitHub,
 by [@talllguy](http://github.com/talllguy).
 
-<a class="btn btn-info btn-large" href="shalegasplays/">EIA Shale Gas Plays Map <i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="shalegasplays/">EIA Shale Gas Plays Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
 
@@ -56,7 +71,7 @@ Geoserver setup (see [charlesreid1.com for more info](http://charlesreid1.com/wi
 
 **Data**: The data on this map were provided by a [Geoserver tutorial](http://docs.geoserver.org/stable/en/user/gettingstarted/web-admin-quickstart/index.html).
 
-<a class="btn btn-info btn-large" href="nycstreets/">NYC Streets Map <i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="nycstreets/">NYC Streets Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
 
 
