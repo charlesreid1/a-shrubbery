@@ -1,13 +1,3 @@
-// to get information from Jinja into javascript:
-// http://stackoverflow.com/questions/21626048/unable-to-pass-jinja2-variables-into-javascript-snippet
-// 
-// <meta id="my-data" data-name="" data-other="">
-//
-// var djangoData = $('#my-data').data();
-
-
-var jinjaData = $('#jinja-site-url').data();
-console.log(jinjaData);
 
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
 var m = L.map('map').setView([38, -118], 6);
@@ -53,4 +43,5 @@ function enhanceLayer(f,l){
 }
 
 
-var geoj = new L.geoJson.ajax(jinjaData['siteurl']+"/carandom.geojson",{onEachFeature:enhanceLayer}).addTo(m);
+var prefix = "http://charlesreid1.github.io/a-shrubbery/";
+var geoj = new L.geoJson.ajax(prefix+"carandom.geojson",{onEachFeature:enhanceLayer}).addTo(m);

@@ -64,4 +64,5 @@ function enhanceLayer(f,l){
 }
 
 // "/"+SITEURL+
-var geoj = new L.geoJson.ajax("cacommuterincome.geojson",{onEachFeature:enhanceLayer}).addTo(m);
+var prefix = "http://charlesreid1.github.io/a-shrubbery/";
+var geoj = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer}).addTo(m);
