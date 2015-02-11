@@ -11,7 +11,7 @@ key3 = 'C_Above150PovLn_PublicTrans_CountyPct'
 
 
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
-var m1 = L.map('map1').setView([38, -118], 6);
+var m1 = L.map('map1').setView([38, -118], 5);
 //var m2 = L.map('map2').setView([38, -118], 6);
 //var m3 = L.map('map3').setView([38, -118], 6);
 
@@ -57,12 +57,12 @@ function enhanceLayer1(f,l){
     if (f.properties){
         // -----------
         // popup
-        l.bindPopup("Percentage: "+f.properties[key1]);
+        l.bindPopup("Percentage: "+f.properties[key1].toFixed());
 
         // -----------
         // style
         l.setStyle({    
-            fillColor: getColorGreen(f.properties[key1]),
+            fillColor: getColorBlue(f.properties[key1]),
             fillOpacity: 0.75,
             stroke: false
         });
