@@ -65,7 +65,9 @@ function enhanceLayer1(f,l){
         l.setStyle({    
             fillColor: getColorBlue(f.properties[key1]),
             fillOpacity: 1.00,
-            stroke: false
+            stroke: true,
+            color: '#222',
+            weight: 2
         });
     }
 }
@@ -77,7 +79,9 @@ function enhanceLayer2(f,l){
         l.setStyle({    
             fillColor: getColorBlue(f.properties[key2]),
             fillOpacity: 1.00,
-            stroke: false
+            stroke: true,
+            color: '#222',
+            weight: 2
         });
     }
 }
@@ -89,7 +93,9 @@ function enhanceLayer3(f,l){
         l.setStyle({    
             fillColor: getColorOrange(f.properties[key3]),
             fillOpacity: 1.00,
-            stroke: false
+            stroke: true,
+            color: '#222',
+            weight: 2
         });
     }
 }
