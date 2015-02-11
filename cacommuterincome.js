@@ -37,17 +37,19 @@ function getColor(d) {
 // f = feature, l = layer
 function enhanceLayer(f,l){
 
+    console.log(f);
+
     var out = [];
     if (f.properties){
 
         console.log(f.properties.keys());
 
-        // -----------
-        // add popup
-        for(key in f.properties){
-            out.push(key+": "+f.properties[key]);
-        }
-        l.bindPopup(out.join("<br />"));
+        //// -----------
+        //// add popup
+        //for(key in f.properties){
+        //    out.push(key+": "+f.properties[key]);
+        //}
+        //l.bindPopup(out.join("<br />"));
 
     //    // -----------
     //    // set style based on property
