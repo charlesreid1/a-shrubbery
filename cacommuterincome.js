@@ -12,8 +12,8 @@ key3 = 'C_Above150PovLn_PublicTrans_CountyPct'
 
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
 var m1 = L.map('map1').setView([38, -118], 6);
-var m2 = L.map('map2').setView([38, -118], 6);
-var m3 = L.map('map3').setView([38, -118], 6);
+//var m2 = L.map('map2').setView([38, -118], 6);
+//var m3 = L.map('map3').setView([38, -118], 6);
 
 // Add MapBox Tiles
 // https://www.mapbox.com/developers/api/maps/
@@ -22,8 +22,8 @@ tl = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?ac
     maxZoom: 18
 });
 tl.addTo(m1);
-tl.addTo(m2);
-tl.addTo(m3);
+//tl.addTo(m2);
+//tl.addTo(m3);
 
 
 function getColorGreen(d) {
@@ -106,5 +106,5 @@ function enhanceLayer3(f,l){
 // "/"+SITEURL+
 var prefix = "http://charlesreid1.github.io/a-shrubbery/";
 var geoj1 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer1}).addTo(m1);
-var geoj2 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer2}).addTo(m2);
-var geoj3 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer3}).addTo(m3);
+//var geoj2 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer2}).addTo(m2);
+//var geoj3 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer3}).addTo(m3);
