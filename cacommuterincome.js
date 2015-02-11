@@ -37,11 +37,10 @@ function getColor(d) {
 // f = feature, l = layer
 function enhanceLayer(f,l){
 
-    console.log(f);
-
     var out = [];
     if (f.properties){
 
+        console.log('hello');
         console.log(f.properties.keys());
 
         //// -----------
@@ -62,7 +61,7 @@ function enhanceLayer(f,l){
     //        stroke: false
     //    });
 
-        console.log(f.properties['A_Below100PovLn_DroveAlone']);
+        console.log(f.properties.A_Below100PovLn_DroveAlone);
     }
 
 }
