@@ -1,6 +1,6 @@
 {% extends 'base_map.html' %}
 
-{% set mytitle="CA Counties: Commute Means by Income" %}
+{% set mytitle="CA Counties: Means of Transportation to Work by Poverty Status" %}
 
 {# ----------- title -------------- #}
 
@@ -10,22 +10,103 @@
 
 {% block content %}
 
+
+<div class="container">
+
+<div class="row">
 <h2>{{ mytitle }}</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
 
 <p>The following map gives a breakdown of how people get to work,
 based on the ratio of their income to the poverty line.
 </p>
 
-<p>The population falls into three classes: (1) income below
-the poverty line; (2) income at or 1.5 times the poverty line;
-(3) income more than 1.5 times the poverty line.
-</p>
+<p>This table divides the population into three classes:</p>
 
-<div id="map" style="width:800px;"></div>
+<ul>
+    <li>income below the poverty line;
+    </li>
+    <li>income at or 1.5 times the poverty line;
+    </li>
+    <li>income more than 1.5 times the poverty line.
+    </li>
+</ul>
+
+<p>It breaks down commuting methods to a couple of groups:
+
+<ul>
+    <li>Drive alone
+    </li>
+    <li>Drive in carpool/vanpool/other
+    </li>
+    <li>Public transit
+    </li>
+    <li>Bike, motorcycle, taxi
+    </li>
+    <li>Walk
+    </li>
+</ul>
+
+<p>Let's start with public transit.</p>
+
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <h1><b>Public Transit</b></h1>
+</div>
+
+<div class="row">
+
+    <div class="col-md-4">
+
+        <h2><b>Below Poverty Line: Commuting by Public Transit</b></h2>
+
+        <p>"Below Poverty Line" defined as income level of 
+        &lt; 100% of poverty line/poverty threshold.</p>
+
+<div id="map1" style="width:100%; height: 400px;"></div>
+
+    </div>
+
+
+
+    <div class="col-md-4">
+
+        <h2><b>Above Poverty Line: Commuting by Public Transit</b></h2>
+
+        <p>"Above Poverty Line" defined as income level of 
+        &gt; 150% of poverty line/poverty threshold.</p>
+
+<div id="map3" style="width:100%; height: 400px;"></div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <h2><b>At Poverty Line: Commuting by Public Transit</b></h2>
+
+        <p>"At Poverty Line" defined as income level of 
+        100-150% of poverty line/poverty threshold.</p>
+
+<div id="map2" style="width:100%; height: 400px;"></div>
+
+    </div>
+
+
+</div>
+
 
 <meta id="jinja-site-url" data-siteurl="{{ SITEURL }}"></meta>
 <script src="{{ SITEURL }}/theme/js/leaflet.ajax.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="{{ SITEURL }}/cacommuterincome.js"></script>
+
 
 {% endblock %}
 
