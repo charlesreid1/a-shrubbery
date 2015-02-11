@@ -1,0 +1,31 @@
+{% extends 'base_map.html' %}
+
+{% set mytitle="CA Counties: Commute Means by Income" %}
+
+{# ----------- title -------------- #}
+
+{% block title %}{{ mytitle }}{% endblock %}
+
+{# ----------- content ------------- #}
+
+{% block content %}
+
+<h2>{{ mytitle }}</h2>
+
+<p>The following map gives a breakdown of how people get to work,
+based on the ratio of their income to the poverty line.
+</p>
+
+<p>The population falls into three classes: (1) income below
+the poverty line; (2) income at or 1.5 times the poverty line;
+(3) income more than 1.5 times the poverty line.
+</p>
+
+<div id="map" style="width:800px;"></div>
+
+<meta id="jinja-site-url" data-siteurl="{{ SITEURL }}"></meta>
+<script src="{{ SITEURL }}/theme/js/leaflet.ajax.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="{{ SITEURL }}/cacommuterincome.js"></script>
+
+{% endblock %}
+
