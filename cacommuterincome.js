@@ -40,8 +40,6 @@ function enhanceLayer(f,l){
     var out = [];
     if (f.properties){
 
-        console.log('hello');
-
         //// -----------
         //// add popup
         //for(key in f.properties){
@@ -49,18 +47,19 @@ function enhanceLayer(f,l){
         //}
         //l.bindPopup(out.join("<br />"));
 
-    //    // -----------
-    //    // set style based on property
-    //    //
-    //    // http://leafletjs.com/reference.html#path-options
-    //    //
-    //    l.setStyle({    
-    //        fillColor: getColor(f.properties['A_Below100PovLn_DroveAlone']),
-    //        fillOpacity: 0.75,
-    //        stroke: false
-    //    });
+        //console.log(f.properties.A_Below100PovLn_DroveAlone);
 
-        console.log(f.properties.A_Below100PovLn_DroveAlone);
+        // -----------
+        // set style based on property
+        //
+        // http://leafletjs.com/reference.html#path-options
+        //
+        l.setStyle({    
+            fillColor: getColor(f.properties['A_Below100PovLn_DroveAlone_CountyPct']),
+            fillOpacity: 0.75,
+            stroke: false
+        });
+
     }
 
 }
