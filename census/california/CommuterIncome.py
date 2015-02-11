@@ -86,7 +86,7 @@ def main():
 
 
     with open(filename,'w') as f:
-        f.write( json.dumps(counties) )
+        f.write( json.dumps(counties,sort_keys=True) )
 
     print "bing! all done!"
 
