@@ -11,19 +11,25 @@ key3 = 'C_Above150PovLn_PublicTrans_CountyPct'
 
 
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
-var m1 = L.map('map1').setView([37.7, -122.4], 5);
-//var m2 = L.map('map2').setView([37.7, -122.4], 5);
-var m3 = L.map('map3').setView([37.7, -122.4], 5);
+var m1 = L.map('map1').setView([37.7, -122.4], 6);
+//var m2 = L.map('map2').setView([37.7, -122.4], 6);
+var m3 = L.map('map3').setView([37.7, -122.4], 6);
 
 // Add MapBox Tiles
 // https://www.mapbox.com/developers/api/maps/
-tl = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{
+tl1 = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
     maxZoom: 18
 });
-tl.addTo(m1);
+tl1.addTo(m1);
+
 //tl.addTo(m2);
-tl.addTo(m3);
+
+tl3 = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
+    maxZoom: 18
+});
+tl3.addTo(m3);
 
 
 function getColorGreen(d) {
