@@ -64,4 +64,4 @@ function enhanceLayer(f,l){
 }
 
 // "/"+SITEURL+
-var geoj = new L.geoJson.ajax("/carandom.geojson",{onEachFeature:enhanceLayer}).addTo(m);
+var geoj = new L.geoJson.ajax("cacommuterincome.geojson",{onEachFeature:enhanceLayer}).addTo(m);
