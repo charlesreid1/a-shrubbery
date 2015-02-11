@@ -1,6 +1,6 @@
 // pass variable from Jinja to Javascript
 var jinjaData = $('#jinja-site-url');
-console.log(jinjaData[0]['dataset']['siteurl']);
+var SITEURL = jinjaData[0]['dataset']['siteurl'];
 
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
 var m = L.map('map').setView([38, -118], 6);
@@ -64,4 +64,4 @@ function enhanceLayer(f,l){
 }
 
 
-var geoj = new L.geoJson.ajax("/"+jinjaData['siteurl']+"/carandom.geojson",{onEachFeature:enhanceLayer}).addTo(m);
+var geoj = new L.geoJson.ajax("/"+SITEURL+"/carandom.geojson",{onEachFeature:enhanceLayer}).addTo(m);
