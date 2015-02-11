@@ -37,30 +37,31 @@ function getColor(d) {
 // f = feature, l = layer
 function enhanceLayer(f,l){
 
-    var out = [];
-    if (f.properties){
+    //var out = [];
+    //if (f.properties){
 
-        console.log(f.properties.keys());
+    //    console.log(f.properties.keys());
 
-        // -----------
-        // add popup
-        for(key in f.properties){
-            out.push(key+": "+f.properties[key]);
-        }
-        l.bindPopup(out.join("<br />"));
+    //    // -----------
+    //    // add popup
+    //    for(key in f.properties){
+    //        out.push(key+": "+f.properties[key]);
+    //    }
+    //    l.bindPopup(out.join("<br />"));
 
-        // -----------
-        // set style based on property
-        //
-        // http://leafletjs.com/reference.html#path-options
-        //
-        l.setStyle({    
-            fillColor: getColor(f.properties['A_Below100PovLn_DroveAlone']),
-            fillOpacity: 0.75,
-            stroke: false
-        });
-        console.log(f.properties['derived_quantity']/10.0);
-    }
+    //    // -----------
+    //    // set style based on property
+    //    //
+    //    // http://leafletjs.com/reference.html#path-options
+    //    //
+    //    l.setStyle({    
+    //        fillColor: getColor(f.properties['A_Below100PovLn_DroveAlone']),
+    //        fillOpacity: 0.75,
+    //        stroke: false
+    //    });
+    //    console.log(f.properties['derived_quantity']/10.0);
+    //}
+
 }
 
 // "/"+SITEURL+
