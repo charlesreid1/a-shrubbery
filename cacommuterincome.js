@@ -5,15 +5,15 @@
 
 
 key1 = 'A_Below100PovLn_PublicTrans_CountyPct'
-key2 = 'B_Btwn100_149PovLn_PublicTrans_CountyPct'
+//key2 = 'B_Btwn100_149PovLn_PublicTrans_CountyPct'
 key3 = 'C_Above150PovLn_PublicTrans_CountyPct'
 
 
 
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
-var m1 = L.map('map1').setView([38, -118], 5);
-//var m2 = L.map('map2').setView([38, -118], 6);
-//var m3 = L.map('map3').setView([38, -118], 6);
+var m1 = L.map('map1').setView([37.7, -122.4], 5);
+//var m2 = L.map('map2').setView([37.7, -122.4], 5);
+var m3 = L.map('map3').setView([37.7, -122.4], 5);
 
 // Add MapBox Tiles
 // https://www.mapbox.com/developers/api/maps/
@@ -23,7 +23,7 @@ tl = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?ac
 });
 tl.addTo(m1);
 //tl.addTo(m2);
-//tl.addTo(m3);
+tl.addTo(m3);
 
 
 function getColorGreen(d) {
@@ -55,15 +55,10 @@ function getColorOrange(d) {
 function enhanceLayer1(f,l){
     var out = [];
     if (f.properties){
-        // -----------
-        // popup
-        l.bindPopup("Percentage: "+(f.properties[key1]*10).toFixed());
-
-        // -----------
-        // style
+        l.bindPopup("Percentage: "+(f.properties[key1]*100).toFixed());
         l.setStyle({    
             fillColor: getColorBlue(f.properties[key1]),
-            fillOpacity: 0.75,
+            fillOpacity: 1.00,
             stroke: false
         });
     }
@@ -72,15 +67,10 @@ function enhanceLayer1(f,l){
 function enhanceLayer2(f,l){
     var out = [];
     if (f.properties){
-        // -----------
-        // popup
-        l.bindPopup("Percentage: "+f.properties[key2]);
-
-        // -----------
-        // style
+        l.bindPopup("Percentage: "+(f.properties[key1]*100).toFixed());
         l.setStyle({    
             fillColor: getColorBlue(f.properties[key2]),
-            fillOpacity: 0.75,
+            fillOpacity: 1.00,
             stroke: false
         });
     }
@@ -89,15 +79,10 @@ function enhanceLayer2(f,l){
 function enhanceLayer3(f,l){
     var out = [];
     if (f.properties){
-        // -----------
-        // popup
-        l.bindPopup("Percentage: "+f.properties[key3]);
-
-        // -----------
-        // style
+        l.bindPopup("Percentage: "+(f.properties[key1]*100).toFixed());
         l.setStyle({    
             fillColor: getColorOrange(f.properties[key3]),
-            fillOpacity: 0.75,
+            fillOpacity: 1.00,
             stroke: false
         });
     }
@@ -107,4 +92,4 @@ function enhanceLayer3(f,l){
 var prefix = "http://charlesreid1.github.io/a-shrubbery/";
 var geoj1 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer1}).addTo(m1);
 //var geoj2 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer2}).addTo(m2);
-//var geoj3 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer3}).addTo(m3);
+var geoj3 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer3}).addTo(m3);
