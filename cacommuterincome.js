@@ -1,6 +1,6 @@
-// pass variable from Jinja to Javascript
-var jinjaData = $('#jinja-site-url');
-var SITEURL = jinjaData[0]['dataset']['siteurl'];
+//// pass variable from Jinja to Javascript
+//var jinjaData = $('#jinja-site-url');
+//var SITEURL = jinjaData[0]['dataset']['siteurl'];
 
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
 var m = L.map('map').setView([38, -118], 6);
@@ -55,7 +55,7 @@ function enhanceLayer(f,l){
         // http://leafletjs.com/reference.html#path-options
         //
         l.setStyle({    
-            fillColor: getColor(f.properties['derived_quantity']/10.0),
+            fillColor: getColor(f.properties['A_Below100PovLn_DroveAlone']),
             fillOpacity: 0.75,
             stroke: false
         });
