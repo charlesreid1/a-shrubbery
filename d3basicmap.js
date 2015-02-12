@@ -35,7 +35,7 @@ d3.json(prefix+"d3basicmap.json", function(error, ca) {
   svg.selectAll(".subunit")
       .data(subunits.features)
     .enter().append("path")
-      .attr("class", function(d) { return "subunit subunit" + d.properties.geoid; })
+      .attr("class", function(d) { console.log(d); return "subunit subunit" + d.properties.geoid; })
       .attr("d", path);
 
 
