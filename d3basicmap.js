@@ -30,10 +30,10 @@ d3.json(prefix+"d3basicmap.json", function(error, ca) {
 
   console.log(ca);
 
-  var subunits = topojson.feature(ca, ca.objects.collection);
+  var subunits = topojson.feature(ca, ca.objects.d3basicmap);
 
   svg.selectAll(".subunit")
-      .data(subunits.features)
+      .data(subunits.geometries)
     .enter().append("path")
       .attr("class", function(d) { return "subunit subunit" + d.properties.geoid; })
       .attr("d", path);
