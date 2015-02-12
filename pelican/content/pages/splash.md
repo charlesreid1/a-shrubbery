@@ -3,6 +3,20 @@ PageStyle: clear
 save_as: index.html
 
 
+# My First D3 Map
+
+**Description**: This slaps together a simple map of California using D3.
+This was a very different process from the one used to create a Leaflet.
+
+**Data**: This uses the same dataset as before, of California county boundary
+information obtained from the US Census Bureau
+via the [Census Reporter API](https://github.com/censusreporter/censusreporter).
+
+<a class="btn btn-info btn-large" href="d3basicmap/">See My Very Basic D3 Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<br />
+
+
 # My First US Census Data Map: 
 
 ## California Counties, Means of Transportation to Work by Poverty Status 

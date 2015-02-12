@@ -61,6 +61,9 @@ TEMPLATE_PAGES['cacommuterincome.html'] = 'cacommuterincome/index.html'
 TEMPLATE_PAGES['cacommuterincome.js']   = 'cacommuterincome.js'
 TEMPLATE_PAGES['cacommuterincome.geojson']   = 'cacommuterincome.geojson'
 
+TEMPLATE_PAGES['d3basicmap.html'] = 'd3basicmap/index.html'
+TEMPLATE_PAGES['d3basicmap.js']   = 'd3basicmap.js'
+TEMPLATE_PAGES['d3basicmap.json'] = 'd3basicmap.json'
 
 
 
