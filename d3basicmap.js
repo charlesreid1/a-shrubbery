@@ -28,9 +28,9 @@ var prefix = "http://charlesreid1.github.io/a-shrubbery/";
 
 d3.json(prefix+"d3basicmap.json", function(error, ca) {
 
-  console.log(ca);
-
+  //console.log(ca);
   var subunits = topojson.feature(ca, ca.objects.d3basicmap);
+  console.log(subunits);
 
   svg.selectAll(".subunit")
       .data(subunits.geometries)
