@@ -30,7 +30,8 @@ d3.json(prefix+"d3basicmap.json", function(error, ca) {
 
   //console.log(ca);
 
-  var subunits = topojson.feature(ca, ca.objects.collection);
+  //var subunits = topojson.feature(ca, ca.objects.collection);
+  var subunits = topojson.feature(ca, ca.objects.features);
 
   svg.selectAll(".subunit")
       .data(subunits.features)
