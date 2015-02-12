@@ -28,15 +28,14 @@ var prefix = "http://charlesreid1.github.io/a-shrubbery/";
 
 d3.json(prefix+"d3basicmap.json", function(error, ca) {
 
-  //console.log(ca);
+  console.log(ca);
 
-  //var subunits = topojson.feature(ca, ca.objects.collection);
-  var subunits = topojson.feature(ca, ca.objects.features);
+  var subunits = topojson.feature(ca, ca.objects.collection);
 
   svg.selectAll(".subunit")
       .data(subunits.features)
     .enter().append("path")
-      .attr("class", function(d) { console.log(d); return "subunit subunit" + d.properties.geoid; })
+      .attr("class", function(d) { return "subunit subunit" + d.properties.geoid; })
       .attr("d", path);
 
 
