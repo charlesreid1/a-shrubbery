@@ -32,7 +32,6 @@ d3.json(prefix+"barrygoldwater.json", function(error, ca) {
 
   //console.log(ca);
   var subunits = topojson.feature(ca, ca.objects.d3basicmap);
-  console.log(subunits);
 
   svg.selectAll(".subunit")
       .data(subunits.features)
