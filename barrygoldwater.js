@@ -8,7 +8,7 @@ var width = 800,
 // http://bl.ocks.org/mbostock/4090848
 //
 var projection = d3.geo.albersUsa()
-    .center(32.57, -113.47])
+    .center([32.57, -113.47])
     .scale(1400)
     .translate([width*3/4, height/2]);
 
