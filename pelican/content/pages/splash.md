@@ -3,6 +3,20 @@ PageStyle: clear
 save_as: index.html
 
 
+# Barry Goldwater Bombing Range Topo Map
+
+**Description**: A topo map of the Barry Goldwater bombing range in southwestern
+Arizona. 
+The map is made with D3.
+
+**Data**: Uses shapefile data from the National Map Viewer, translated into TopoJson. 
+See [charlesreid1 wiki](http://charlesreid1.com/wiki/Topo_Map#National_Map_Viewer).
+
+<a class="btn btn-info btn-large" href="barrygoldwater/">See Goldater Bombing Range Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<br />
+
+
 # My First D3 Map
 
 **Description**: This slaps together a simple map of California using D3.

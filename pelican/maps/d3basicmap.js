@@ -6,8 +6,13 @@ var width = 800,
 // 
 // http://bl.ocks.org/mbostock/4090848
 //
+/*
 var projection = d3.geo.albersUsa()
     .scale(1400)
+    .translate([width*3/4, height/2]);
+*/
+var projection = d3.geo.albersUsa()
+    .scale(800)
     .translate([width*3/4, height/2]);
 
 var path = d3.geo.path()
@@ -23,21 +28,25 @@ var svg = d3.select("body").append("svg")
 // This is a hack.
 // If running locally, change prefix to /
 // Otherwise, keep a-shrubbery
-var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-//var prefix = "/";
+//var prefix = "http://charlesreid1.github.io/a-shrubbery/";
+var prefix = "/";
 
 d3.json(prefix+"d3basicmap.json", function(error, ca) {
 
   //console.log(ca);
   var subunits = topojson.feature(ca, ca.objects.d3basicmap);
-  console.log(subunits);
 
   svg.selectAll(".subunit")
       .data(subunits.features)
     .enter().append("path")
       .attr("class", function(d) { return "subunit subunit" + d.properties.geoid; })
-      .attr("d", path);
+      .attr("d", path)
 
+/*
+      .attr("transform", function(d) { 
+          return "translate(" + projection([
+                  ;
+*/
 
 
 });

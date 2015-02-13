@@ -1,0 +1,50 @@
+{% extends 'base_map.html' %}
+
+{% set mytitle="Barry Goldwater Bombing Range Topo Map" %}
+
+{# ----------- title -------------- #}
+
+{% block title %}{{ mytitle }}{% endblock %}
+
+{# ----------- content ------------- #}
+
+{% block content %}
+
+<style>
+
+.contour {
+  stroke-width: 0.5;
+}
+
+.key path {
+  display: none;
+}
+
+.key line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+</style>
+
+<h2>{{ mytitle }}</h2>
+
+<p>A topographical map of the Barry Goldwater Bombing Range in southwestern 
+Arizona, near Yuma.
+</p>
+
+<p>This page shows topographical shape data from the USGS National
+Map Viewer. It is an extremely large TopoJson file, highly detailed,
+so please be patient!
+</p>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+
+<meta id="jinja-site-url" data-siteurl="{{ SITEURL }}"></meta>
+<script src="{{ SITEURL }}/barrygoldwater.js" type="text/javascript"></script>
+
+{% endblock %}
+
+
+
+

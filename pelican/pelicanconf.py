@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = u'charlesreid1'
 SITENAME = u'A Shrubbery'
-SITEURL = '/a-shrubbery'
+#SITEURL = '/a-shrubbery'
 
 PATH = 'content'
 
@@ -65,6 +65,9 @@ TEMPLATE_PAGES['d3basicmap.html'] = 'd3basicmap/index.html'
 TEMPLATE_PAGES['d3basicmap.js']   = 'd3basicmap.js'
 TEMPLATE_PAGES['d3basicmap.json'] = 'd3basicmap.json'
 
+TEMPLATE_PAGES['barrygoldwater.html'] = 'barrygoldwater/index.html'
+TEMPLATE_PAGES['barrygoldwater.js']   = 'barrygoldwater.js'
+TEMPLATE_PAGES['barrygoldwater.json'] = 'barrygoldwater.json'
 
 
 
