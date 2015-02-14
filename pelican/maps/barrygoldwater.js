@@ -29,8 +29,8 @@ var zoom = d3.behavior.zoom()
 // This is a hack.
 // If running locally, change prefix to /
 // Otherwise, keep a-shrubbery
-//var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-var prefix = "/";
+var prefix = "http://charlesreid1.github.io/a-shrubbery/";
+//var prefix = "/";
 
 d3.json(prefix+"barrygoldwater.json", function(error, contours) {
 
