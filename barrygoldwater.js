@@ -4,8 +4,8 @@ var width = 800,
 // width increase = move to right
 // height increase = move to bottom
 var projection = d3.geo.albersUsa()
-    .scale(4800)
-    .translate([width*1.6, height*0.05]);
+    .scale(6000)
+    .translate([width*1.7, height*0.03]);
     //.translate([width*3/4, height/2]);
 
 var path = d3.geo.path()
