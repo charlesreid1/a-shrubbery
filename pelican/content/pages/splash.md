@@ -12,7 +12,7 @@ The map is made with D3.
 **Data**: Uses shapefile data from the National Map Viewer, translated into TopoJson. 
 See [charlesreid1 wiki](http://charlesreid1.com/wiki/Topo_Map#National_Map_Viewer).
 
-<a class="btn btn-info btn-large" href="barrygoldwater/">See Goldater Bombing Range Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="barrygoldwater/">See Goldwater Bombing Range Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
 

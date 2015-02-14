@@ -1,41 +1,28 @@
-
 var width = 800,
     height = 600;
 
-// 32.571952, -113.473564
-// 
-// http://bl.ocks.org/mbostock/4090848
-//
-// doesn't work:
-//    .center([32.57, 113.47])
-//    .center(["32.57", "-113.47"])
-//
-
-// http://bl.ocks.org/mbostock/4707858
-
-//var projection = d3.geo.mercator()
+// width increase = move to right
+// height increase = move to bottom
 var projection = d3.geo.albersUsa()
-    .scale(1400)
-    .translate([width/2, height/2]);
+    .scale(4200)
+    .translate([width*1.4, height*0.10]);
+    //.translate([width*3/4, height/2]);
 
 var path = d3.geo.path()
     .projection(projection)
-    .pointRadius(1);
+    .pointRadius(2);
+
+var svg = d3.select("div.map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
 
+
+/*
 var zoom = d3.behavior.zoom()
     .scaleExtent([1, 2])
     .on("zoom", zoomed);
-
-
-// This is inserted as <body> is being constructed,
-// so <svg> occurs wherever this .js file is called.
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .call(zoom);
-
-var map = svg.append("g");
+*/
 
 
 
@@ -49,50 +36,57 @@ d3.json(prefix+"barrygoldwater.json", function(error, contours) {
 
     var contour = topojson.feature(contours, contours.objects.Elev_Contour);
 
-    var b = path.bounds(contour),
-        s = .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
-        t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
-
-    var shortcontours = contour.features.filter(function(d) {
-        return d.properties.CONTOURELE<1400;
-    });
-
     var onecontour = contour.features.filter(function(d) {
         return d.properties.CONTOURELE === 1840;
     });
 
+    // http://stackoverflow.com/questions/14492284/center-a-map-in-d3-given-a-geojson-object
 
-    /*
-    var b = path.bounds(onecontour);
-    console.log(b);
+    var scale = 1000;
 
-    var b = path.bounds(onecontour),
-        s = .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
-        t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
-    */
+    var center = d3.geo.centroid(contours);
 
-    projection.scale(1).translate([0, 0]);
-    projection
-        .scale(s)
-        .translate(t);
+    var path2 = d3.geo.path().projection(projection);
 
-    map.selectAll(".contour")
-            .data(contours)
+    var bounds = path2.bounds(contours);
+    var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
+    var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
+    var scale   = (hscale < vscale) ? hscale : vscale;
+    var offset  = [width/2 - (bounds[0][0] + bounds[1][0])/2,
+                   height/2 - (bounds[0][1] + bounds[1][1])/2];
+
+    //// new projection
+    //projection2 = d3.geo.mercator().center(center)
+    //        .scale(scale).translate(offset);
+    //path2 = path2.projection(projection);
+
+
+    // add a rectangle to see the bound of the svg
+    svg.append("rect").attr('width', width).attr('height', height)
+      .style('stroke', 'black').style('fill', 'none');
+
+
+    //console.log("scale = "+scale);
+    //console.log("hscale = "+hscale);
+    //console.log("vscale = "+vscale);
+
+
+        //.data(contour.features)
+    svg.selectAll("path")
+        .data(onecontour)
         .enter().append("path")
-            .attr("class", "contour")
-            .attr("class", function(d) { return "contour contour" + d.properties.CONTOURELE; })
-            .attr("d", path);
-
-    //svg.selectAll(".subunit")
-    //    .data(subunits.features)
-    //  .enter().append("path")
-    //    .attr("class", function(d) { return "subunit subunit" + d.properties.geoid; })
-    //    .attr("d", path);
+        .attr("d", path)
+        .attr("class", function(d) { return "contour contour" + d.properties.CONTOURELE; })
+        .style("stroke-width", "1")
+        .style("stroke", "black")
+        .style("fill", "red")
 
 });
 
+/*
 function zoomed() {
     map.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
     contour.style("stroke-width", 0.5 / d3.event.scale);
 }
+*/
 
