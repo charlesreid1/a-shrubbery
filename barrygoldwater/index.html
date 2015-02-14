@@ -138,11 +138,18 @@
 
 
 <style>
-.subunit {
-    fill: #aba;
+
+.contour {
+  stroke-width: 0.5;
 }
-.subunit05000US06071 {
-    fill: #fc9272;
+
+.key path {
+  display: none;
+}
+
+.key line {
+  stroke: #000;
+  shape-rendering: crispEdges;
 }
 </style>
 
@@ -156,6 +163,8 @@ Arizona, near Yuma.
 Map Viewer. It is an extremely large TopoJson file, highly detailed,
 so please be patient!
 </p>
+
+<div class="container map"></div>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
