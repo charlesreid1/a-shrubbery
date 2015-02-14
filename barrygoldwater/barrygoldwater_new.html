@@ -1,0 +1,109 @@
+<!-- language: html -->
+<style>
+/*svg { border: 5px solid #333; background-color: #C6ECFF;}*/
+
+/* TOPO */
+path.Topo_1 { fill:#ACD0A5; stroke: #0978AB; stroke-width: 1px; }
+path.Topo_50 {fill: #94BF8B; }
+path.Topo_100 {fill: #BDCC96; }
+path.Topo_200 {fill: #E1E4B5; }
+path.Topo_500 {fill: #DED6A3; }
+path.Topo_1000 {fill:#CAB982 ; }
+path.Topo_2000 {fill: #AA8753; }
+path.Topo_3000 {fill: #BAAE9A; }
+path.Topo_4000 {fill: #E0DED8 ; }
+path.Topo_5000 {fill: #FFFFFF ; }
+/*
+.download { 
+  background: #333; 
+  color: #FFF; 
+  font-weight: 900; 
+  border: 2px solid #B10000; 
+  padding: 4px; 
+  margin:4px;
+}
+*/
+</style>
+<body>
+<script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script>
+
+
+// 1. -------------- SETTINGS ------------- //
+// Geo-frame_borders in decimal degrees
+//var WNES = { "W": 114.0, "N":32.0, "E": 113.0, "S": 33.0 };
+var WNES = { "W": -113.0, "N":32.0, "E": -114.0, "S": 33.0 };
+
+// Geo values of interest :
+var latCenter = (WNES.S + WNES.N)/2,
+    lonCenter = (WNES.W + WNES.E)/2,
+    geo_width = (WNES.E - WNES.W),
+    geo_height= (WNES.N - WNES.S);
+// HTML expected frame dimensions
+var width  = 800,
+    height = 600;//width * (geo_height / geo_width);
+
+// Projection: projection, reset scale and translate
+var projection = d3.geo.equirectangular()
+      .scale(1)
+      .translate([0, 0]);
+
+// SVG injection:
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// Path
+var path = d3.geo.path()
+    .projection(projection)
+    .pointRadius(4);
+
+// Data (getJSON: TopoJSON)
+d3.json("barrygoldwater_new.json", showData);
+
+// 2. ---------- FUNCTION ------------- //
+function showData(error, contours) {
+
+    var contour = topojson.feature(contours, contours.objects.Elev_Contour);
+
+    var onecontour = contour.features.filter(function(d) {
+        return d.properties.CONTOURELE === 1000;
+    });
+
+
+    // Focus area box compute for derive scale & translate.
+    // [[left, bottom], [right, top]] // E   W    N   S
+    var b = path.bounds(contour),
+        s = 1 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
+        t = [(width  - s * (b[1][0] + b[0][0])) / 2, 
+             (height - s * (b[1][1] + b[0][1])) / 2];
+
+    // Projection update
+    projection
+        .scale(s)
+        .translate(t);
+
+    // black border around map
+    svg.append("rect").attr('width', width).attr('height', height)
+      .style('stroke', 'black').style('fill', 'none'); 
+
+    svg.append("path")
+        .datum(contour)
+        .attr("d",path)
+    svg.selectAll(".contours")
+        .data(topojson.feature(contours,contours.objects.Elev_Contour).features)
+        .enter().append("path")
+        .attr("class", function(d) { return "contour contour" + d.properties.CONTOURELE; })
+        .style("stroke-width", "1")
+        .style("stroke", "black")
+        .attr("d",path)
+
+}
+</script>
+<br />
+<p>you see?</p>
+<br />
+</body>
+</html>
