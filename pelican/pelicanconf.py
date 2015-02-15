@@ -69,6 +69,9 @@ TEMPLATE_PAGES['barrygoldwater.html'] = 'barrygoldwater/index.html'
 TEMPLATE_PAGES['barrygoldwater.js']   = 'barrygoldwater.js'
 TEMPLATE_PAGES['barrygoldwater.json'] = 'barrygoldwater.json'
 
+TEMPLATE_PAGES['nationalmaptile.html'] = 'nationalmaptile/index.html'
+TEMPLATE_PAGES['nationalmaptile.js']   = 'nationalmaptile.js'
+
 
 
 # --------------8<---------------------
