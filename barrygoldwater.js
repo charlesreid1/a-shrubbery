@@ -4,8 +4,8 @@ var width = 800,
 // width increase = move to right
 // height increase = move to bottom
 var projection = d3.geo.albersUsa()
-    .scale(5000)
-    .translate([width*1.9, height*0.00]);
+    .scale(4000)
+    .translate([width*1.4, height*0.10]);
     //.translate([width*3/4, height/2]);
 
 var path = d3.geo.path()
@@ -89,4 +89,3 @@ function zoomed() {
     contour.style("stroke-width", 0.5 / d3.event.scale);
 }
 */
-

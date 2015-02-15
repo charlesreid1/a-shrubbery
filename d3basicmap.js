@@ -64,4 +64,3 @@ d3.json(prefix+"d3basicmap.json", function(error, ca) {
     //  .style("fill", "red")
 
 });
-
