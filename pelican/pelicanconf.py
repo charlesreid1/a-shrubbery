@@ -65,13 +65,16 @@ TEMPLATE_PAGES['d3basicmap.html'] = 'd3basicmap/index.html'
 TEMPLATE_PAGES['d3basicmap.js']   = 'd3basicmap.js'
 TEMPLATE_PAGES['d3basicmap.json'] = 'd3basicmap.json'
 
-TEMPLATE_PAGES['barrygoldwater.html'] = 'barrygoldwater/index.html'
-TEMPLATE_PAGES['barrygoldwater.js']   = 'barrygoldwater.js'
-TEMPLATE_PAGES['barrygoldwater.json'] = 'barrygoldwater.json'
+#TEMPLATE_PAGES['barrygoldwater_d3.html'] = 'barrygoldwater_d3/index.html'
+#TEMPLATE_PAGES['barrygoldwater_d3.js']   = 'barrygoldwater_d3.js'
+#TEMPLATE_PAGES['barrygoldwater_d3.json'] = 'barrygoldwater_d3.json'
 
 TEMPLATE_PAGES['nationalmaptile.html'] = 'nationalmaptile/index.html'
 TEMPLATE_PAGES['nationalmaptile.js']   = 'nationalmaptile.js'
 
+TEMPLATE_PAGES['barrygoldwater.html'] = 'barrygoldwater/index.html'
+TEMPLATE_PAGES['barrygoldwater.js']   = 'barrygoldwater.js'
+TEMPLATE_PAGES['barrygoldwater_red.json'] = 'barrygoldwater_red.json'
 
 
 # --------------8<---------------------
