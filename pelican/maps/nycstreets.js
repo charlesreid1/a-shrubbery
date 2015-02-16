@@ -70,8 +70,6 @@ $.ajax({
     //upon success extraction of data
     success: function (data) {
 
-        console.log(data);
-
         // the data.geometry field contains coordinate/location data.
         //
         // now use this page on Leaflet+GeoJSON:
