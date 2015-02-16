@@ -2,6 +2,13 @@
 output/
 cache/
 
+# shapefiles
+*.shp
+*.shx
+*.prj
+*.dbf
+
+barrygoldwater/Elev_Contour.json
 
 
 # Byte-compiled / optimized / DLL files
