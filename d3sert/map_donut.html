@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>A Shrubbery</title>
+    <meta name="author" content="charlesreid1">
+
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.arc path {
+  stroke: #fff;
+}
+
+</style>
+
+    <!--
+    my CSS styles
+    -->
+    <link href="http://charlesreid1.github.io/a-shrubbery/theme/css/bootstrap.css"       rel="stylesheet" type="text/css">
+    <link href="http://charlesreid1.github.io/a-shrubbery/theme/css/sandstone.css"       rel="stylesheet" type="text/css"/>
+    <link href="http://charlesreid1.github.io/a-shrubbery/theme/css/navbar.css"          rel="stylesheet" type="text/css"/>
+    <link href="http://charlesreid1.github.io/a-shrubbery/theme/css/main.css"            rel="stylesheet" type="text/css"/>
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+          rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+          rel="stylesheet" type="text/css"/>
+
+    <link href="http://charlesreid1.github.io/a-shrubbery/theme/css/pygment.css" rel="stylesheet" type="text/css"/>
+
+    <script src="http://charlesreid1.github.io/a-shrubbery/theme/js/jquery.min.js"></script>
+    <script src="http://charlesreid1.github.io/a-shrubbery/theme/js/bootstrap.min.js"></script>
+
+    <!-- map header -->
+
+    <!-- load the leaflet library -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <!-- end map header -->
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+</head>
+
+<body>
+
+<table border="1" width="100%">
+    <tr>
+        <td width="50%">
+            <h1>The Map</h1>
+            <p>Here ya go:</p>
+            <div id="map" style="height: 400px; width: 400px;"></div>
+        </td>
+        <td width="50%">
+            <h1>The Donut</h1>
+            <div class="graph"></div>
+        </td>
+    </tr>
+</table>
+
+
+
+
+<script>
+
+////////////////////////////////////////////////////
+
+var map = L.map('map').setView([40.754306, -73.985861], 12);
+L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
+    maxZoom: 18
+}).addTo(map);
+var owsrootUrl = 'http://104.236.163.66:8080/geoserver/ows';
+var defaultParameters = {
+    service : 'WFS',
+    version : '1.0',
+    request : 'GetFeature',
+    typeName : 'nyc_roads',
+    maxFeatures : '100',
+    outputFormat : 'text/javascript',
+    format_options : 'callback:getJson',
+    SrsName : 'EPSG:4326'
+};
+var parameters = L.Util.extend(defaultParameters);
+var URL = owsrootUrl + L.Util.getParamString(parameters);
+$.ajax({
+    type: "POST",
+    url: URL,
+    dataType: 'jsonp',
+    jsonpCallback : 'getJson',
+    success: function (data) {
+    	var geojson = new L.geoJson(data, {
+                style: {"color":"#ff7800","weight":2},
+    		    onEachFeature: function(feature, layer){
+    		    	layer.bindPopup("street: " + feature.properties.name);
+    		    }
+    	}).addTo(map);
+        var marker = L.marker([40.7543, -73.9858]).addTo(map);
+    }
+});
+
+
+////////////////////////////////////////////////////
+
+
+var width = 350,
+    height = 350,
+    radius = Math.min(width, height) / 2;
+
+var color = d3.scale.ordinal()
+.range([ "#ffffcc", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#0c2c84" ]);
+
+var arc = d3.svg.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(radius - 70);
+
+var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d) { return d.population; });
+
+var svg = d3.select("div.graph").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+d3.csv("data.csv", function(error, data) {
+
+  data.forEach(function(d) {
+    d.population = +d.population;
+  });
+
+  var g = svg.selectAll(".arc")
+      .data(pie(data))
+    .enter().append("g")
+      .attr("class", "arc");
+
+  g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d) { return color(d.data.age); });
+
+  g.append("text")
+      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+      .attr("dy", ".35em")
+      .style("text-anchor", "middle")
+      .text(function(d) { return d.data.age; });
+
+});
+
+
+</script>
+
+
