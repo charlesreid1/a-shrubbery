@@ -54,8 +54,8 @@ function enhanceLayer(f,l){
 
 
 
-//var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-var prefix = "/";
+var prefix = "http://charlesreid1.github.io/a-shrubbery/";
+//var prefix = "/";
 var url = prefix+"barrygoldwater_red.json"
 
 
@@ -129,112 +129,3 @@ function leaveLayer(){
     opacity:.8
   });
 }
-
-//var geoj = new L.geoJson.ajax(url,{onEachFeature: enhanceLayer});
-
-
-
-
-
-
-
-///////////////////////////////////////////////////////////
-//// old stuff
-
-
-
-//function enhanceLayer(f,l){
-//    if (f.properties){
-//        if (f.properties['CONTOURELE']===1840){
-//            l.setStyle({    
-//                fillColor: '#000',
-//                fillOpacity: 0.50,
-//                stroke: true,
-//                color: '#222',
-//                weight: 1
-//            });
-//        }
-//    }
-//}
-//
-
-
-
-
-//var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-//var prefix = "/";
-//var url = prefix+"barrygoldwater.geojson"
-//var geoj = new L.geoJson.ajax(url,{onEachFeature: enhanceLayer});
-/*function(f,l) {
-            if (f.properties){
-                if (f.properties['CONTOURELE']===1840){
-                    l.setStyle({    
-                        fillColor: '#000',
-                        fillOpacity: 0.50,
-                        stroke: true,
-                        color: '#222',
-                        weight: 1
-                    });
-                }
-            }
-        }
-    });
-*/
-//geoj.addTo(map);
-
-
-///////////////////////////////////////////////////
-
-/*
-
-var owsrootUrl = 'http://104.236.163.66:8080/geoserver/ows';
-
-var defaultParameters = {
-    service : 'WFS',
-    version : '1.0',
-    request : 'GetFeature',
-    typeName : 'US_ShalePlays_EIA_May2011',
-    maxFeatures : '200',
-    outputFormat : 'text/javascript',
-    format_options : 'callback:getJson',
-    SrsName : 'EPSG:4269'
-};
-
-var parameters = L.Util.extend(defaultParameters);
-var URL = owsrootUrl + L.Util.getParamString(parameters);
-
-//ajax to get map features
-$.ajax({
-    type: "POST",
-    url: URL,
-    dataType: 'jsonp',
-    jsonpCallback : 'getJson',
-
-    //upon success extraction of data
-    success: function (data) {
-
-        console.log(data);
-
-        // the data.geometry field contains coordinate/location data.
-        //
-        // now use this page on Leaflet+GeoJSON:
-        // http://leafletjs.com/examples/geojson.html
-
-    	//create a new geojson layer
-    	var geojson = new L.geoJson(data, {
-
-    		    // apply a style 
-                style: {"color":"#ff7800","weight":2},
-                //
-    		    // and bind a popup showing the street name for each feature extracted.
-    		    //onEachFeature: function(feature, layer){
-    		    //	layer.bindPopup("street: " + feature.properties.name);
-                //    //console.log(feature.properties);
-    		    //}
-    	}).addTo(map);
-
-        //var marker = L.marker([40.7543, -73.9858]).addTo(map);
-    }
-});
-*/
-
