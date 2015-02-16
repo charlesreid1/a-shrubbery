@@ -3,6 +3,21 @@ PageStyle: clear
 save_as: index.html
 
 
+# Barry Goldwater Bombing Range Topo Map
+
+<img width="300px" src="images/splash_barrygoldwater.png" alt="Barry Goldwater Bombing Range Topo Map" />
+
+**Description**: Combines a tileset with contours from a shapefile,
+for the purpose of enhancing or calling out particular topological
+elevations or features.
+
+**Data**: This uses a tileset from the National Map Viewer, and 
+topological shapefiles that are also from the National Map Viewer.
+
+<a class="btn btn-info btn-large" href="barrygoldwater/">See Barry Goldwater Bombing Range Topo Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<br />
+
 
 # National Map Tileset
 
@@ -132,7 +147,7 @@ The map is made with D3.
 **Data**: Uses shapefile data from the National Map Viewer, translated into TopoJson. 
 See [charlesreid1 wiki](http://charlesreid1.com/wiki/Topo_Map#National_Map_Viewer).
 
-<a class="btn btn-info btn-large" href="barrygoldwater/">See Goldwater Bombing Range Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="barrygoldwater_d3/">See Goldwater Bombing Range Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
 
