@@ -103,6 +103,187 @@ function layerMouseclick() {
 
 
 
+    red = '#ff0000';
+
+    these_layer_ids = Object.keys(this._layers);
+
+
+    // print the leaflet ids of map layers for our county
+    //console.log(these_layer_ids);
+
+
+    // print every single layer object on the leaflet map
+    //map.eachLayer(function(layer) {
+    //    console.log(layer);
+    //});
+
+
+    // First, make sure no counties are red.
+    // Restore any previously red counties
+    // to their original color.
+    map.eachLayer(function(layer) {
+        if(layer.options) {
+            if( layer['options']['fillColor'] ) {
+                if(layer.options['fillColor']===red) {
+                    //console.log("Returning active fill color back to original fill color.");
+                    //console.log("Before: "+layer.options['fillColor']);
+                    layer.setStyle(
+                        {'fillColor':layer.options['originalFillColor'] }
+                    )
+                    //console.log("After: "+layer.options['fillColor']);
+                    //console.log("Original: "+layer.options['originalFillColor']);
+                }
+            }
+        }
+    });
+
+
+
+    // Now make the county the user clicked red.
+    // Some counties have multiple pieces,
+    // so we need to use var these_layer_ids
+    map.eachLayer(function(layer,ii) {
+        
+        if( layer['options'] ){
+
+            these_layer_ids.forEach( function(this_layer_id) {
+
+                if(layer['_leaflet_id']==this_layer_id) {
+                    if(layer['options']['fillColor']){
+                        // Get the county's current color.
+                        orig_fillColor = layer['options']['fillColor'];
+
+                        // Check if county is already red.
+                        // If not, make it red.
+                        if( orig_fillColor===red) {
+                            var a=0;
+
+                        } else {
+                            // set style to red 
+                            console.log(layer);
+                            layer.setStyle({
+                                'fillColor' : red,
+                                'originalFillColor' : orig_fillColor
+                            });
+                        }
+
+                    } else {
+                        layer.setStyle({
+                            'fillColor' : red,
+                            'originalFillColor' : red
+                        });
+                    }
+                }
+            });
+        }
+
+
+
+
+        // // We don't want layer, we want layer['_layers']
+        // // (sure. makes perfect sense.)
+        // if(layer['_layers']) {
+
+        //     // the keys of layer['_layers'] are leaflet IDs.
+        //     ids = Object.keys(layer['_layers']);
+
+        //     if(ids===these_layer_ids) {
+        //         if(layer['options']) {
+        //             if(layer['options']['fillColor']) {
+        //                 // Get the county's current color.
+        //                 orig_fillColor = layer['options']['fillColor'];
+
+        //                 // Check if county is already red.
+        //                 // If not, make it red.
+        //                 if( orig_fillColor===red) {
+        //                     var a=0;
+
+        //                 } else {
+        //                     // set style to red 
+        //                     console.log(layer);
+        //                     layer.setStyle({
+        //                         'fillColor' : red,
+        //                         'originalFillColor' : orig_fillColor
+        //                     });
+        //                 }
+        //             }
+        //         }
+        //     }
+
+        //     /*
+        //     // This is a little more complicated than it 
+        //     // needs to be, because Leaflet returns a layer
+        //     // that contains every single layer.
+        //     // I'm not sure where it is, or how to ignore it,
+        //     // so I'm picking it out by its abnormal length.
+        //     //
+        //     if(ids.length<6){
+
+        //         //// Print out the geoids of entities on this layer
+        //         //console.log("layers keys for key:");
+        //         //ids.forEach(function(d){
+        //         //    console.log(d);
+        //         //});
+
+
+        //         // Iterate over entities on this layer,
+        //         // and if the user clicked on them,
+        //         // turn them red.
+
+
+
+
+        //         // This is the most convoluted logic 
+        //         // I've ever coded into a script.
+
+        //     }
+        //     */
+        // }
+
+
+
+
+        /*
+        these_layer_ids.forEach( function(id) {
+
+            if(layer._leaflet_id == id-1) {
+                //console.log(layer._leaflet_id);
+                console.log(layer);
+                if(layer['options']) {
+                    if(layer['options']['fillColor']) {
+
+                        // Get the county's current color.
+                        orig_fillColor = layer['options']['fillColor'];
+
+                        // Check if county is already red.
+                        // If not, make it red.
+                        if( orig_fillColor===red) {
+                            var a=0;
+
+                        } else {
+                            // set style to red 
+                            console.log(layer);
+                            layer.setStyle({
+                                'fillColor' : red,
+                                'originalFillColor' : orig_fillColor
+                            });
+                        }
+                    }
+                }
+            }
+
+        });
+        */
+    });
+
+
+
+
+
+
+
+
+
     // Well, here's proof of concept that we can
     // assemble a vector of data to send over to
     // the D3 pie chart:
@@ -182,7 +363,6 @@ function layerMouseclick() {
     //
     // whatever. it never is a victory. 
     // just limp over the finish line.
-    red = '#ff0000';
 
 
 
@@ -190,7 +370,10 @@ function layerMouseclick() {
     // consists of multiple pieces.
     //
     my_leaflet_id   = this._leaflet_id;
-    //this_layer      = this._layers[ my_leaflet_id-1 ];
+    these_layers    = Object.keys(this._layers);
+
+    //console.log(these_layers);
+
     //options_dict    = this_layer['options'];
     //orig_fillColor  = options_dict['fillColor'];
     //console.log(this._leaflet_id);
@@ -214,26 +397,36 @@ function layerMouseclick() {
     //this_layer      = this._layers[ my_leaflet_id-1 ];
 
 
-    // Fill clicked counties with red 
-    map.eachLayer(function(layer) {
-        if( layer['options'] ) {
-            if( layer['options']['fillColor'] ) {
 
-                // set fill color to red
 
-                orig_fillColor = layer['options']['fillColor'];
-                if( orig_fillColor === red ){
-                    var a=0;
-                } else {
-                    layer.setStyle({
-                        'fillColor' : red,
-                        'originalFillColor' : orig_fillColor
-                    });
-                }
+    //// this is going to make every single layer red
+    //map.eachLayer(function(layer) {
+    //    if( layer['options'] ) {
+    //        if( layer['options']['fillColor'] ) {
 
-            }
-        }
-    });
+    //            // This county has a fill color.
+    //            // Check if it is red. 
+
+    //            orig_fillColor = layer['options']['fillColor'];
+
+    //            if( orig_fillColor === red ){
+    //                // do nothing
+    //                var a=0;
+    //                console.log(layer);
+
+    //            } else {
+    //                // set style to red 
+    //                console.log(layer);
+    //                layer.setStyle({
+    //                    'fillColor' : red,
+    //                    'originalFillColor' : orig_fillColor
+    //                });
+
+    //            }
+
+    //        }
+    //    }
+    //});
 
 
 
@@ -252,39 +445,39 @@ function layerMouseclick() {
     //}
 
 
-    // Restore any previously red counties
-    // to their original color
-    map.eachLayer( function(layer) { 
-        if(layer.options) {
-            if( layer['options']['fillColor'] ) {
+    //// Restore any previously red counties
+    //// to their original color
+    //map.eachLayer( function(layer) { 
+    //    if(layer.options) {
+    //        if( layer['options']['fillColor'] ) {
 
-                if(layer.options['fillColor']===red) {
+    //            if(layer.options['fillColor']===red) {
 
-                    // Improve this: 
-                    // dont' check for my leaflet id, which is 
-                    // by nature excluding other entities,
-                    // but instead grab Object.keys(self._layers)
-                    // and use it here.
-                    //
-                    // if layer._leaflet_id in Object.keys(self._layers)
-                    //
-                    if(layer._leaflet_id == my_leaflet_id-1) {
-                        var a=0;
+    //                // Improve this: 
+    //                // dont' check for my leaflet id, which is 
+    //                // by nature excluding other entities,
+    //                // but instead grab Object.keys(self._layers)
+    //                // and use it here.
+    //                //
+    //                // if layer._leaflet_id in Object.keys(self._layers)
+    //                //
+    //                if(layer._leaflet_id == my_leaflet_id-1) {
+    //                    var a=0;
 
-                    } else {
-                        //console.log("Returning active fill color back to original fill color.");
-                        //console.log("Before: "+layer.options['fillColor']);
-                        layer.setStyle(
-                            {'fillColor':layer.options['originalFillColor'] }
-                        )
-                        //console.log("After: "+layer.options['fillColor']);
-                        //console.log("Original: "+layer.options['originalFillColor']);
-                    }
-                }
-            }
-        }
-    });
-    map._onResize(); 
+    //                } else {
+    //                    //console.log("Returning active fill color back to original fill color.");
+    //                    //console.log("Before: "+layer.options['fillColor']);
+    //                    layer.setStyle(
+    //                        {'fillColor':layer.options['originalFillColor'] }
+    //                    )
+    //                    //console.log("After: "+layer.options['fillColor']);
+    //                    //console.log("Original: "+layer.options['originalFillColor']);
+    //                }
+    //            }
+    //        }
+    //    }
+    //});
+    //map._onResize(); 
 
 
 
