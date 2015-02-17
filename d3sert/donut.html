@@ -36,6 +36,24 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+// Printing the data from this d3.csv() call
+// 
+// myd = d3.csv("data.csv",function(e,d) {
+//     console.log(d);
+// });
+// 
+// shows that it is an array of dictionaries with same keys:
+// 
+// [Object, Object, Object, Object, Object, Object, Object]
+// 0: Object
+// age: "<5"
+// population: "2704659"
+// Object1: 
+// Object2: 
+// ...
+
+
+
 d3.csv("data.csv", function(error, data) {
 
   data.forEach(function(d) {
@@ -52,10 +70,13 @@ d3.csv("data.csv", function(error, data) {
       .style("fill", function(d) { return color(d.data.age); });
 
   g.append("text")
-      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-      .attr("dy", ".35em")
-      .style("text-anchor", "middle")
-      .text(function(d) { return d.data.age; });
+    .attr("transform", function(d) { 
+      console.log("arc centroid: "+arc.centroid(d)); 
+      return "translate(" + arc.centroid(d) + ")"; 
+    })
+    .attr("dy", ".35em")
+    .style("text-anchor", "middle")
+    .text(function(d) { return d.data.age; });
 
 });
 
