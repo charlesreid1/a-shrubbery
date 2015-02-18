@@ -213,6 +213,38 @@ function layerMouseclick() {
 
     path = path.data(data1, key);
 
+    var labelr = radius + 30;
+
+    path.enter().append("path")
+        .each(function(d, i) { this._current = findNeighborArc(i, data0, data1, key) || d; })
+        .attr("fill", function(d) { 
+            return color(d.data.cat); })
+
+    path.exit()
+        .datum(function(d, i) { return findNeighborArc(i, data1, data0, key) || d; })
+      .transition()
+        .duration(750)
+        .attrTween("d", arcTween)
+        .remove();
+
+    path.transition()
+        .duration(750)
+        .attrTween("d", arcTween);
+
+
+
+    ///// Arc Labels ///// 
+    // Calculate position 
+    path.append("text")
+      .attr("transform", function(d) { 
+          var pos = outerArc.centroid(d); 
+          return "translate(" + (pos[0] + (.5 - (pos[0] < 0)) * radius) + "," + (pos[1]*2) + ")"; 
+      })
+      .attr("dy", ".35em")
+      .style("text-anchor", function(d) { 
+          return outerArc.centroid(d)[0] > 0 ? "start" : "end";
+       })
+      .text(function(d) { return d.data.cat; });
 
 
 
@@ -248,38 +280,6 @@ function layerMouseclick() {
         .text(function(d,i) { 
             return d.data.cat; });
     */
-    var labelr = radius + 30;
-    path.enter().append("path")
-        .each(function(d, i) { this._current = findNeighborArc(i, data0, data1, key) || d; })
-        .attr("fill", function(d) { 
-            return color(d.data.cat); })
-
-    path.exit()
-        .datum(function(d, i) { return findNeighborArc(i, data1, data0, key) || d; })
-      .transition()
-        .duration(750)
-        .attrTween("d", arcTween)
-        .remove();
-
-    path.transition()
-        .duration(750)
-        .attrTween("d", arcTween);
-
-
-
-    ///// Arc Labels ///// 
-    // Calculate position 
-    path.append("text")
-      .attr("transform", function(d) { 
-          var pos = outerArc.centroid(d); 
-          return "translate(" + (pos[0] + (.5 - (pos[0] < 0)) * radius) + "," + (pos[1]*2) + ")"; 
-      })
-      .attr("dy", ".35em")
-      .style("text-anchor", function(d) { 
-          return outerArc.centroid(d)[0] > 0 ? "start" : "end";
-       })
-      .text(function(d) { return d.data.cat; });
-
 
 
 
@@ -515,7 +515,6 @@ var color = d3.scale.ordinal()
     .domain(categories)
     .range(["#018571", "#80cdc1", "#f5f5f5", "#dfc27d", "#a6611a"]);
 
-
 var arc = d3.svg.arc()
     .outerRadius(radius - 10)
     .innerRadius(radius - 70);
@@ -523,6 +522,18 @@ var arc = d3.svg.arc()
 var outerArc = d3.svg.arc()
     .innerRadius(radius * 0.9)
     .outerRadius(radius * 0.9);
+
+lab1 = 'Biked';
+lab2 = 'Drove Alone';
+lab3 = 'Drove Carpool';
+lab4 = 'Public Transit';
+lab5 = 'Walked';
+init_data = [{'cat' : lab1, 'dat' : 1.0},
+             {'cat' : lab2, 'dat' : 1.0},  
+             {'cat' : lab3, 'dat' : 1.0},  
+             {'cat' : lab4, 'dat' : 1.0},  
+             {'cat' : lab5, 'dat' : 1.0}];
+
 
 var pie = d3.layout.pie()
     .sort(null)
@@ -538,6 +549,26 @@ var path = svg.selectAll("path");
 
 svg.append("g").attr("class","labels");
 svg.append("g").attr("class","lines");
+
+var g = svg.selectAll(".arc")
+    .data(pie(init_data))
+    .enter().append("g")
+    .attr("class","arc");
+
+g.append("path")
+    .attr("d", arc)
+    .style("fill", function(d) { 
+        return color(d.data.cat); });
+
+g.append("text")
+    .attr("transform", function(d) { 
+        return "translate(" + arc.centroid(d) + ")"; })
+    .attr("dy", ".35em")
+    .style("text-anchor", "middle")
+    .text(function(d) { 
+        return d.data.cat; 
+    });
+
 
 
 
