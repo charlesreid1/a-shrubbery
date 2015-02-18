@@ -8,13 +8,6 @@
 
 <style>
 
-body {
-  font: 10px sans-serif;
-}
-
-.arc path {
-  stroke: #fff;
-}
 
 </style>
 
@@ -48,17 +41,36 @@ body {
     <!-- end map header -->
 
     <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="d3.legend.js"></script>
 
     <style>
+
     table {
         width: 100%;
     }
+
     td { 
         padding: 40px;
     }
+
     .activecounty {
         fillColor: #ff0000;
     }
+
+    body {
+      font: 12px sans-serif;
+    }
+    
+    .arc path {
+      stroke: #fff;
+    }
+    
+    .legend rect {
+        fill:white;
+        stroke:none;
+        opacity:0.8; 
+    }
+
     </style>
 
 </head>
