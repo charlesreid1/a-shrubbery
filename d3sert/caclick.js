@@ -200,29 +200,59 @@ function layerMouseclick() {
     //console.log(pie_data);
 
 
-    // Just drawing the plot doesn't work.
-    // Nothing gets updated.
-    //
-    // Need to look at donut transition example.
-    //
-    // remember, we set the value() function for pie
-    // above (well, below actually) to be d.dat 
-    // (so, in this case, pie_data.dat)
-    //
+
+    // This basically uses data0 and data1 to 
+    // update new locations for pie slices.
+    // it then draws the new ones. 
+    // its mostly magic.
     //
     // http://bl.ocks.org/mbostock/5682158
     //
     var data0 = path.data();
     var data1 = pie(pie_data);
 
-    // second arg is handle to key function
     path = path.data(data1, key);
 
+
+
+
+
+    // trying a third time to get 
+    // some damn text labels 
+    // on this damn pie chart.
+    //
+    // http://jsfiddle.net/nrabinowitz/GQDUS/
+
+    /*
+    var labelr = radius + 30;
+    var mytxt = path.enter().append("path")
+            .each(function(d, i) { this._current = findNeighborArc(i, data0, data1, key) || d; })
+            .attr("fill", function(d) { 
+                return color(d.data.cat); })
+            .append("text")
+    mytxt.attr("transform", function(d) {
+            var c = arc.centroid(d),
+                x = c[0],
+                y = c[1],
+                // pythagorean theorem for hypotenuse
+                h = Math.sqrt(x*x + y*y);
+            return "translate(" + (x/h * labelr) +  ',' +
+               (y/h * labelr) +  ")"; 
+        })
+        .attr("dy", ".35em")
+        .attr("text-anchor", function(d) {
+            // are we past the center?
+            return (d.endAngle + d.startAngle)/2 > Math.PI ?
+                "end" : "start";
+        })
+        .text(function(d,i) { 
+            return d.data.cat; });
+    */
+    var labelr = radius + 30;
     path.enter().append("path")
         .each(function(d, i) { this._current = findNeighborArc(i, data0, data1, key) || d; })
-        .attr("fill", function(d) { return color(d.data.cat); })
-      .append("title")
-        .text(function(d) { return d.data.cat; });
+        .attr("fill", function(d) { 
+            return color(d.data.cat); })
 
     path.exit()
         .datum(function(d, i) { return findNeighborArc(i, data1, data0, key) || d; })
@@ -234,6 +264,179 @@ function layerMouseclick() {
     path.transition()
         .duration(750)
         .attrTween("d", arcTween);
+
+
+
+    ///// Arc Labels ///// 
+    // Calculate position 
+    path.append("text")
+      .attr("transform", function(d) { 
+          var pos = outerArc.centroid(d); 
+          return "translate(" + (pos[0] + (.5 - (pos[0] < 0)) * radius) + "," + (pos[1]*2) + ")"; 
+      })
+      .attr("dy", ".35em")
+      .style("text-anchor", function(d) { 
+          return outerArc.centroid(d)[0] > 0 ? "start" : "end";
+       })
+      .text(function(d) { return d.data.cat; });
+
+
+
+
+    /*
+
+    // Now add text labels
+    //
+    // don't ask...
+    //
+    // http://jsfiddle.net/thudfactor/HdwTH/
+    // 
+    pied_arc = d3.svg.arc()
+        .innerRadius(radius - 70)
+        .outerRadius(radius - 10);
+
+    enteringLabels = svg.select(".labels").data(categories).enter();
+    labelGroups = enteringLabels.append("g").attr("class", "label");
+    labelGroups.append("circle").attr({
+        x: 0,
+        y: 0,
+        r: 2,
+        fill: "#000",
+        transform: function (d, i) {
+            centroid = pied_arc.centroid(d);
+            return "translate(" + pied_arc.centroid(d) + ")";
+        },
+            'class': "label-circle"
+    });
+
+    // "When am I ever going to use this?" I said in 
+    // 10th grade trig.
+    cDim = {'labelRadius':175};
+    textLines = labelGroups.append("line").attr({
+        x1: function (d, i) {
+            return pied_arc.centroid(d)[0];
+        },
+        y1: function (d, i) {
+            return pied_arc.centroid(d)[1];
+        },
+        x2: function (d, i) {
+            centroid = pied_arc.centroid(d);
+            midAngle = Math.atan2(centroid[1], centroid[0]);
+            x = Math.cos(midAngle) * cDim.labelRadius;
+            return x;
+        },
+        y2: function (d, i) {
+            centroid = pied_arc.centroid(d);
+            midAngle = Math.atan2(centroid[1], centroid[0]);
+            y = Math.sin(midAngle) * cDim.labelRadius;
+            return y;
+        },
+            'class': "label-line"
+    });
+
+
+
+    console.log(labelGroups);
+    textLabels = labelGroups.append("text").attr({
+        x: function (d, i) {
+            centroid = pied_arc.centroid(d);
+            midAngle = Math.atan2(centroid[1], centroid[0]);
+            x = Math.cos(midAngle) * cDim.labelRadius;
+            sign = (x > 0) ? 1 : -1
+            labelX = x + (5 * sign)
+            return labelX;
+        },
+        y: function (d, i) {
+            centroid = pied_arc.centroid(d);
+            midAngle = Math.atan2(centroid[1], centroid[0]);
+            y = Math.sin(midAngle) * cDim.labelRadius;
+            console.log(d);
+            return y;
+        },
+            'text-anchor': function (d, i) {
+            centroid = pied_arc.centroid(d);
+            midAngle = Math.atan2(centroid[1], centroid[0]);
+            x = Math.cos(midAngle) * cDim.labelRadius;
+            return (x > 0) ? "start" : "end";
+        },
+            'class': 'label-text'
+    })
+    .text(function (d) {
+        return d;
+    });
+
+    */
+
+
+    /*
+    // now add text labels
+    // 
+    // via 
+    // http://bl.ocks.org/dbuezas/9306799
+    //
+    var text = svg.select(".labels").selectAll("text")
+        .data(data1, key);
+
+    text.enter()
+        .append("text")
+        .attr("dy", ".35em")
+        .text(function(d) {
+            return d.data.label;
+        });
+    
+    function midAngle(d){
+        return d.startAngle + (d.endAngle - d.startAngle)/2;
+    }
+
+    text.transition().duration(1000)
+        .attrTween("transform", function(d) {
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                var pos = outerArc.centroid(d2);
+                pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+                return "translate("+ pos +")";
+            };
+        })
+        .styleTween("text-anchor", function(d){
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                return midAngle(d2) < Math.PI ? "start":"end";
+            };
+        });
+
+    text.exit()
+        .remove();
+
+
+    var polyline = svg.select(".lines").selectAll("polyline")
+        .data(data1, key);
+    
+    polyline.enter()
+        .append("polyline");
+
+    polyline.transition().duration(1000)
+        .attrTween("points", function(d){
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                var pos = outerArc.centroid(d2);
+                pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+                return [arc.centroid(d2), outerArc.centroid(d2), pos];
+            };          
+        });
+    
+    polyline.exit()
+        .remove();
+    
+        */
 
 }
 
@@ -300,16 +503,26 @@ var geoj1 = new L.geoJson.ajax(
 ////////////////////////////////////////////////////
 //// d3 geom
 
+var categories = ["Walked", "Biked", "Public Transit", "Drove Carpool", "Drove Alone"];
+
 
 var width = 300,
     height = 300,
-    radius = Math.min(width, height) / 2;
+    padding = 30,
+    radius = Math.min(width-padding, height-padding) / 2;
 
-var color = d3.scale.category20();
+var color = d3.scale.ordinal()
+    .domain(categories)
+    .range(["#018571", "#80cdc1", "#f5f5f5", "#dfc27d", "#a6611a"]);
+
 
 var arc = d3.svg.arc()
     .outerRadius(radius - 10)
     .innerRadius(radius - 70);
+
+var outerArc = d3.svg.arc()
+    .innerRadius(radius * 0.9)
+    .outerRadius(radius * 0.9);
 
 var pie = d3.layout.pie()
     .sort(null)
@@ -322,6 +535,9 @@ var svg = d3.select("div.graph").append("svg")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 var path = svg.selectAll("path");
+
+svg.append("g").attr("class","labels");
+svg.append("g").attr("class","lines");
 
 
 

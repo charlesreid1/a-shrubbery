@@ -1,0 +1,222 @@
+
+    // Well, here's proof of concept that we can
+    // assemble a vector of data to send over to
+    // the D3 pie chart:
+    // 
+    //console.log(this.feature);
+    //console.log(this.feature.properties['A_Below100PovLn_BikeEtc_CountyPct']);
+
+
+
+
+    /*
+    // Initial figuring out:
+
+    //console.log(geoj1);
+    //console.log(Object.keys(geoj1));
+    //
+    // this is a dictionary indexed by leaflet IDs
+    //console.log(geoj1._layers);
+    */ 
+
+
+
+    /*
+
+    // Here, we set the style of whatever county
+    // has just been clicked.
+    //
+    // If it is not red, we make it red.
+    // If it is already red, we return it to its old color.
+    //
+    //
+    // This seems like an extremely cumbersome way
+    // to access the feature that's just been clicked,
+    // but... whatever, I guess. That's JS/D3 for you.
+
+    my_leaflet_id   = this._leaflet_id;
+    this_layer      = this._layers[ my_leaflet_id-1 ];
+    options_dict    = this_layer['options'];
+
+
+    red = '#ff0000';
+
+    if (options_dict['fillColor']===red) {
+
+        this.setStyle({
+            'fillColor' : getColorBlue(this.feature.properties[key1])
+        });
+
+    } else {
+
+        this.setStyle({
+            'fillColor' : '#ff0000'
+        });
+
+    }
+
+    */
+
+
+    // A better approach would be to loop through 
+    // all tags representing all counties,
+    // and set the clicked one to be "active"
+    // and turn off any other county that was active.
+    // Then css style for "active" is defined as having 
+    // fillColor: #ff0000.
+
+    // But how do we get a feature/layer iterator?
+    // //
+    // likee this... except this is more than just countiees.
+    // and we arent accessing/modifying the county
+    // css class. just the fillColor and other style
+    // properties.
+    //
+    // whatever. it never is a victory. 
+    // just limp over the finish line.
+
+
+
+    // This is hacky and is creating problems when a layer 
+    // consists of multiple pieces.
+    //
+    my_leaflet_id   = this._leaflet_id;
+    these_layers    = Object.keys(this._layers);
+
+    //console.log(these_layers);
+
+    //options_dict    = this_layer['options'];
+    //orig_fillColor  = options_dict['fillColor'];
+    //console.log(this._leaflet_id);
+    //console.log(this._layers);
+
+
+
+    //var keys = Object.keys(this._layers);
+    //keys.forEach(function(d) {
+    //    //console.log(typeof(d.toString()));
+    //    //console.log(this._layers);
+    //    //layer = this._layers[d]['options'];
+    //    //layer = this._layers[d.toString()]['options'];
+    //});
+
+
+
+    //console.log(this._layers[37]['options']);
+    //console.log(typeof(this._layers));
+
+    //this_layer      = this._layers[ my_leaflet_id-1 ];
+
+
+
+
+    //// this is going to make every single layer red
+    //map.eachLayer(function(layer) {
+    //    if( layer['options'] ) {
+    //        if( layer['options']['fillColor'] ) {
+
+    //            // This county has a fill color.
+    //            // Check if it is red. 
+
+    //            orig_fillColor = layer['options']['fillColor'];
+
+    //            if( orig_fillColor === red ){
+    //                // do nothing
+    //                var a=0;
+    //                console.log(layer);
+
+    //            } else {
+    //                // set style to red 
+    //                console.log(layer);
+    //                layer.setStyle({
+    //                    'fillColor' : red,
+    //                    'originalFillColor' : orig_fillColor
+    //                });
+
+    //            }
+
+    //        }
+    //    }
+    //});
+
+
+
+    //if(orig_fillColor===red) {
+
+    //    var a=0;
+
+    //} else {
+
+    //    this.setStyle({
+    //        'fillColor' : red,
+    //        'originalFillColor' : orig_fillColor
+
+    //    });
+
+    //}
+
+
+    //// Restore any previously red counties
+    //// to their original color
+    //map.eachLayer( function(layer) { 
+    //    if(layer.options) {
+    //        if( layer['options']['fillColor'] ) {
+
+    //            if(layer.options['fillColor']===red) {
+
+    //                // Improve this: 
+    //                // dont' check for my leaflet id, which is 
+    //                // by nature excluding other entities,
+    //                // but instead grab Object.keys(self._layers)
+    //                // and use it here.
+    //                //
+    //                // if layer._leaflet_id in Object.keys(self._layers)
+    //                //
+    //                if(layer._leaflet_id == my_leaflet_id-1) {
+    //                    var a=0;
+
+    //                } else {
+    //                    //console.log("Returning active fill color back to original fill color.");
+    //                    //console.log("Before: "+layer.options['fillColor']);
+    //                    layer.setStyle(
+    //                        {'fillColor':layer.options['originalFillColor'] }
+    //                    )
+    //                    //console.log("After: "+layer.options['fillColor']);
+    //                    //console.log("Original: "+layer.options['originalFillColor']);
+    //                }
+    //            }
+    //        }
+    //    }
+    //});
+    //map._onResize(); 
+
+
+
+    
+
+
+    // This is where you would put D3 bindings
+
+    /*
+
+    https://github.com/mbostock/d3/wiki/Selections
+    
+    As a simple example, consider the case where the existing selection is empty, and we wish to create new nodes to match our data:
+    
+    d3.select("body").selectAll("div")
+        .data([4, 8, 15, 16, 23, 42])
+      .enter().append("div")
+        .text(function(d) { return d; });
+    
+    Assuming that the body is initially empty, the above code will create six new DIV elements, append them to the body in order, and assign their text content as the associated (string-coerced) number:
+    
+    <div>4</div>
+    <div>8</div>
+    <div>15</div>
+    <div>16</div>
+    <div>23</div>
+    <div>42</div>
+    
+    Note: the data method cannot be used to clear previously-bound data; use selection.datum instead.
+
+    */
