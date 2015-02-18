@@ -97,12 +97,6 @@ function layerMouseclick() {
     var county = this.feature.properties.name;
     $tooltip.text("County: "+county).show();
 
-
-
-    data_keys = Object.keys(this.feature.properties);
-
-
-
     red = '#ff0000';
 
     these_layer_ids = Object.keys(this._layers);
@@ -160,7 +154,6 @@ function layerMouseclick() {
 
                         } else {
                             // set style to red 
-                            console.log(layer);
                             layer.setStyle({
                                 'fillColor' : red,
                                 'originalFillColor' : orig_fillColor
@@ -176,340 +169,122 @@ function layerMouseclick() {
                 }
             });
         }
-
-
-
-
-        // // We don't want layer, we want layer['_layers']
-        // // (sure. makes perfect sense.)
-        // if(layer['_layers']) {
-
-        //     // the keys of layer['_layers'] are leaflet IDs.
-        //     ids = Object.keys(layer['_layers']);
-
-        //     if(ids===these_layer_ids) {
-        //         if(layer['options']) {
-        //             if(layer['options']['fillColor']) {
-        //                 // Get the county's current color.
-        //                 orig_fillColor = layer['options']['fillColor'];
-
-        //                 // Check if county is already red.
-        //                 // If not, make it red.
-        //                 if( orig_fillColor===red) {
-        //                     var a=0;
-
-        //                 } else {
-        //                     // set style to red 
-        //                     console.log(layer);
-        //                     layer.setStyle({
-        //                         'fillColor' : red,
-        //                         'originalFillColor' : orig_fillColor
-        //                     });
-        //                 }
-        //             }
-        //         }
-        //     }
-
-        //     /*
-        //     // This is a little more complicated than it 
-        //     // needs to be, because Leaflet returns a layer
-        //     // that contains every single layer.
-        //     // I'm not sure where it is, or how to ignore it,
-        //     // so I'm picking it out by its abnormal length.
-        //     //
-        //     if(ids.length<6){
-
-        //         //// Print out the geoids of entities on this layer
-        //         //console.log("layers keys for key:");
-        //         //ids.forEach(function(d){
-        //         //    console.log(d);
-        //         //});
-
-
-        //         // Iterate over entities on this layer,
-        //         // and if the user clicked on them,
-        //         // turn them red.
-
-
-
-
-        //         // This is the most convoluted logic 
-        //         // I've ever coded into a script.
-
-        //     }
-        //     */
-        // }
-
-
-
-
-        /*
-        these_layer_ids.forEach( function(id) {
-
-            if(layer._leaflet_id == id-1) {
-                //console.log(layer._leaflet_id);
-                console.log(layer);
-                if(layer['options']) {
-                    if(layer['options']['fillColor']) {
-
-                        // Get the county's current color.
-                        orig_fillColor = layer['options']['fillColor'];
-
-                        // Check if county is already red.
-                        // If not, make it red.
-                        if( orig_fillColor===red) {
-                            var a=0;
-
-                        } else {
-                            // set style to red 
-                            console.log(layer);
-                            layer.setStyle({
-                                'fillColor' : red,
-                                'originalFillColor' : orig_fillColor
-                            });
-                        }
-                    }
-                }
-            }
-
-        });
-        */
     });
 
 
 
 
+    data_keys = Object.keys(this.feature.properties);
+    this.feature.properties['A_Below100PovLn_BikeEtc_CountyPct'];
+
+    // Assemble our pie chart data
+    key1 = 'A_Below100PovLn_BikeEtc_CountyPct';
+    key2 = 'A_Below100PovLn_DroveAlone_CountyPct';
+    key3 = 'A_Below100PovLn_DroveCarpool_CountyPct';
+    key4 = 'A_Below100PovLn_PublicTrans_CountyPct';
+    key5 = 'A_Below100PovLn_Walked_CountyPct';
+
+    lab1 = 'Bike'
+    lab2 = 'Drove Alone'
+    lab3 = 'Drove Carpool'
+    lab4 = 'Public Transit'
+    lab5 = 'Walked'
+
+    pie_data = [{'cat' : lab1, 'key' : key1, 'dat' : this.feature.properties[key1]},
+                {'cat' : lab2, 'key' : key2, 'dat' : this.feature.properties[key2]},  
+                {'cat' : lab3, 'key' : key3, 'dat' : this.feature.properties[key3]},  
+                {'cat' : lab4, 'key' : key4, 'dat' : this.feature.properties[key4]},  
+                {'cat' : lab5, 'key' : key5, 'dat' : this.feature.properties[key5]}]  
+
+    //console.log("Data for "+this.feature.properties['name']);
+    //console.log(pie_data);
 
 
-
-
-
-    // Well, here's proof of concept that we can
-    // assemble a vector of data to send over to
-    // the D3 pie chart:
-    // 
-    //console.log(this.feature);
-    //console.log(this.feature.properties['A_Below100PovLn_BikeEtc_CountyPct']);
-
-    // Now if only we could figure out if 
-    // any county (other than the one just clicked)
-    // has a class equal to "active" 
-    // and if so, turn it off.
-
-
-
-    /*
-    // Initial figuring out:
-
-    //console.log(geoj1);
-    //console.log(Object.keys(geoj1));
+    // Just drawing the plot doesn't work.
+    // Nothing gets updated.
     //
-    // this is a dictionary indexed by leaflet IDs
-    //console.log(geoj1._layers);
-    */ 
-
-
-
-    /*
-
-    // Here, we set the style of whatever county
-    // has just been clicked.
+    // Need to look at donut transition example.
     //
-    // If it is not red, we make it red.
-    // If it is already red, we return it to its old color.
+    // remember, we set the value() function for pie
+    // above (well, below actually) to be d.dat 
+    // (so, in this case, pie_data.dat)
     //
     //
-    // This seems like an extremely cumbersome way
-    // to access the feature that's just been clicked,
-    // but... whatever, I guess. That's JS/D3 for you.
-
-    my_leaflet_id   = this._leaflet_id;
-    this_layer      = this._layers[ my_leaflet_id-1 ];
-    options_dict    = this_layer['options'];
-
-
-    red = '#ff0000';
-
-    if (options_dict['fillColor']===red) {
-
-        this.setStyle({
-            'fillColor' : getColorBlue(this.feature.properties[key1])
-        });
-
-    } else {
-
-        this.setStyle({
-            'fillColor' : '#ff0000'
-        });
-
-    }
-
-    */
-
-
-    // A better approach would be to loop through 
-    // all tags representing all counties,
-    // and set the clicked one to be "active"
-    // and turn off any other county that was active.
-    // Then css style for "active" is defined as having 
-    // fillColor: #ff0000.
-
-    // But how do we get a feature/layer iterator?
-    // //
-    // likee this... except this is more than just countiees.
-    // and we arent accessing/modifying the county
-    // css class. just the fillColor and other style
-    // properties.
+    // http://bl.ocks.org/mbostock/5682158
     //
-    // whatever. it never is a victory. 
-    // just limp over the finish line.
+    var data0 = path.data();
+    var data1 = pie(pie_data);
 
+    // second arg is handle to key function
+    path = path.data(data1, key);
 
+    path.enter().append("path")
+        .each(function(d, i) { this._current = findNeighborArc(i, data0, data1, key) || d; })
+        .attr("fill", function(d) { return color(d.data.cat); })
+      .append("title")
+        .text(function(d) { return d.data.cat; });
 
-    // This is hacky and is creating problems when a layer 
-    // consists of multiple pieces.
-    //
-    my_leaflet_id   = this._leaflet_id;
-    these_layers    = Object.keys(this._layers);
+    path.exit()
+        .datum(function(d, i) { return findNeighborArc(i, data1, data0, key) || d; })
+      .transition()
+        .duration(750)
+        .attrTween("d", arcTween)
+        .remove();
 
-    //console.log(these_layers);
+    path.transition()
+        .duration(750)
+        .attrTween("d", arcTween);
 
-    //options_dict    = this_layer['options'];
-    //orig_fillColor  = options_dict['fillColor'];
-    //console.log(this._leaflet_id);
-    //console.log(this._layers);
-
-
-
-    //var keys = Object.keys(this._layers);
-    //keys.forEach(function(d) {
-    //    //console.log(typeof(d.toString()));
-    //    //console.log(this._layers);
-    //    //layer = this._layers[d]['options'];
-    //    //layer = this._layers[d.toString()]['options'];
-    //});
-
-
-
-    //console.log(this._layers[37]['options']);
-    //console.log(typeof(this._layers));
-
-    //this_layer      = this._layers[ my_leaflet_id-1 ];
-
-
-
-
-    //// this is going to make every single layer red
-    //map.eachLayer(function(layer) {
-    //    if( layer['options'] ) {
-    //        if( layer['options']['fillColor'] ) {
-
-    //            // This county has a fill color.
-    //            // Check if it is red. 
-
-    //            orig_fillColor = layer['options']['fillColor'];
-
-    //            if( orig_fillColor === red ){
-    //                // do nothing
-    //                var a=0;
-    //                console.log(layer);
-
-    //            } else {
-    //                // set style to red 
-    //                console.log(layer);
-    //                layer.setStyle({
-    //                    'fillColor' : red,
-    //                    'originalFillColor' : orig_fillColor
-    //                });
-
-    //            }
-
-    //        }
-    //    }
-    //});
-
-
-
-    //if(orig_fillColor===red) {
-
-    //    var a=0;
-
-    //} else {
-
-    //    this.setStyle({
-    //        'fillColor' : red,
-    //        'originalFillColor' : orig_fillColor
-
-    //    });
-
-    //}
-
-
-    //// Restore any previously red counties
-    //// to their original color
-    //map.eachLayer( function(layer) { 
-    //    if(layer.options) {
-    //        if( layer['options']['fillColor'] ) {
-
-    //            if(layer.options['fillColor']===red) {
-
-    //                // Improve this: 
-    //                // dont' check for my leaflet id, which is 
-    //                // by nature excluding other entities,
-    //                // but instead grab Object.keys(self._layers)
-    //                // and use it here.
-    //                //
-    //                // if layer._leaflet_id in Object.keys(self._layers)
-    //                //
-    //                if(layer._leaflet_id == my_leaflet_id-1) {
-    //                    var a=0;
-
-    //                } else {
-    //                    //console.log("Returning active fill color back to original fill color.");
-    //                    //console.log("Before: "+layer.options['fillColor']);
-    //                    layer.setStyle(
-    //                        {'fillColor':layer.options['originalFillColor'] }
-    //                    )
-    //                    //console.log("After: "+layer.options['fillColor']);
-    //                    //console.log("Original: "+layer.options['originalFillColor']);
-    //                }
-    //            }
-    //        }
-    //    }
-    //});
-    //map._onResize(); 
-
-
-
-    
-
-
-    // This is where you would put D3 bindings
-
-    /*
-
-    https://github.com/mbostock/d3/wiki/Selections
-    
-    As a simple example, consider the case where the existing selection is empty, and we wish to create new nodes to match our data:
-    
-    d3.select("body").selectAll("div")
-        .data([4, 8, 15, 16, 23, 42])
-      .enter().append("div")
-        .text(function(d) { return d; });
-    
-    Assuming that the body is initially empty, the above code will create six new DIV elements, append them to the body in order, and assign their text content as the associated (string-coerced) number:
-    
-    <div>4</div>
-    <div>8</div>
-    <div>15</div>
-    <div>16</div>
-    <div>23</div>
-    <div>42</div>
-    
-    Note: the data method cannot be used to clear previously-bound data; use selection.datum instead.
-
-    */
 }
+
+function key(d) {
+    return d.data.cat;
+}
+
+function findNeighborArc(i, data0, data1, key) {
+  var d;
+  return (d = findPreceding(i, data0, data1, key)) ? {startAngle: d.endAngle, endAngle: d.endAngle}
+      : (d = findFollowing(i, data0, data1, key)) ? {startAngle: d.startAngle, endAngle: d.startAngle}
+      : null;
+}
+
+// Find the element in data0 that joins the highest preceding element in data1.
+function findPreceding(i, data0, data1, key) {
+  var m = data0.length;
+  while (--i >= 0) {
+    var k = key(data1[i]);
+    for (var j = 0; j < m; ++j) {
+      if (key(data0[j]) === k) return data0[j];
+    }
+  }
+}
+
+// Find the element in data0 that joins the lowest following element in data1.
+function findFollowing(i, data0, data1, key) {
+  var n = data1.length, m = data0.length;
+  while (++i < n) {
+    var k = key(data1[i]);
+    for (var j = 0; j < m; ++j) {
+      if (key(data0[j]) === k) return data0[j];
+    }
+  }
+}
+
+function arcTween(d) {
+  var i = d3.interpolate(this._current, d);
+  this._current = i(0);
+  return function(t) { return arc(i(t)); };
+}
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+
+
+// add geojson to map
+
 
 //var prefix = "http://charlesreid1.github.io/a-shrubbery/";
 var prefix = "/"
@@ -523,6 +298,7 @@ var geoj1 = new L.geoJson.ajax(
 
 
 ////////////////////////////////////////////////////
+//// d3 geom
 
 
 var width = 300,
@@ -544,6 +320,12 @@ var svg = d3.select("div.graph").append("svg")
     .attr("height", height)
   .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+var path = svg.selectAll("path");
+
+
+
+/*
 
 
 
@@ -598,6 +380,7 @@ g.append("text")
 
 
 
+*/
 
 
 
