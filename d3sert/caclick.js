@@ -501,8 +501,8 @@ function findFollowing(i, data0, data1, key) {
 }
 
 function arcTween(d) {
-    //console.log("Tween: this._current =");
-    //console.log(this._current);
+    console.log("Tween: this._current =");
+    console.log(this._current);
     var i = d3.interpolate(this._current, d);
     this._current = i(0);
     return function(t) { return arc(i(t)); };
@@ -607,28 +607,74 @@ var path = svg.selectAll("path");
 // the problem is with the first transition,
 // not picking up the initial data.
 //
-/////data_init0 = path.data()
-
-data_init = pie(init_data);
 
 
-// we have to set ._current 
-// for this path in order to 
-// make the first animation work.
+// since the first graph is messed up...
+// walk through what the subsequent graphs do.
+
+data_init0 = path.data();
+data_init1 = pie(init_data);
+
+path = path.data(data_init1, key);
+
+
+// animate transitions...
+/*
+path.enter().append("path")
+    .each(function(d, i) { 
+        this._current = findNeighborArc(i, data_init0, data_init1, key) || d; 
+    })
+    .attr("fill", function(d) { 
+        return color(d.data.cat); })
+
+path.each(function(d){console.log(this._current);});
+
+(5 x undefined)
+*/
 path.each(function(d, i) { 
-    this._current = findNeighborArc(i, data_init, data_init, key) || d; 
-    console.log("Dat in this._current for init:");
-    console.log(this._current);
-});
+        this._current = findNeighborArc(i, data_init0, data_init1, key) || d; 
+    })
+    .attr("fill", function(d) { 
+        return color(d.data.cat); })
 
-path.data(data_init,key).exit()
+// this happens when user clicks on a county
+path.exit()
     .datum(function(d, i) { 
-        return findNeighborArc(i, data_init, data_init, key) || d; 
+        return findNeighborArc(i, data_init1, data_init0, key) || d; 
     })
     .transition()
     .duration(750)
     .attrTween("d", arcTween)
     .remove();
+
+// this happens on page load
+path.transition()
+    .duration(750)
+    .attrTween("d", arcTween);
+
+path.append("text")
+    .attr("transform", function(d) { 
+        return "translate(" + arc.centroid(d) + ")"; })
+    .attr("dy", ".35em")
+    .style("text-anchor", "middle")
+    .text(function(d) { 
+        return d.data.cat; 
+    });
+
+
+// // //// we have to set ._current 
+// // //// for this path in order to 
+// // //// make the first animation work.
+// // //path.each(function(d, i) { 
+// // //    this._current = findNeighborArc(i, data_init0, data_init1, key) || d; 
+// // //    //console.log("Dat in this._current for init:");
+// // //    //console.log(this._current);
+// // //});
+
+
+
+
+
 
 /////
 /////g.exit()
