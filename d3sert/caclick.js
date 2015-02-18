@@ -93,6 +93,7 @@ function layerMouseout() {
     });
 }
 
+var Nclicks = 0;
 function layerMouseclick() {
     var county = this.feature.properties.name;
     $tooltip.text("County: "+county).show();
@@ -208,21 +209,42 @@ function layerMouseclick() {
     //
     // http://bl.ocks.org/mbostock/5682158
     //
-    var data0 = path.data();
+    //
+    //
+    //we have to set path hree, 
+    //as we don't update it after we 
+    //make our initial drawing...
+    //
+    var data0 = path.data(); 
     var data1 = pie(pie_data);
+    console.log("Nclicks: "+Nclicks);
+    console.log("Data0 to Data1 transition:");
+    console.log("Data0:");
+    console.log(data0);
+    console.log("Data1:");
+    console.log(data1);
 
     path = path.data(data1, key);
 
     var labelr = radius + 30;
 
+    Nclicks = Nclicks + 1;
+
+    ////////////////////////////////////////////
+    // animate transitions
+    //
     path.enter().append("path")
-        .each(function(d, i) { this._current = findNeighborArc(i, data0, data1, key) || d; })
+        .each(function(d, i) { 
+            this._current = findNeighborArc(i, data0, data1, key) || d; 
+        })
         .attr("fill", function(d) { 
             return color(d.data.cat); })
 
     path.exit()
-        .datum(function(d, i) { return findNeighborArc(i, data1, data0, key) || d; })
-      .transition()
+        .datum(function(d, i) { 
+            return findNeighborArc(i, data1, data0, key) || d; 
+        })
+        .transition()
         .duration(750)
         .attrTween("d", arcTween)
         .remove();
@@ -230,21 +252,19 @@ function layerMouseclick() {
     path.transition()
         .duration(750)
         .attrTween("d", arcTween);
-
+    ////////////////////////////////////////////
 
 
     ///// Arc Labels ///// 
     // Calculate position 
     path.append("text")
-      .attr("transform", function(d) { 
-          var pos = outerArc.centroid(d); 
-          return "translate(" + (pos[0] + (.5 - (pos[0] < 0)) * radius) + "," + (pos[1]*2) + ")"; 
-      })
-      .attr("dy", ".35em")
-      .style("text-anchor", function(d) { 
-          return outerArc.centroid(d)[0] > 0 ? "start" : "end";
-       })
-      .text(function(d) { return d.data.cat; });
+        .attr("transform", function(d) { 
+            return "translate(" + arc.centroid(d) + ")"; })
+        .attr("dy", ".35em")
+        .style("text-anchor", "middle")
+        .text(function(d) { 
+            return d.data.cat; 
+        });
 
 
 
@@ -569,6 +589,31 @@ g.append("text")
         return d.data.cat; 
     });
 
+var path = svg.selectAll("path");
+
+
+// we shouldn't need to do this to animate the plot.
+// setting the initial state just gives transitions 
+// a starting point.
+// 
+// the problem is with the first transition,
+// not picking up the initial data.
+//
+/////data_init0 = path.data()
+/////data_init1 = pie(init_data);
+/////
+/////g.each(function(d, i) { this._current = findNeighborArc(i, data_init0, data_init1, key) || d; });
+/////
+/////g.exit()
+/////        .datum(function(d, i) { return findNeighborArc(i, data_init1, data_init0, key) || d; })
+/////      .transition()
+/////        .duration(750)
+/////        .attrTween("d", arcTween)
+/////        .remove();
+/////
+/////g.transition()
+/////        .duration(750)
+/////        .attrTween("d", arcTween);
 
 
 
