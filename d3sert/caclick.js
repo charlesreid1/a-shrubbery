@@ -175,7 +175,7 @@ function layerMouseclick() {
     key4 = 'A_Below100PovLn_PublicTrans_CountyPct';
     key5 = 'A_Below100PovLn_Walked_CountyPct';
 
-    lab1 = 'Bike'
+    lab1 = 'Biked'
     lab2 = 'Drove Alone'
     lab3 = 'Drove Carpool'
     lab4 = 'Public Transit'
@@ -501,8 +501,8 @@ function findFollowing(i, data0, data1, key) {
 }
 
 function arcTween(d) {
-    console.log("Tween: this._current =");
-    console.log(this._current);
+    //console.log("Tween: this._current =");
+    //console.log(this._current);
     var i = d3.interpolate(this._current, d);
     this._current = i(0);
     return function(t) { return arc(i(t)); };
@@ -662,31 +662,10 @@ path.append("text")
     });
 
 
-// // //// we have to set ._current 
-// // //// for this path in order to 
-// // //// make the first animation work.
-// // //path.each(function(d, i) { 
-// // //    this._current = findNeighborArc(i, data_init0, data_init1, key) || d; 
-// // //    //console.log("Dat in this._current for init:");
-// // //    //console.log(this._current);
-// // //});
 
 
 
 
-
-
-/////
-/////g.exit()
-/////        .datum(function(d, i) { return findNeighborArc(i, data_init1, data_init0, key) || d; })
-/////      .transition()
-/////        .duration(750)
-/////        .attrTween("d", arcTween)
-/////        .remove();
-/////
-/////g.transition()
-/////        .duration(750)
-/////        .attrTween("d", arcTween);
 
 
 
