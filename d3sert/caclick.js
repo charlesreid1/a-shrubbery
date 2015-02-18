@@ -103,16 +103,6 @@ function layerMouseclick() {
     these_layer_ids = Object.keys(this._layers);
 
 
-    // print the leaflet ids of map layers for our county
-    //console.log(these_layer_ids);
-
-
-    // print every single layer object on the leaflet map
-    //map.eachLayer(function(layer) {
-    //    console.log(layer);
-    //});
-
-
     // First, make sure no counties are red.
     // Restore any previously red counties
     // to their original color.
@@ -215,14 +205,27 @@ function layerMouseclick() {
     //as we don't update it after we 
     //make our initial drawing...
     //
+
+    console.log("Path, just before our first transition:");
+    path.each(function(d,i){ console.log(d);});
+    //
+    // path[0] = {'startAngle' : 0
+    //            'endAngle' : 1.25}
+    //
+    // path[1] = {'startAngle' : 1.25,
+    //            'endAngle' : 2.51
+    //            
+
+
     var data0 = path.data(); 
     var data1 = pie(pie_data);
-    console.log("Nclicks: "+Nclicks);
-    console.log("Data0 to Data1 transition:");
-    console.log("Data0:");
-    console.log(data0);
-    console.log("Data1:");
-    console.log(data1);
+
+    //console.log("Nclicks: "+Nclicks);
+    //console.log("Data0 to Data1 transition:");
+    //console.log("Data0:");
+    //console.log(data0);
+    //console.log("Data1:");
+    //console.log(data1);
 
     path = path.data(data1, key);
 
@@ -235,6 +238,10 @@ function layerMouseclick() {
     //
     path.enter().append("path")
         .each(function(d, i) { 
+            console.log("Data0:");
+            console.log(data0);
+            console.log("Data1:");
+            console.log(data1);
             this._current = findNeighborArc(i, data0, data1, key) || d; 
         })
         .attr("fill", function(d) { 
@@ -494,9 +501,11 @@ function findFollowing(i, data0, data1, key) {
 }
 
 function arcTween(d) {
-  var i = d3.interpolate(this._current, d);
-  this._current = i(0);
-  return function(t) { return arc(i(t)); };
+    //console.log("Tween: this._current =");
+    //console.log(this._current);
+    var i = d3.interpolate(this._current, d);
+    this._current = i(0);
+    return function(t) { return arc(i(t)); };
 }
 
 
@@ -565,10 +574,9 @@ var svg = d3.select("div.graph").append("svg")
   .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-var path = svg.selectAll("path");
-
 svg.append("g").attr("class","labels");
 svg.append("g").attr("class","lines");
+
 
 var g = svg.selectAll(".arc")
     .data(pie(init_data))
@@ -600,9 +608,28 @@ var path = svg.selectAll("path");
 // not picking up the initial data.
 //
 /////data_init0 = path.data()
-/////data_init1 = pie(init_data);
-/////
-/////g.each(function(d, i) { this._current = findNeighborArc(i, data_init0, data_init1, key) || d; });
+
+data_init = pie(init_data);
+
+
+// we have to set ._current 
+// for this path in order to 
+// make the first animation work.
+path.each(function(d, i) { 
+    this._current = findNeighborArc(i, data_init, data_init, key) || d; 
+    console.log("Dat in this._current for init:");
+    console.log(this._current);
+});
+
+path.data(data_init,key).exit()
+    .datum(function(d, i) { 
+        return findNeighborArc(i, data_init, data_init, key) || d; 
+    })
+    .transition()
+    .duration(750)
+    .attrTween("d", arcTween)
+    .remove();
+
 /////
 /////g.exit()
 /////        .datum(function(d, i) { return findNeighborArc(i, data_init1, data_init0, key) || d; })
