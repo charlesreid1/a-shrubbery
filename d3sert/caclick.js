@@ -1,7 +1,7 @@
 
 ////////////////////////////////////////////////////
 
-var map = L.map('map').setView([37.7, -122.4], 6);
+var map = L.map('map').setView([37.7, -119.5], 6);
 L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{
     attribution: 'US Census Bureau',
     maxZoom: 18
@@ -9,9 +9,14 @@ L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_
 
 
 
+
+
+
 function getColorBlue(d) {
-    // 6 scale blues
-    var colors = ['#eff3ff', '#c6dbef', '#9ecae1', '#6baed6', '#3182bd', '#08519c'];
+    //// 6 scale blues
+    //var colors = ['#eff3ff', '#c6dbef', '#9ecae1', '#6baed6', '#3182bd', '#08519c'];
+    // 5 scale tan/brown
+    var colors = [ '#f6e8c3', '#dfc27d', '#bf812d', '#8c510a', '#543005', ];
     return colors[Math.round((d/0.50)*colors.length)];
 };
 
@@ -58,7 +63,9 @@ function layerMouseclick() {
     var county = this.feature.properties.name;
     $tooltip.text("County: "+county).show();
 
-    red = '#ff0000';
+    //red = '#ff0000'
+    red = '#7a0177';//purple
+    //red = '#80cdc1'//dark turq
 
     these_layer_ids = Object.keys(this._layers);
 
