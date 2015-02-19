@@ -22,9 +22,6 @@ d3.legend = function(g) {
     itemso = d3.entries(items).sort(function(a,b) { return a.value.pos-b.value.pos})
     items = d3.entries(items)
 
-    console.log(itemso);
-    console.log(items);
-    
     li.selectAll("text")
         .data(items,function(d) { return d.key})
         .call(function(d) { d.enter().append("text")})

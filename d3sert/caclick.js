@@ -12,7 +12,7 @@ L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_
 function getColorBlue(d) {
     // 6 scale blues
     var colors = ['#eff3ff', '#c6dbef', '#9ecae1', '#6baed6', '#3182bd', '#08519c'];
-    return colors[Math.round((d/0.75)*colors.length)];
+    return colors[Math.round((d/0.50)*colors.length)];
 };
 
 key1 = 'A_Below100PovLn_PublicTrans_CountyPct'
@@ -138,7 +138,7 @@ function layerMouseclick() {
     lab1 = 'Walked'
     lab2 = 'Biked'
     lab3 = 'Public Transit'
-    lab4 = 'Drove Carpool'
+    lab4 = 'Carpool'
     lab5 = 'Drove Alone'
 
     pie_data = [{'cat' : lab1, 'key' : key1, 'dat' : this.feature.properties[key1]},
@@ -297,12 +297,14 @@ var geoj1 = new L.geoJson.ajax(
 ////////////////////////////////////////////////////
 //// d3 geom
 
-var categories = ["Walked", "Biked", "Public Transit", "Drove Carpool", "Drove Alone"];
+var categories = ["Walked", "Biked", "Public Transit", "Carpool", "Drove Alone"];
 
 
-var width = 350,
+// set size of canvas
+// width and height
+var width = 500,
     height = 500,
-    padding = 60,
+    padding = 120,
     radius = Math.min(width-padding, height-padding) / 2;
 
 var color = d3.scale.ordinal()
@@ -317,10 +319,14 @@ var outerArc = d3.svg.arc()
     .innerRadius(radius * 0.9)
     .outerRadius(radius * 0.9);
 
+var outerOuterArc = d3.svg.arc()
+    .innerRadius(radius * 1.1)
+    .outerRadius(radius * 1.1);
+
 lab1 = 'Walked'
 lab2 = 'Biked'
 lab3 = 'Public Transit'
-lab4 = 'Drove Carpool'
+lab4 = 'Carpool'
 lab5 = 'Drove Alone'
 
 init_data = [{'cat' : lab1, 'dat' : 1.0},
@@ -356,8 +362,13 @@ g.append("path")
     .style("fill", function(d) { 
         return color(d.data.cat); });
 
+
 /*
-g.append("text")
+//////////////////////////////////
+// DO NOT DELETE
+/////////////////////////////////
+// This works. adds labels on top of arcs.
+txts = g.append("text")
     .attr("transform", function(d) { 
         return "translate(" + arc.centroid(d) + ")"; })
     .attr("dy", ".35em")
@@ -365,14 +376,109 @@ g.append("text")
     .text(function(d) { 
         return d.data.cat; 
     });
+//////////////////////////////////
+// END DO NOT DELETE
+/////////////////////////////////
 */
 
 
+// --------------------------------------------------------
+// Start labels code
+// 
+// from http://bl.ocks.org/dbuezas/9306799
+// adding labels with lines
+//
+// note that there isn't a PIE, 
+// per se, just a bunch of things
+// using a pie() function to split 
+// information apart and use it for 
+// drawing shapes.
+var text = svg.select(".labels").selectAll("text")
+    .data(pie(init_data));;
+    //.data(pie(init_data), key);
+
+text.enter()
+    .append("text")
+    .attr("dy", ".35em")
+    .style("font-size", "11px")
+    .attr("transform", function(d) { 
+        return "translate(" + arc.centroid(d) + ")"; })
+    .style("text-anchor", "middle")
+    .text(function(d) {
+        return d.data.cat;
+    });
+
+function midAngle(d){
+    return d.startAngle + (d.endAngle - d.startAngle)/2;
+}
+
+
+text.transition().duration(1000)
+    .attrTween("transform", function(d) {
+        this._current = this._current || d;
+        var interpolate = d3.interpolate(this._current, d);
+        this._current = interpolate(0);
+        return function(t) {
+            var d2 = interpolate(t);
+            var pos = outerOuterArc.centroid(d2);
+            pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+            //pos[1] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+            return "translate("+ pos +")";
+        };
+    })
+    .styleTween("text-anchor", function(d){
+        this._current = this._current || d;
+        var interpolate = d3.interpolate(this._current, d);
+        this._current = interpolate(0);
+        return function(t) {
+            var d2 = interpolate(t);
+            return midAngle(d2) < Math.PI ? "start":"end";
+        };
+    });
+
+text.exit()
+    .remove();
+
+
+/* ------- SLICE TO TEXT POLYLINES -------*/
+
+var polyline = svg.select(".lines").selectAll("polyline")
+    .data(pie(init_data), key);
+
+polyline.enter()
+    .append("polyline");
+
+polyline.transition().duration(1000)
+    .attrTween("points", function(d){
+        this._current = this._current || d;
+        var interpolate = d3.interpolate(this._current, d);
+        this._current = interpolate(0);
+        return function(t) {
+            var d2 = interpolate(t);
+            var pos = outerOuterArc.centroid(d2);
+            pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+            //pos[1] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+            return [arc.centroid(d2), outerArc.centroid(d2), pos];
+        };          
+    });
+
+polyline.exit()
+    .remove();
+
+
+// End labels code
+// ----------------------------------------------------------
+
+
+
+// add a legend 
+// via d3.legend.js
 legend = svg.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate(80,-150)")
-    .style("font-size", "12px")
+    .attr("transform", "translate(0,0)")
+    .style("font-size", "11px")
     .call(d3.legend)
+
 
 
 var path = svg.selectAll("path");
@@ -417,15 +523,6 @@ path.exit()
 path.transition()
     .duration(750)
     .attrTween("d", arcTween);
-
-txts = path.append("text")
-    .attr("transform", function(d) { 
-        return "translate(" + arc.centroid(d) + ")"; })
-    .attr("dy", ".35em")
-    .style("text-anchor", "middle")
-    .text(function(d) { 
-        return d.data.cat; 
-    });
 
 
 
