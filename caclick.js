@@ -27,7 +27,7 @@ function enhanceLayer1(f,l){
     if (f.properties){
         l.setStyle({    
             fillColor: getColorBlue(f.properties[key1]),
-            fillOpacity: 0.80,
+            fillOpacity: 0.65,
             stroke: true,
             color: '#222',
             weight: 1
@@ -424,7 +424,7 @@ var categories = ["Walked", "Biked", "Public Transit", "Carpool", "Drove Alone"]
 // set size of canvas
 // width and height
 var width = 500,
-    height = 500,
+    height = 600,
     padding = 180,
     radius = Math.min(width-padding, height-padding) / 2;
 
