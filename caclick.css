@@ -1,3 +1,7 @@
+#map {
+    width: 450px;
+}
+
 .activecounty {
     fillColor: #ff0000;
 }
