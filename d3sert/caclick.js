@@ -304,7 +304,7 @@ var categories = ["Walked", "Biked", "Public Transit", "Carpool", "Drove Alone"]
 // width and height
 var width = 500,
     height = 500,
-    padding = 120,
+    padding = 180,
     radius = Math.min(width-padding, height-padding) / 2;
 
 var color = d3.scale.ordinal()
@@ -316,12 +316,12 @@ var arc = d3.svg.arc()
     .innerRadius(radius - 70);
 
 var outerArc = d3.svg.arc()
-    .innerRadius(radius * 0.9)
-    .outerRadius(radius * 0.9);
+    .innerRadius(radius * 1.0)
+    .outerRadius(radius * 1.0);
 
 var outerOuterArc = d3.svg.arc()
-    .innerRadius(radius * 1.1)
-    .outerRadius(radius * 1.1);
+    .innerRadius(radius * 2.0)
+    .outerRadius(radius * 2.0);
 
 lab1 = 'Walked'
 lab2 = 'Biked'
@@ -420,7 +420,7 @@ text.transition().duration(1000)
         this._current = interpolate(0);
         return function(t) {
             var d2 = interpolate(t);
-            var pos = outerOuterArc.centroid(d2);
+            var pos = outerArc.centroid(d2);
             pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
             //pos[1] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
             return "translate("+ pos +")";
@@ -455,7 +455,7 @@ polyline.transition().duration(1000)
         this._current = interpolate(0);
         return function(t) {
             var d2 = interpolate(t);
-            var pos = outerOuterArc.centroid(d2);
+            var pos = outerArc.centroid(d2);
             pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
             //pos[1] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
             return [arc.centroid(d2), outerArc.centroid(d2), pos];
@@ -475,7 +475,7 @@ polyline.exit()
 // via d3.legend.js
 legend = svg.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate(0,0)")
+    .attr("transform", "translate(-20,-20)")
     .style("font-size", "11px")
     .call(d3.legend)
 
