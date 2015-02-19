@@ -1,0 +1,29 @@
+{% extends 'base_map.html' %}
+
+{% set mytitle="California Donut 1: Commute Method by Povery Status" %}
+
+{# ----------- title -------------- #}
+
+{% block title %}{{ mytitle }}{% endblock %}
+
+{# ----------- content ------------- #}
+
+{% block content %}
+
+<link href="{{ SITEURL }}/caclick.css"
+    rel="stylesheet" type="text/css" >
+
+<h1>The Map</h1>
+<p>Here ya go:</p>
+<div id="map" style="height: 600px; width: 400px;"></div>
+
+
+<h1>The Donut</h1>
+<div class="county">County: </div>
+<div class="graph"></div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="{{ SITEURL }}/theme/js/d3.legend.js"></script>
+<script src="{{ SITEURL }}/caclick.js"></script>
+
+{% endblock %}

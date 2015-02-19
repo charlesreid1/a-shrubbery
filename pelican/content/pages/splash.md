@@ -3,6 +3,20 @@ PageStyle: clear
 save_as: index.html
 
 
+# California D3 Donut: Commute Method by Povery Status
+
+<img width="300px" src="images/splash_d3donut.png" alt="D3 Donut" />
+
+**Description**: Uses a Leaflet map of California counties to control
+a D3 plot and send data to it dynamically based on the user selection. 
+
+**Data**: The data set used is commute method by poverty status, a data set 
+from the US Census that I decided to use to learn how to parse census data.
+
+<a class="btn btn-info btn-large" href="barrygoldwater/">See California D3 Donut Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<br />
+
 # Barry Goldwater Bombing Range Topo Map
 
 <img width="300px" src="images/splash_barrygoldwater.png" alt="Barry Goldwater Bombing Range Topo Map" />

@@ -76,6 +76,10 @@ TEMPLATE_PAGES['barrygoldwater.html'] = 'barrygoldwater/index.html'
 TEMPLATE_PAGES['barrygoldwater.js']   = 'barrygoldwater.js'
 TEMPLATE_PAGES['barrygoldwater_red.json'] = 'barrygoldwater_red.json'
 
+TEMPLATE_PAGES['caclick.html']  = 'caclick/index.html'
+TEMPLATE_PAGES['caclick.js']    = 'caclick.js'
+TEMPLATE_PAGES['caclick.css']   = 'caclick.css'
+
 
 # --------------8<---------------------
 
