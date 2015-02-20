@@ -45,6 +45,11 @@
 
     <style>
 
+    .container {
+        width: 400px;
+    }
+
+
     table {
         width: 100%;
     }
@@ -68,9 +73,8 @@
     .legend rect {
         fill:white;
         stroke:none;
-        opacity:0.8; 
+        opacity:0.0; 
     }
-
 
     path.slice{
         stroke-width:2px;
@@ -100,9 +104,18 @@
         <td width="50%">
             <h1>The Donut</h1>
             <div class="county">County: </div>
-            <div class="graph1"></div>
-            <div class="graph2"></div>
-            <div class="graph3"></div>
+            <div class="container container1">
+                <center><h3><b>Below Poverty Line</b></h3></center>
+                <div class="graph1"></div> 
+            </div>
+            <div class="container container2">
+                <center><h3><b>At Poverty Line</b></h3></center>
+                <div class="graph2"></div>
+            </div>
+            <div class="container container3">
+                <center><h3><b>Above Poverty Line</b></h3></center>
+                <div class="graph3"></div>
+            </div>
         </td>
     </tr>
 </table>

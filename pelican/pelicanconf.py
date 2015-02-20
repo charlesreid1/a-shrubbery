@@ -80,8 +80,13 @@ TEMPLATE_PAGES['caclick.html']  = 'caclick/index.html'
 TEMPLATE_PAGES['caclick.js']    = 'caclick.js'
 TEMPLATE_PAGES['caclick.css']   = 'caclick.css'
 
+TEMPLATE_PAGES['triplepie.html']  = 'triplepie/index.html'
+TEMPLATE_PAGES['triplepie.js']    = 'triplepie.js'
+TEMPLATE_PAGES['triplepie.css']   = 'triplepie.css'
+
 
 # --------------8<---------------------
+
 
 
 

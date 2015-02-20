@@ -5,15 +5,15 @@ save_as: index.html
 
 # California D3 Donut: Commute Method by Povery Status
 
-<img width="300px" src="images/splash_d3donut.png" alt="D3 Donut" />
+<img width="300px" src="images/splash_triplepie.png" alt="California D3 Donut" />
 
 **Description**: Uses a Leaflet map of California counties to control
 a D3 plot and send data to it dynamically based on the user selection. 
 
 **Data**: The data set used is commute method by poverty status, a data set 
-from the US Census that I decided to use to learn how to parse census data.
+from the US Census Bureau.
 
-<a class="btn btn-info btn-large" href="barrygoldwater/">See California D3 Donut Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="triplepie/">See California D3 Donut Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
 
@@ -162,6 +162,21 @@ The map is made with D3.
 See [charlesreid1 wiki](http://charlesreid1.com/wiki/Topo_Map#National_Map_Viewer).
 
 <a class="btn btn-info btn-large" href="barrygoldwater_d3/">See Goldwater Bombing Range Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<br />
+
+
+# California D3 Donut #1: Commute Method by Povery Status
+
+<img width="300px" src="images/splash_caclick.png" alt="California D3 Donut" />
+
+**Description**: Uses a Leaflet map of California counties to control
+a D3 plot and send data to it dynamically based on the user selection. 
+
+**Data**: The data set used is commute method by poverty status, a data set 
+from the US Census Bureau.
+
+<a class="btn btn-info btn-large" href="caclick/">See California D3 Donut Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
 
