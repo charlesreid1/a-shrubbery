@@ -451,7 +451,7 @@ var categories = ["Walked", "Biked", "Public Transit", "Carpool", "Drove Alone"]
 // set size of canvas
 // width and height
 var width = 500,
-    height = 600,
+    height = 400,
     padding = 180,
     radius = Math.min(width-padding, height-padding) / 2;
 
