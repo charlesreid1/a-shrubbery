@@ -845,7 +845,7 @@ var color = d3.scale.ordinal()
 
 var arc = d3.svg.arc()
     .outerRadius(radius - 20)
-    .innerRadius(radius - 50);
+    .innerRadius(radius - 45);
 
 var outerArc = d3.svg.arc()
     .innerRadius(radius * 1.0)
