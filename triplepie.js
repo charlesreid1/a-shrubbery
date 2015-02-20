@@ -807,8 +807,8 @@ var categories = ["Walked", "Biked", "Public Transit", "Carpool", "Drove Alone"]
 
 // set size of canvas
 // width and height
-var width = 500,
-    height = 400,
+var width = 400,
+    height = 300,
     padding = 100,
     radius = Math.min(width-padding, height-padding) / 2;
 
@@ -817,7 +817,7 @@ var color = d3.scale.ordinal()
     .range(["#018571", "#80cdc1", "#ddd", "#dfc27d", "#a6611a"]);
 
 var arc = d3.svg.arc()
-    .outerRadius(radius - 10)
+    .outerRadius(radius - 30)
     .innerRadius(radius - 70);
 
 var outerArc = d3.svg.arc()
