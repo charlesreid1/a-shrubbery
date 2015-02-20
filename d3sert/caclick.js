@@ -16,9 +16,19 @@ function getColorBlue(d) {
     //// 6 scale blues
     //var colors = ['#eff3ff', '#c6dbef', '#9ecae1', '#6baed6', '#3182bd', '#08519c'];
     // 5 scale tan/brown
-    var colors = [ '#f6e8c3', '#dfc27d', '#bf812d', '#8c510a', '#543005', ];
-    return colors[Math.round((d/0.50)*colors.length)];
+    //var colors = [ '#f6e8c3', '#dfc27d', '#bf812d', '#8c510a', '#543005', ];
+    //return colors[Math.round((d/0.50)*colors.length)];
 };
+
+countyColors = d3.scale.category20c();
+
+var myFillOpacity = 0.55;
+var myThickFillOpacity = 0.90;
+
+var polylineOpacity = 0.30;
+
+var pctDisplayThreshold = 0.02;
+
 
 key1 = 'A_Below100PovLn_PublicTrans_CountyPct'
 
@@ -26,8 +36,9 @@ function enhanceLayer1(f,l){
     var out = [];
     if (f.properties){
         l.setStyle({    
-            fillColor: getColorBlue(f.properties[key1]),
-            fillOpacity: 0.80,
+            fillColor: countyColors( Math.round(Math.random()*15-1) ),
+            //getColorBlue(f.properties[key1]),
+            fillOpacity: myFillOpacity,
             stroke: true,
             color: '#222',
             weight: 1
@@ -63,8 +74,8 @@ function layerMouseclick() {
     var county = this.feature.properties.name;
     $tooltip.text("County: "+county).show();
 
-    //red = '#ff0000'
-    red = '#7a0177';//purple
+    red = '#ff0000'
+    //red = '#7a0177';//purple
     //red = '#80cdc1'//dark turq
 
     these_layer_ids = Object.keys(this._layers);
@@ -80,7 +91,10 @@ function layerMouseclick() {
                     //console.log("Returning active fill color back to original fill color.");
                     //console.log("Before: "+layer.options['fillColor']);
                     layer.setStyle(
-                        {'fillColor':layer.options['originalFillColor'] }
+                        {
+                            'fillColor':layer.options['originalFillColor'],
+                            'fillOpacity' : myFillOpacity
+                        }
                     )
                     //console.log("After: "+layer.options['fillColor']);
                     //console.log("Original: "+layer.options['originalFillColor']);
@@ -114,6 +128,7 @@ function layerMouseclick() {
                             // set style to red 
                             layer.setStyle({
                                 'fillColor' : red,
+                                'fillOpacity' : myThickFillOpacity,
                                 'originalFillColor' : orig_fillColor
                             });
                         }
@@ -121,6 +136,7 @@ function layerMouseclick() {
                     } else {
                         layer.setStyle({
                             'fillColor' : red,
+                            'fillOpacity' : myThickFillOpacity,
                             'originalFillColor' : red
                         });
                     }
@@ -153,9 +169,6 @@ function layerMouseclick() {
                 {'cat' : lab3, 'key' : key3, 'dat' : this.feature.properties[key3]},  
                 {'cat' : lab4, 'key' : key4, 'dat' : this.feature.properties[key4]},  
                 {'cat' : lab5, 'key' : key5, 'dat' : this.feature.properties[key5]}]  
-
-
-
 
 
 
@@ -259,11 +272,13 @@ function layerMouseclick() {
     // using a pie() function to split 
     // information apart and use it for 
     // drawing shapes.
+
     var text = svg.select(".labels").selectAll("text")
         .data(data1);
         //.data(pie(pie_data));
         //.data(pie(init_data), key);
     
+    //text.append("text")
     text.enter()
         .append("text")
         .attr("dy", ".35em")
@@ -274,6 +289,13 @@ function layerMouseclick() {
         .text(function(d) {
             return d.data.cat;
         });
+
+    text.style("opacity",function(d) {
+            var visible = (d.data.dat > pctDisplayThreshold);
+            return visible ? 1.0 : 0.0;
+        });
+
+
     
     //function midAngle(d){
     //    return d.startAngle + (d.endAngle - d.startAngle)/2;
@@ -327,6 +349,11 @@ function layerMouseclick() {
                 //pos[1] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
                 return [arc.centroid(d2), outerArc.centroid(d2), pos];
             };          
+        });
+
+    polyline.style("opacity",function(d) {
+            var visible = (d.data.dat > pctDisplayThreshold);
+            return visible ? polylineOpacity : 0.0;
         });
     
     polyline.exit()
@@ -424,8 +451,8 @@ var categories = ["Walked", "Biked", "Public Transit", "Carpool", "Drove Alone"]
 // set size of canvas
 // width and height
 var width = 500,
-    height = 500,
-    padding = 180,
+    height = 400,
+    padding = 100,
     radius = Math.min(width-padding, height-padding) / 2;
 
 var color = d3.scale.ordinal()
