@@ -394,10 +394,12 @@ function layerMouseclick() {
 
     var text1 = svg1.select(".labels").selectAll("text")
         .data(data1_1);
+    /*
     var text2 = svg2.select(".labels").selectAll("text")
         .data(data1_2);
     var text3 = svg3.select(".labels").selectAll("text")
         .data(data1_3);
+    */
 
 
 
@@ -426,6 +428,7 @@ function layerMouseclick() {
         .text(function(d) {
             return d.data.cat;
         });
+    /*
     text2.enter()
         .append("text")
         .attr("dy", ".35em")
@@ -446,6 +449,7 @@ function layerMouseclick() {
         .text(function(d) {
             return d.data.cat;
         });
+    */
 
 
 
@@ -460,6 +464,7 @@ function layerMouseclick() {
             var visible = (d.data.dat > pctDisplayThreshold);
             return visible ? 1.0 : 0.0;
         });
+    /*
     text2.style("opacity",function(d) {
             var visible = (d.data.dat > pctDisplayThreshold);
             return visible ? 1.0 : 0.0;
@@ -468,6 +473,7 @@ function layerMouseclick() {
             var visible = (d.data.dat > pctDisplayThreshold);
             return visible ? 1.0 : 0.0;
         });
+    */
 
 
     
@@ -523,6 +529,7 @@ function layerMouseclick() {
                 return midAngle(d2) < Math.PI ? "start":"end";
             };
         });
+    /*
     text2.transition().duration(1000)
         .attrTween("transform", function(d) {
             this._current = this._current || d;
@@ -567,6 +574,7 @@ function layerMouseclick() {
                 return midAngle(d2) < Math.PI ? "start":"end";
             };
         });
+    */
 
 
 
@@ -578,10 +586,12 @@ function layerMouseclick() {
     */
     text1.exit()
         .remove();
+    /*
     text2.exit()
         .remove();
     text3.exit()
         .remove();
+    */
 
 
 
@@ -656,6 +666,7 @@ function layerMouseclick() {
     // ------------
 
 
+    /*
     var polyline2 = svg2.select(".lines").selectAll("polyline")
         .data(data1_2);
     
@@ -715,6 +726,7 @@ function layerMouseclick() {
     
     polyline3.exit()
         .remove();
+    */
     
     
     // End labels code
@@ -805,28 +817,40 @@ var geoj1 = new L.geoJson.ajax(
 var categories = ["Walked", "Biked", "Public Transit", "Carpool", "Drove Alone"];
 
 
+var legend_xtrans = -30,
+    legend_ytrans = -20;
+
 // set size of canvas
-// width and height
+// width and height for default (non-labeled) graphs
 var width = 400,
-    height = 300,
-    padding = 100,
-    radius = Math.min(width-padding, height-padding) / 2;
+    height = 200,
+    wpadding = 5,
+    hpadding = 5,
+    radius = Math.min(width-wpadding, height-hpadding) / 2;
+
+// set size of canvas
+// for first graph 
+// (with text labels)
+var width1 = 400,
+    height1 = 220,
+    wpadding1 = 70,
+    hpadding1 = 70,
+    radius1 = Math.min(width1-wpadding1, height1-hpadding1) / 2;
+
+
 
 var color = d3.scale.ordinal()
     .domain(categories)
     .range(["#018571", "#80cdc1", "#ddd", "#dfc27d", "#a6611a"]);
 
 var arc = d3.svg.arc()
-    .outerRadius(radius - 30)
-    .innerRadius(radius - 70);
+    .outerRadius(radius - 20)
+    .innerRadius(radius - 50);
 
 var outerArc = d3.svg.arc()
     .innerRadius(radius * 1.0)
     .outerRadius(radius * 1.0);
 
-var outerOuterArc = d3.svg.arc()
-    .innerRadius(radius * 2.0)
-    .outerRadius(radius * 2.0);
 
 lab1 = 'Walked'
 lab2 = 'Biked'
@@ -850,8 +874,8 @@ var pie = d3.layout.pie()
 //  .append("g")
 //    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 var svg1 = d3.select("div.graph1").append("svg")
-    .attr("width", width)
-    .attr("height", height)
+    .attr("width", width1)
+    .attr("height", height1)
   .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 var svg2 = d3.select("div.graph2").append("svg")
@@ -966,10 +990,12 @@ txts = g.append("text")
 //    .data(pie(init_data));;
 var text1 = svg1.select(".labels").selectAll("text")
     .data(pie(init_data));;
+/*
 var text2 = svg2.select(".labels").selectAll("text")
     .data(pie(init_data));;
 var text3 = svg3.select(".labels").selectAll("text")
     .data(pie(init_data));;
+*/
 
 
 //text.enter()
@@ -992,6 +1018,7 @@ text1.enter()
     .text(function(d) {
         return d.data.cat;
     });
+/*
 text2.enter()
     .append("text")
     .attr("dy", ".35em")
@@ -1012,7 +1039,7 @@ text3.enter()
     .text(function(d) {
         return d.data.cat;
     });
-
+*/
 
 
 function midAngle(d){
@@ -1074,6 +1101,7 @@ text1.transition().duration(1000)
 text1.exit()
     .remove();
 
+/*
 text2.transition().duration(1000)
     .attrTween("transform", function(d) {
         this._current = this._current || d;
@@ -1121,7 +1149,7 @@ text3.transition().duration(1000)
     });
 text3.exit()
     .remove();
-
+*/
 
 
 
@@ -1133,10 +1161,14 @@ var polyline = svg.select(".lines").selectAll("polyline")
 */
 var polyline1 = svg1.select(".lines").selectAll("polyline")
     .data(pie(init_data), key);
+/*
 var polyline2 = svg2.select(".lines").selectAll("polyline")
     .data(pie(init_data), key);
 var polyline3 = svg3.select(".lines").selectAll("polyline")
     .data(pie(init_data), key);
+*/
+
+
 
 /*
 polyline.enter()
@@ -1144,10 +1176,14 @@ polyline.enter()
 */
 polyline1.enter()
     .append("polyline");
+/*
 polyline2.enter()
     .append("polyline");
 polyline3.enter()
     .append("polyline");
+*/
+
+
 
 
 /*
@@ -1179,6 +1215,7 @@ polyline1.transition().duration(1000)
             return [arc.centroid(d2), outerArc.centroid(d2), pos];
         };          
     });
+/*
 polyline2.transition().duration(1000)
     .attrTween("points", function(d){
         this._current = this._current || d;
@@ -1205,6 +1242,9 @@ polyline3.transition().duration(1000)
             return [arc.centroid(d2), outerArc.centroid(d2), pos];
         };          
     });
+*/
+
+
 
 
 /*
@@ -1213,10 +1253,14 @@ polyline.exit()
 */
 polyline1.exit()
     .remove();
+/*
 polyline2.exit()
     .remove();
 polyline3.exit()
     .remove();
+*/
+
+
 
 
 
@@ -1236,19 +1280,19 @@ legend = svg.append("g")
 
 legend1 = svg1.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate(-20,-20)")
+    .attr("transform", "translate("+legend_xtrans+","+legend_ytrans+")")
     .style("font-size", "11px")
     .call(d3.legend)
 
 legend2 = svg2.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate(-20,-20)")
+    .attr("transform", "translate("+legend_xtrans+","+legend_ytrans+")")
     .style("font-size", "11px")
     .call(d3.legend)
 
 legend3 = svg3.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate(-20,-20)")
+    .attr("transform", "translate("+legend_xtrans+","+legend_ytrans+")")
     .style("font-size", "11px")
     .call(d3.legend)
 
