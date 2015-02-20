@@ -452,7 +452,7 @@ var categories = ["Walked", "Biked", "Public Transit", "Carpool", "Drove Alone"]
 // width and height
 var width = 500,
     height = 400,
-    padding = 180,
+    padding = 100,
     radius = Math.min(width-padding, height-padding) / 2;
 
 var color = d3.scale.ordinal()
