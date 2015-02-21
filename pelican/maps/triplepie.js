@@ -734,6 +734,58 @@ function layerMouseclick() {
 
 
 
+    // -------------------------
+    // Add population indicator
+
+
+
+    // 1. Remove previously-existing population indicators
+    //
+    // turn the childNodes NodeList (chnl) into an array (ch)
+    var pop = d3.select("div.population"),
+        chnl = pop[0][0].childNodes,
+        ch = [];
+
+    for(var i = 0, len = chnl.length; i != len; ch.push(chnl[i++]));
+
+    // now use slice to select and remove the population indicators 
+    var tags_to_delete = ch.slice(1,ch.length);
+    tags_to_delete.forEach(function(d) {
+        d.remove();
+    });
+
+
+    // 2. Determine number of population indicators to add
+    popkey1 = 'A_Below100PovLn_Total';
+    popkey2 = 'B_Btwn100_149PovLn_Total';
+    popkey3 = 'C_Above150PovLn_Total';
+
+    // this will be accomplished by 
+    // dividing the population by some number,
+    // rounding, and displaying that many
+    // font awesome icon tags.
+    //console.log(this.feature.properties);
+    pop1 = this.feature.properties[popkey1];
+    pop2 = this.feature.properties[popkey2];
+    pop3 = this.feature.properties[popkey3];
+    pop = pop1+pop2+pop3;
+    pop = Math.round(Math.log(pop)-5);
+    //console.log(pop);
+
+    var fontsize = 10;
+    for( var i = 0; i != pop; i++ ) {
+        icon = d3.select("div.population").append("i")
+            .attr("class","fa fa-child")
+            .style("color",'#000')
+            .style("font-size",fontsize+"px");
+        fontsize += 2*i;
+    }
+
+
+
+    // -------------------------
+
+
 }
 
 function key(d) {
