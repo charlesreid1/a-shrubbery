@@ -22,8 +22,8 @@ function getColorBlue(d) {
 
 countyColors = d3.scale.category20c();
 
-var myFillOpacity = 0.50;
-var myThickFillOpacity = 0.75;
+var myFillOpacity = 0.55;
+var myThickFillOpacity = 0.90;
 
 var polylineOpacity = 0.30;
 

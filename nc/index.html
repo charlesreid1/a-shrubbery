@@ -137,43 +137,39 @@
 
 
 
-<link href="/a-shrubbery/triplepie.css" rel="stylesheet" type="text/css" >
-
-<h1>Commute Method by Povery Status</h1>
+<h1>North Carolina Census Tract Map</h1>
 <h2>Poverty Status: Under Poverty Line</h2>
 
-<p>This county-by-county map of California is clickable - try selecting a county.
+<link href="/a-shrubbery/nc.css" rel="stylesheet" type="text/css" >
 
-<p>The pie chart to the right displays the method of commuting to work for people 
-living under the poverty line. 
+<h1><b>North Carolina</b></h1>
+
+<p>Here, we have a map overlay of counties in North Carolina. This was created by requesting geographic
+entity data from the Census Bureau. To do this, I used the Census Reporter API, which greatly
+simplifies the process of requesting census data.
 </p>
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>This is a map of the Outer Banks of North Carolina.
+</p>
 
-<div class="row">
+<div id="map" style="width: 600px; height: 400px"></div>
 
-    <div class="col-md-5">
-        <h3>Select a County:</h3>
-        <div id="map"></div>
-    </div>
+<p>Now let's break down the county into its different sub-levels.
 
-    <div class="col-md-5">
-        <h3><div class="county">County: </div></h3>
-        <div class="graph1"></div>
-        <div class="graph2"></div>
-        <div class="graph3"></div>
-    </div>
+<div id="map2" style="width: 600px; height: 400px"></div>
 
-</div>
+<p>And finally, let's do census tracts for multiple counties:</p>
+
+<div id="map3" style="width: 600px; height: 400px"></div>
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js" type="text/javascript"> </script>
+<script src="/a-shrubbery/leaflet.ajax.min.js" type="text/javascript"> </script>
+<script src="/a-shrubbery/nc1.js" type="text/javascript"> </script>
+<script src="/a-shrubbery/nc2.js" type="text/javascript"> </script>
+<script src="/a-shrubbery/nc3.js" type="text/javascript"> </script>
 
-
-<script src="/a-shrubbery/theme/js/leaflet.ajax.min.js" type="text/javascript"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="/a-shrubbery/theme/js/d3.legend.js"></script>
-<script src="/a-shrubbery/triplepie.js"></script>
 
 
 
