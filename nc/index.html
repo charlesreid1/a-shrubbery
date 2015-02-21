@@ -137,28 +137,32 @@
 
 
 
-<h1>North Carolina Census Tract Map</h1>
-<h2>Poverty Status: Under Poverty Line</h2>
-
 <link href="/a-shrubbery/nc.css" rel="stylesheet" type="text/css" >
 
 <h1><b>North Carolina</b></h1>
 
 <p>Here, we have a map overlay of counties in North Carolina. This was created by requesting geographic
 entity data from the Census Bureau. To do this, I used the Census Reporter API, which greatly
-simplifies the process of requesting census data.
+simplifies the process of requesting census data. 
 </p>
 
-<p>This is a map of the Outer Banks of North Carolina.
+<p>Documentation of the process is <a href="http://charlesreid1.com/wiki/NC_Census_Map">on the charlesreid1.com wiki</a>.
+</p>
+
+<p>Here is a map of the Outer Banks of North Carolina:
 </p>
 
 <div id="map" style="width: 600px; height: 400px"></div>
 
-<p>Now let's break down the county into its different sub-levels.
+<p>Dare County is a county right on the Atlantic seaboard. 
+Let's break down Dare County into its different sub-levels.
 
 <div id="map2" style="width: 600px; height: 400px"></div>
 
-<p>And finally, let's do census tracts for multiple counties:</p>
+<p>Next, we can grab the same kind of census tract information,
+but do it for multiple counties by using a Javascript array 
+and looping over it.
+</p>
 
 <div id="map3" style="width: 600px; height: 400px"></div>
 

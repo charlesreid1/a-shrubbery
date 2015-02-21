@@ -33,7 +33,14 @@ function enhanceLayer(f,l){
     }
 }
 
-//var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-var prefix = "";
-var geoj = new L.geoJson.ajax("NC.json",{onEachFeature:enhanceLayer}).addTo(map);
+rooturl = "http://api.censusreporter.org/1.0/geo/show/tiger2013?geo_ids=050|04000US37";
 
+$.ajax({
+    type: "GET",
+    url: rooturl,
+    success: function (data) {
+    	var geojson = new L.geoJson(data, {
+    		onEachFeature: enhanceLayer
+    	}
+    }).addTo(map2);
+});
