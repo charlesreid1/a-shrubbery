@@ -1,0 +1,66 @@
+{% extends 'base_map.html' %}
+
+{% set mytitle="North Carolina Census Tract Map" %}
+
+{# ----------- title -------------- #}
+
+{% block title %}{{ mytitle }}{% endblock %}
+
+{# ----------- content ------------- #}
+
+{% block content %}
+
+<link href="{{ SITEURL }}/nc.css" rel="stylesheet" type="text/css" >
+
+<h1><b>North Carolina</b></h1>
+
+<p>Here, we have a map overlay of counties in North Carolina. This was created by requesting geographic
+entity data from the Census Bureau. To do this, I used the Census Reporter API, which greatly
+simplifies the process of requesting census data. 
+</p>
+
+<p>Documentation of the process is <a href="http://charlesreid1.com/wiki/NC_Census_Map">on the charlesreid1.com wiki</a>.
+</p>
+
+<p>Here is a map of the Outer Banks of North Carolina:
+</p>
+
+<div id="map" style="width: 600px; height: 400px"></div>
+
+<br />
+<br />
+
+<p>Dare County is a county right on the Atlantic seaboard. 
+Let's break down Dare County into its different sub-levels,
+specifically, the census tracts that are in Dare County:
+</p>
+
+<div id="map2" style="width: 600px; height: 400px"></div>
+
+<br />
+<br />
+
+<p>Next, we can grab the same kind of census tract information,
+but do it for multiple counties by using a Javascript array 
+and looping over it:
+</p>
+
+<div id="map3" style="width: 600px; height: 400px"></div>
+
+<p>You can see how all of this works over at <a href="http://charlesreid1.com/wiki/NC_Census_Map">on the charlesreid1.com wiki</a>
+or in the <a href="http://github.com/charlesreid1/a-shrubbery">Github repo for A-Shrubbery</a>.
+</p>
+
+<br />
+<br />
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js" type="text/javascript"> </script>
+<script src="{{ SITEURL }}/nc1.js" type="text/javascript"> </script>
+<script src="{{ SITEURL }}/nc2.js" type="text/javascript"> </script>
+<script src="{{ SITEURL }}/nc3.js" type="text/javascript"> </script>
+
+
+{% endblock %}
