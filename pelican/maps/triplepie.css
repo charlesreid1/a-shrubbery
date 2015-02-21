@@ -1,5 +1,9 @@
+.cont {
+    width: 400px;
+}
+
 #map {
-    width: 450px;
+    width: 100%;
 }
 
 .activecounty {

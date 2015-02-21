@@ -1,6 +1,6 @@
 {% extends 'base_map.html' %}
 
-{% set mytitle="Commute Method by Povery Status" %}
+{% set mytitle="Commute Method by Povery Status for California Counties" %}
 
 {# ----------- title -------------- #}
 
@@ -13,7 +13,6 @@
 <link href="{{ SITEURL }}/triplepie.css" rel="stylesheet" type="text/css" >
 
 <h1>{{mytitle}}</h1>
-<h2>Poverty Status: Under Poverty Line</h2>
 
 <p>This county-by-county map of California is clickable - try selecting a county.
 
@@ -33,9 +32,21 @@ living under the poverty line.
 
     <div class="col-md-5">
         <h3><div class="county">County: </div></h3>
-        <div class="graph1"></div>
-        <div class="graph2"></div>
-        <div class="graph3"></div>
+
+        <p><div class="population">&nbsp;</div></p>
+
+        <div class="cont container1">
+            <center><h3><b>Below Poverty Line</b></h3></center>
+            <div class="graph1"></div> 
+        </div>
+        <div class="cont container2">
+            <center><h3><b>At Poverty Line</b></h3></center>
+            <div class="graph2"></div>
+        </div>
+        <div class="cont container3">
+            <center><h3><b>Above Poverty Line</b></h3></center>
+            <div class="graph3"></div>
+        </div>
     </div>
 
 </div>

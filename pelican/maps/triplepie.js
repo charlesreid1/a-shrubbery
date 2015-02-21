@@ -792,8 +792,8 @@ function arcTween(d) {
 // add geojson to map
 
 
-var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-//var prefix = "/"
+//var prefix = "http://charlesreid1.github.io/a-shrubbery/";
+var prefix = "/"
 var geoj1 = new L.geoJson.ajax(
                     prefix+"cacommuterincome.geojson",
                     {onEachFeature : enhanceLayer1}
