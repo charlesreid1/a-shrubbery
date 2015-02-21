@@ -41,6 +41,6 @@ $.ajax({
     success: function (data) {
     	var geojson = new L.geoJson(data, {
     		onEachFeature: enhanceLayer
-    	}
-    }).addTo(map);
+        }).addTo(map);
+    }
 });

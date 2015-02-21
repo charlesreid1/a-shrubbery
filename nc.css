@@ -6,10 +6,6 @@
     fillColor: #ff0000;
 }
 
-body {
-  font: 12px sans-serif;
-}
-
 .arc path {
   stroke: #fff;
 }
