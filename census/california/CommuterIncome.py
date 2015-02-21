@@ -16,9 +16,8 @@ def main():
     results = ca.lookup_table(table_id)
     counties = ca.get_counties_geojson()
 
-    county_names  = [f['properties']['name']  for f in counties['features']]
-    county_geoids = [f['properties']['geoid'] for f in counties['features']]
-
+    county_names       = [f['properties']['name']       for f in counties['features']]
+    county_geoids      = [f['properties']['geoid']      for f in counties['features']]
 
 
     # First, do your calculations.
