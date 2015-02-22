@@ -48,10 +48,3 @@ $.ajax({
     }
 });
 
-
-
-/*
-//var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-var prefix = "";
-var geoj = new L.geoJson.ajax("dare_census_tracts.json",{onEachFeature:enhanceLayer2}).addTo(map2);
-*/

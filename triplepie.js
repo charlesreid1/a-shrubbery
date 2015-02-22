@@ -422,7 +422,6 @@ function layerMouseclick() {
         .append("text")
         .attr("dy", ".35em")
         .style("font-size", "11px")
-        .attr("class","small")
         .attr("transform", function(d) { 
             return "translate(" + arc.centroid(d) + ")"; })
         .style("text-anchor", "middle")
@@ -845,8 +844,8 @@ function arcTween(d) {
 // add geojson to map
 
 
-//var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-var prefix = "/"
+var prefix = "http://charlesreid1.github.io/a-shrubbery/";
+//var prefix = "/"
 var geoj1 = new L.geoJson.ajax(
                     prefix+"cacommuterincome.geojson",
                     {onEachFeature : enhanceLayer1}
