@@ -109,7 +109,7 @@ function doClick() {
 
 
     // http://en.wikipedia.org/wiki/Carolina_blue
-    red = '#56A0D3'
+    red = '#56A0D3';
 
     these_layer_ids = Object.keys(this._layers);
 
@@ -227,8 +227,9 @@ function doClick() {
         success: function (data) {
             census_geoj.addData(data);
             var bounds = census_geoj.getBounds();
-            map_census.panInsideBounds(bounds);
-            map_census.setZoom( map_census.getBoundsZoom(bounds) );
+            //map_census.panInsideBounds(bounds);
+            //map_census.setZoom( map_census.getBoundsZoom(bounds) );
+            map_census.fitBounds(bounds,animate=true);
         }
     });
 
