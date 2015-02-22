@@ -2,8 +2,8 @@
 ////////////////////////////////////
 // Take care of county map first:
 //
-
-var map_county = L.map('education_county').setView([35.8, -78.6], 7);
+var zoomOrig = 7;
+var map_county = L.map('education_county').setView([35.8, -78.6], zoomOrig);
 
 var basemapViewer = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.run-bike-hike/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{ 
     maxZoom: 14,
@@ -206,21 +206,41 @@ function doClick() {
     var geo_id = this.feature.properties.geoid;
 
     census_url = "http://api.censusreporter.org/1.0/geo/show/tiger2013?geo_ids=140|"+geo_id;
-    console.log(geo_id);
-    console.log(census_url);
+
+
+
+    // TODO
+    // remove the previous census tracts layer here
+
+
 
     // initialize empty GeoJson
     var census_geoj = L.geoJson(false, {
             onEachFeature: onEachCensusFeature
         }).addTo(map_census);
 
+    // Get the bounds for the census tract geometries.
+    // Center and zoom the map.
     $.ajax({
         type: "GET",
         url: census_url,
         success: function (data) {
             census_geoj.addData(data);
+            var bounds = census_geoj.getBounds();
+            map_census.panInsideBounds(bounds);
+            map_census.setZoom( map_census.getBoundsZoom(bounds) );
         }
     });
+
+    // Right here is the wrong place to use the 
+    // Ajax data to set the map bounds. 
+    //
+    // Ajax is asynchronous - so when we get to 
+    // this point in the script, the Ajax hasn't 
+    // been loaded yet. 
+    //
+    // It took me a long while to figure that out.
+
 
 }
 
