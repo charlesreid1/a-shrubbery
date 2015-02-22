@@ -1,7 +1,7 @@
 
 ////////////////////////////////////////////////////
 
-var map = L.map('map').setView([37.7, -119.5], 6);
+var map = L.map('map').setView([37.7, -119.5], 5);
 L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{
     attribution: 'US Census Bureau',
     maxZoom: 18

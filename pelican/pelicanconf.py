@@ -89,6 +89,7 @@ TEMPLATE_PAGES['nc.css']   = 'nc.css'
 TEMPLATE_PAGES['nc1.js']   = 'nc1.js'
 TEMPLATE_PAGES['nc2.js']   = 'nc2.js'
 TEMPLATE_PAGES['nc3.js']   = 'nc3.js'
+TEMPLATE_PAGES['nceducation.js'] = 'nceducation.js'
 
 
 # --------------8<---------------------
