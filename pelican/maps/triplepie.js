@@ -742,7 +742,7 @@ function layerMouseclick() {
     // 1. Remove previously-existing population indicators
     //
     // turn the childNodes NodeList (chnl) into an array (ch)
-    var pop = d3.select("div.population"),
+    var pop = d3.select("span.population"),
         chnl = pop[0][0].childNodes,
         ch = [];
 
@@ -769,12 +769,20 @@ function layerMouseclick() {
     pop2 = this.feature.properties[popkey2];
     pop3 = this.feature.properties[popkey3];
     pop = pop1+pop2+pop3;
+
+    //console.log("-------------------------");
+    //console.log("Population 1 = "+pop1);
+    //console.log("Population 2 = "+pop2);
+    //console.log("Population 3 = "+pop3);
+    console.log("Total Population = "+pop);
+    //console.log("Log Population = "+Math.log(pop));
+
     pop = Math.round(Math.log(pop)-5);
-    //console.log(pop);
+    console.log(pop);
 
     var fontsize = 10;
     for( var i = 0; i != pop; i++ ) {
-        icon = d3.select("div.population").append("i")
+        icon = d3.select("span.population").append("i")
             .attr("class","fa fa-child")
             .style("color",'#000')
             .style("font-size",fontsize+"px");
