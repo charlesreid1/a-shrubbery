@@ -10,7 +10,7 @@ def main():
     table_id = "B08122"
 
     ca = CaliforniaCounties()
-    ca.populate()
+    ca.init()
 
 
     results = ca.lookup_table(table_id)
@@ -64,6 +64,13 @@ def main():
                 county_data[final_pct_key] = dat[table_fields[k2][ii1]] / dat[table_fields['Total'][ii1]]
 
 
+
+        # Add keys that were skipped
+        for ii2,k2 in enumerate(['Total']):
+            for ii1,k1 in enumerate(keys_1):
+
+                final_key = k1+"_"+k2
+                county_data[final_key] = dat[table_fields[k2][ii1]]
 
 
         properties_to_embed.append(county_data)

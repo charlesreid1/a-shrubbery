@@ -6,15 +6,19 @@ save_as: index.html
 
 # North Carolina Census Tracts
 
-<img width="300px" src="images/splash_nc.png" alt="North Carolina Census Tracts" />
+<img width="300px" src="images/splash_nccensus.png" alt="North Carolina Census Tracts" />
 
 **Description**: This Leaflet map uses the Census Reporter API to obtain geographic data
 about census tracts for North Carolina from the Census Bureau. 
 
+A clickable, county-level map of North Carolina controls a second
+map that automatically pans to the census tracts composing the 
+selected county.
+
 **Data**: The GeoJson data used to create the state, county, and census tract layers 
 comes from the US Census Bureau and is accessed using the Census Reporter API. 
 
-<a class="btn btn-info btn-large" href="nc/">See North Carolina Census Tract Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="nccensus/">See North Carolina Census Tract Map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
 

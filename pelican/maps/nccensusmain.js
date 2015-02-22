@@ -5,7 +5,7 @@
 var zoomOrig = 6;
 var map_county = L.map('education_county').setView([35.8, -78.6], zoomOrig);
 
-var basemapViewer = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.run-bike-hike/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{ 
+var basemapViewer = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{ 
     maxZoom: 14,
     attribution: "Mapbox"
 }).addTo(map_county);
@@ -105,7 +105,8 @@ function doClick() {
 
     var county = this.feature.properties.name;
 
-    //$tooltip.text("County: "+county).show();
+    var $tooltip = $('.county');
+    $tooltip.text("County: "+county).show();
 
 
 

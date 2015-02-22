@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = u'charlesreid1'
 SITENAME = u'A Shrubbery'
-#SITEURL = '/a-shrubbery'
+SITEURL = '/a-shrubbery'
 
 PATH = 'content'
 
@@ -84,12 +84,12 @@ TEMPLATE_PAGES['triplepie.html']  = 'triplepie/index.html'
 TEMPLATE_PAGES['triplepie.css']   = 'triplepie.css'
 TEMPLATE_PAGES['triplepie.js']    = 'triplepie.js'
 
-TEMPLATE_PAGES['nc.html']  = 'nc/index.html'
-TEMPLATE_PAGES['nc.css']   = 'nc.css'
-TEMPLATE_PAGES['nc1.js']   = 'nc1.js'
-TEMPLATE_PAGES['nc2.js']   = 'nc2.js'
-TEMPLATE_PAGES['nc3.js']   = 'nc3.js'
-TEMPLATE_PAGES['nceducation.js'] = 'nceducation.js'
+TEMPLATE_PAGES['nccensus.html']  = 'nccensus/index.html'
+TEMPLATE_PAGES['nccensus.css']   = 'nccensus.css'
+TEMPLATE_PAGES['nccensus1.js']   = 'nccensus1.js'
+TEMPLATE_PAGES['nccensus2.js']   = 'nccensus2.js'
+TEMPLATE_PAGES['nccensus3.js']   = 'nccensus3.js'
+TEMPLATE_PAGES['nccensusmain.js'] = 'nccensusmain.js'
 
 
 # --------------8<---------------------
