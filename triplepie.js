@@ -769,8 +769,16 @@ function layerMouseclick() {
     pop2 = this.feature.properties[popkey2];
     pop3 = this.feature.properties[popkey3];
     pop = pop1+pop2+pop3;
+
+    console.log("-------------------------");
+    console.log(pop1);
+    console.log(pop2);
+    console.log(pop3);
+    console.log(pop);
+
     pop = Math.round(Math.log(pop)-5);
-    //console.log(pop);
+
+    console.log(pop);
 
     var fontsize = 10;
     for( var i = 0; i != pop; i++ ) {
@@ -844,8 +852,8 @@ function arcTween(d) {
 // add geojson to map
 
 
-var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-//var prefix = "/"
+//var prefix = "http://charlesreid1.github.io/a-shrubbery/";
+var prefix = "/"
 var geoj1 = new L.geoJson.ajax(
                     prefix+"cacommuterincome.geojson",
                     {onEachFeature : enhanceLayer1}
