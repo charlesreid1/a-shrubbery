@@ -12,17 +12,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-      <link href="/favicon.png" rel="icon">
+      <link href="/a-shrubbery/favicon.png" rel="icon">
 
 
 
     <!--
     my CSS styles
     -->
-    <link href="/theme/css/bootstrap.css"       rel="stylesheet" type="text/css">
-    <link href="/theme/css/sandstone.css"       rel="stylesheet" type="text/css"/>
-    <link href="/theme/css/navbar.css"          rel="stylesheet" type="text/css"/>
-    <link href="/theme/css/main.css"            rel="stylesheet" type="text/css"/>
+    <link href="/a-shrubbery/theme/css/bootstrap.css"       rel="stylesheet" type="text/css">
+    <link href="/a-shrubbery/theme/css/sandstone.css"       rel="stylesheet" type="text/css"/>
+    <link href="/a-shrubbery/theme/css/navbar.css"          rel="stylesheet" type="text/css"/>
+    <link href="/a-shrubbery/theme/css/main.css"            rel="stylesheet" type="text/css"/>
 
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -32,10 +32,10 @@
     <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
           rel="stylesheet" type="text/css"/>
 
-    <link href="/theme/css/pygment.css" rel="stylesheet" type="text/css"/>
+    <link href="/a-shrubbery/theme/css/pygment.css" rel="stylesheet" type="text/css"/>
 
-    <script src="/theme/js/jquery.min.js"></script>
-    <script src="/theme/js/bootstrap.min.js"></script>
+    <script src="/a-shrubbery/theme/js/jquery.min.js"></script>
+    <script src="/a-shrubbery/theme/js/bootstrap.min.js"></script>
 
 
 
@@ -46,7 +46,7 @@
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 
 	 <!-- load my style sheet -->
-     <link rel="stylesheet" type="text/css" href="/mapstyles.css">
+     <link rel="stylesheet" type="text/css" href="/a-shrubbery/mapstyles.css">
 
     <!-- end map header -->
 
@@ -66,7 +66,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span> 
             </button>
-            <a class="navbar-brand" href="/index.html" style="margin-right:20px;">A Shrubbery</a>
+            <a class="navbar-brand" href="/a-shrubbery/index.html" style="margin-right:20px;">A Shrubbery</a>
         </div>
         <div>
             <div class="collapse navbar-collapse" id="myNavbar">
@@ -78,7 +78,7 @@
 
 
                     <li>
-                        <a href="/about.html">About</a>
+                        <a href="/a-shrubbery/about.html">About</a>
                     </li>
 
 
@@ -88,7 +88,7 @@
 
 
                     <li>
-                        <a href="/index.html">All Maps</a>
+                        <a href="/a-shrubbery/index.html">All Maps</a>
                     </li>
 
 
@@ -98,7 +98,7 @@
 
 
                     <li>
-                        <a href="/blog.html">Blog</a>
+                        <a href="/a-shrubbery/blog.html">Blog</a>
                     </li>
 
 
@@ -108,7 +108,7 @@
 
 
                     <li>
-                        <a href="/author.html">Author</a>
+                        <a href="/a-shrubbery/author.html">Author</a>
                     </li>
 
                 </ul>
@@ -128,7 +128,7 @@
         -->
         <p>Building a page of map leaflets using Leaflet.js</p>
         <p><a class="btn btn-info btn-lg btn-large" 
-            href="/about.html" role="button">Learn More About It &nbsp;&nbsp;&nbsp; <i class="fa fa-arrow-circle-right"></i></a></p>
+            href="/a-shrubbery/about.html" role="button">Learn More About It &nbsp;&nbsp;&nbsp; <i class="fa fa-arrow-circle-right"></i></a></p>
     </div>
 </div>
 
@@ -139,7 +139,7 @@
 
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-<link href="/triplepie.css" rel="stylesheet" type="text/css" >
+<link href="/a-shrubbery/triplepie.css" rel="stylesheet" type="text/css" >
 
 <h1>California</h1>
 
@@ -156,7 +156,7 @@ living under the poverty line.
 
 <div class="row">
 
-    <div class="col-md-5">
+    <div class="col-md-6">
         <h3>Select a County:</h3>
         <div id="map"></div>
         <br />
@@ -168,20 +168,84 @@ living under the poverty line.
         The people icons <i class="fa fa-child"></i> are 
         logarithmic!</p>
         <br/>
-        <p><i class="fa fa-child" style="font-size: 10;"></i>
-           <i class="fa fa-child" style="font-size: 12;"></i> = 10,000
+        <p>The basis is the smallest county, Alpine County, 
+        which has about 500 commuters. Since log(500) is 
+        about 6, we can subtract 5 from the log of every county's 
+        population, and this gives us a good indicator, starting at 
+        1, of the order of magnitude of that county's population.
         </p>
-        <p><i class="fa fa-child" style="font-size: 10;"></i>
-           <i class="fa fa-child" style="font-size: 12;"></i>
-           <i class="fa fa-child" style="font-size: 16;"></i>
-           <i class="fa fa-child" style="font-size: 24;"></i> = 1,000,000
+        <p>Turn <i class="fa fa-child"></i> into populations with the formula: 
         </p>
+        <p>Population = exp( 5 + <i class="fa fa-child"></i> )
+        </p>
+        <p>While rounding logs leads to gross errors, like San Bernadino
+        County getting 9 people, for a population of exp(5 + 9) ~ 1.2 M,
+        which is way off from its actual population of 0.7 M, but closer 
+        to the next lowest interval, exp(5 + 8) ~ 0.4 M.
+        </p>
+        <p>This is a good illustration of the problem of population
+        data and how multiscale it is: if we had one person represent
+        1,000 people, Los Angeles County would require 10 pages of 
+        little people.
+        </p>
+
+        <img src="/a-shrubbery/images/xkcd_logscale.png" width="400px">
+
+        <div class="well" style="font-size: 10px;">
+            <h3>Key</h3>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i> = ~ 1,000 = ~ exp(5+2)
+            </p>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i>
+               <i class="fa fa-child" style="font-size: 16px;"></i>
+               <i class="fa fa-child" style="font-size: 24px;"></i> = ~ 8,000 = ~ exp(5+4)
+            </p>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i>
+               <i class="fa fa-child" style="font-size: 16px;"></i>
+               <i class="fa fa-child" style="font-size: 22px;"></i> 
+               <i class="fa fa-child" style="font-size: 30px;"></i>
+               <i class="fa fa-child" style="font-size: 40px;"></i> = ~ 60,000 = ~ exp(5+6)
+            </p>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i>
+               <i class="fa fa-child" style="font-size: 16px;"></i>
+               <i class="fa fa-child" style="font-size: 22px;"></i> 
+               <i class="fa fa-child" style="font-size: 30px;"></i>
+               <i class="fa fa-child" style="font-size: 40px;"></i> 
+               <i class="fa fa-child" style="font-size: 52px;"></i>
+               <i class="fa fa-child" style="font-size: 66px;"></i> = ~ 400,000 = ~ exp(5+8)
+            </p>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i>
+               <i class="fa fa-child" style="font-size: 16px;"></i>
+               <i class="fa fa-child" style="font-size: 22px;"></i> 
+               <i class="fa fa-child" style="font-size: 30px;"></i>
+               <i class="fa fa-child" style="font-size: 40px;"></i> 
+               <i class="fa fa-child" style="font-size: 52px;"></i>
+               <i class="fa fa-child" style="font-size: 66px;"></i> 
+               <i class="fa fa-child" style="font-size: 82px;"></i> = ~ 1,200,000 = ~ exp(5+9)
+            </p>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i>
+               <i class="fa fa-child" style="font-size: 16px;"></i>
+               <i class="fa fa-child" style="font-size: 22px;"></i> 
+               <i class="fa fa-child" style="font-size: 30px;"></i>
+               <i class="fa fa-child" style="font-size: 40px;"></i> 
+               <i class="fa fa-child" style="font-size: 52px;"></i>
+               <i class="fa fa-child" style="font-size: 66px;"></i>
+               <i class="fa fa-child" style="font-size: 82px;"></i> 
+               <i class="fa fa-child" style="font-size:100px;"></i> = ~ 3,200,000 = ~ exp(5+10)
+            </p>
+        </div>
+
     </div>
 
-    <div class="col-md-5">
+    <div class="col-md-6">
         <h3><div class="county">County: </div></h3>
 
-        <h3><div class="population">Population<sup>1</sup>: </div></h3>
+        <h3>Population<sup>1</sup>: <span class="population"></span></h3>
 
         <div class="cont container1">
             <center><h3><b>Below Poverty Line</b></h3></center>
@@ -202,10 +266,10 @@ living under the poverty line.
 
 
 
-<script src="/theme/js/leaflet.ajax.min.js" type="text/javascript"></script>
+<script src="/a-shrubbery/theme/js/leaflet.ajax.min.js" type="text/javascript"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="/theme/js/d3.legend.js"></script>
-<script src="/triplepie.js"></script>
+<script src="/a-shrubbery/theme/js/d3.legend.js"></script>
+<script src="/a-shrubbery/triplepie.js"></script>
 
 
 
