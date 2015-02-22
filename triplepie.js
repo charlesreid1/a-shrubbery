@@ -1,7 +1,7 @@
 
 ////////////////////////////////////////////////////
 
-var map = L.map('map').setView([37.7, -119.5], 6);
+var map = L.map('map').setView([37.7, -119.5], 5);
 L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{
     attribution: 'US Census Bureau',
     maxZoom: 18
@@ -734,6 +734,58 @@ function layerMouseclick() {
 
 
 
+    // -------------------------
+    // Add population indicator
+
+
+
+    // 1. Remove previously-existing population indicators
+    //
+    // turn the childNodes NodeList (chnl) into an array (ch)
+    var pop = d3.select("div.population"),
+        chnl = pop[0][0].childNodes,
+        ch = [];
+
+    for(var i = 0, len = chnl.length; i != len; ch.push(chnl[i++]));
+
+    // now use slice to select and remove the population indicators 
+    var tags_to_delete = ch.slice(1,ch.length);
+    tags_to_delete.forEach(function(d) {
+        d.remove();
+    });
+
+
+    // 2. Determine number of population indicators to add
+    popkey1 = 'A_Below100PovLn_Total';
+    popkey2 = 'B_Btwn100_149PovLn_Total';
+    popkey3 = 'C_Above150PovLn_Total';
+
+    // this will be accomplished by 
+    // dividing the population by some number,
+    // rounding, and displaying that many
+    // font awesome icon tags.
+    //console.log(this.feature.properties);
+    pop1 = this.feature.properties[popkey1];
+    pop2 = this.feature.properties[popkey2];
+    pop3 = this.feature.properties[popkey3];
+    pop = pop1+pop2+pop3;
+    pop = Math.round(Math.log(pop)-5);
+    //console.log(pop);
+
+    var fontsize = 10;
+    for( var i = 0; i != pop; i++ ) {
+        icon = d3.select("div.population").append("i")
+            .attr("class","fa fa-child")
+            .style("color",'#000')
+            .style("font-size",fontsize+"px");
+        fontsize += 2*i;
+    }
+
+
+
+    // -------------------------
+
+
 }
 
 function key(d) {
@@ -792,8 +844,8 @@ function arcTween(d) {
 // add geojson to map
 
 
-var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-//var prefix = "/"
+//var prefix = "http://charlesreid1.github.io/a-shrubbery/";
+var prefix = "/"
 var geoj1 = new L.geoJson.ajax(
                     prefix+"cacommuterincome.geojson",
                     {onEachFeature : enhanceLayer1}
