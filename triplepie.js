@@ -422,6 +422,7 @@ function layerMouseclick() {
         .append("text")
         .attr("dy", ".35em")
         .style("font-size", "11px")
+        .attr("class","small")
         .attr("transform", function(d) { 
             return "translate(" + arc.centroid(d) + ")"; })
         .style("text-anchor", "middle")
