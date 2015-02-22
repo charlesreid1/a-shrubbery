@@ -108,7 +108,8 @@ function doClick() {
 
 
 
-    red = '#00ff00'
+    // http://en.wikipedia.org/wiki/Carolina_blue
+    red = '#56A0D3'
 
     these_layer_ids = Object.keys(this._layers);
 
@@ -142,35 +143,6 @@ function doClick() {
             }
         });
     });
-
-
-
-
-
-
-
-
-    /*
-    geoj.eachLayer(function(layer) {
-        console.log(layer);
-        if(layer['_options']) {
-            if( layer['_options']['fillColor'] ) {
-                if(layer['_options']['fillColor']===red) {
-                    //console.log("Returning active fill color back to original fill color.");
-                    //console.log("Before: "+layer.options['fillColor']);
-                    layer.setStyle(
-                        {
-                            'fillColor'   : layer['_options']['originalFillColor'],
-                            'fillOpacity' : myFillOpacity
-                        }
-                    )
-                    //console.log("After: "+layer.options['fillColor']);
-                    //console.log("Original: "+layer.options['originalFillColor']);
-                }
-            }
-        }
-    });
-    */
 
 
 
@@ -224,7 +196,51 @@ function doClick() {
         }
     });
 
+
+
+    // Now add census tracts for this county to the census tract map.
+    //
+    // Do this by grabbing the geo_id for the county,
+    // and form that into a Census Reporter API URL.
+
+    var geo_id = this.feature.properties.geoid;
+
+    census_url = "http://api.censusreporter.org/1.0/geo/show/tiger2013?geo_ids=140|"+geo_id;
+    console.log(geo_id);
+    console.log(census_url);
+
+    // initialize empty GeoJson
+    var census_geoj = L.geoJson(false, {
+            onEachFeature: onEachCensusFeature
+        }).addTo(map_census);
+
+    $.ajax({
+        type: "GET",
+        url: census_url,
+        success: function (data) {
+            census_geoj.addData(data);
+        }
+    });
+
 }
 
 
-
+function onEachCensusFeature(f, l) {
+    if (f.properties) {
+        /*
+        l.on({
+            click: doClick,
+            mouseover: doMouseOver,
+            mouseout: doMouseOut
+        });
+        */
+        l.setStyle({  
+            fillColor: '#FCC',
+            fillOpacity: myFillOpacity,
+            stroke: true,
+            color: '#222',
+            weight: 1
+        });
+        l.bindPopup(f.properties['name']);
+    }
+}
