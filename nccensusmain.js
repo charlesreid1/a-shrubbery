@@ -105,7 +105,8 @@ function doClick() {
 
     var county = this.feature.properties.name;
 
-    //$tooltip.text("County: "+county).show();
+    var $tooltip = $('.county');
+    $tooltip.text("County: "+county).show();
 
 
 
