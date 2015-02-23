@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- page via http://bl.ocks.org/d3noob/7644920 -->
+    <title>NC Leaflet</title>
+    <meta charset="utf-8" />
+    <link 
+        rel="stylesheet" 
+        href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"
+    />
+
+</head>
+<body>
+
+    <h1><b>North Carolina</b></h1>
+
+    <p>Here, we have a map overlay of counties in North Carolina. This was created by requesting geographic
+    entity data from the Census Bureau. To do this, I used the Census Reporter API, which greatly
+    simplifies the process of requesting census data.
+    </p>
+
+    <p>This is a map of the Outer Banks of North Carolina.
+    </p>
+
+    <div id="map" style="width: 600px; height: 400px"></div>
+
+    <p>Now let's break down the county into its different sub-levels.
+
+    <div id="map2" style="width: 600px; height: 400px"></div>
+
+    <p>And finally, let's do census tracts for multiple counties:</p>
+
+    <div id="map3" style="width: 600px; height: 400px"></div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"
+        type="text/javascript">
+    </script>
+
+    <script src="leaflet.ajax.min.js" 
+        type="text/javascript">
+    </script>
+
+    <script src="map_nc_county.js" 
+        type="text/javascript">
+    </script>
+
+    <script src="map_nc_census.js" 
+        type="text/javascript">
+    </script>
+
+    <script src="map_nc_census2.js" 
+        type="text/javascript">
+    </script>
+
+
+
+</body>
+</html>
