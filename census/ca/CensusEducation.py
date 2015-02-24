@@ -2,6 +2,7 @@ import json
 import urllib2
 import numpy as np
 import re
+import os
 import subprocess
 from collections import OrderedDict
 
@@ -31,6 +32,9 @@ def main():
     table_id = "B15002"
 
     states = ["CA"]
+
+    datdir = "educationca.geojson"
+    os.mkdir(datdir)
 
     ################
     # Census.gov constants
@@ -108,7 +112,7 @@ def main():
                 counties['features'][ii]['properties'][key] = county_properties[key]
 
 
-        filename = "education_CA.geo.json"
+        filename = datdir+"/"+"educationca.geo.json"
 
         with open(filename,'w') as f:
             f.write( json.dumps(counties,sort_keys=True) )
@@ -169,7 +173,7 @@ def main():
                     censustracts['features'][ii]['properties'][key] = censustract_properties[key]
 
 
-            filename = "education_CA_"+gid+".geo.json"
+            filename = datdir+"/"+"educationca"+gid+".geo.json"
 
             with open(filename,'w') as f:
                 f.write( json.dumps(censustracts,sort_keys=True) )
@@ -335,20 +339,42 @@ def process_B15002(data):
     #   Education level 1
     #   ...
     #
-    for kk in edM_censuskeys.keys():
+    for kM,kF in zip(edM_censuskeys.keys(),edF_censuskeys.keys()):
 
-        census_keys = edM_censuskeys[kk]
+        census_keys_M = edM_censuskeys[kM]
+        census_keys_F = edF_censuskeys[kF]
 
-        if kk<>"Total":
-            property_key = "Males_Ed"+kk
+
+        if kM<>"Total":
+            property_key_M = "Males_Ed"+kM
         else:
-            property_key = "Males_"+kk
+            property_key_M = "Males_"+kM
 
-        property_value = 0
-        for census_key in census_keys:
-            property_value += data[census_key]
+        property_value_M = 0
+        for census_key_M in census_keys_M:
+            property_value_M += data[census_key_M]
 
-        processed_results[property_key] = property_value
+
+        if kF<>"Total":
+            property_key_F = "Females_Ed"+kF
+        else:
+            property_key_F = "Females_"+kF
+
+        property_value_F = 0
+        for census_key_F in census_keys_F:
+            property_value_F += data[census_key_F]
+
+
+
+        if kM<>"Total":
+            property_key_T = "Total_Ed"+kM
+        else:
+            property_key_T = "Total_"+kM
+
+
+        processed_results[property_key_M] = property_value_M
+        processed_results[property_key_F] = property_value_F
+        processed_results[property_key_T] = (property_value_M+property_value_F)
 
 
     return processed_results
