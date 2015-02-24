@@ -286,7 +286,7 @@ function onEachCensusFeature(f, l) {
         */
         l.setStyle({  
             fillColor: countyColors( Math.round(Math.random()*15-1) ), 
-            fillOpacity: myFillOpacity,
+            fillOpacity: 0.50,
             stroke: false,
             color: '#222',
             weight: 1
