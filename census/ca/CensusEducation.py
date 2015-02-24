@@ -27,6 +27,7 @@ every census tract in the entire state anyway.
 
 """
 
+
 def main():
 
     table_id = "B15002"
@@ -34,7 +35,7 @@ def main():
     states = ["CA"]
 
     datdir = "educationca.geojson"
-    os.mkdir(datdir)
+    subprocess.call(["mkdir","-p",datdir])
 
     ################
     # Census.gov constants
@@ -86,7 +87,7 @@ def main():
 
 
         # ----------------
-        # First, do your calculations.
+        # First, do your tract-by-tract calculations.
 
         # list, one item per census tract
         properties_to_embed = []
@@ -98,6 +99,9 @@ def main():
             county_data = process_B15002( results['data'][county_geoid][table_id]['estimate'] )
 
             properties_to_embed.append(county_data)
+
+
+
 
 
         # ----------------
@@ -158,7 +162,8 @@ def main():
 
                 censustract_data = process_B15002( results['data'][censustract_geoid][table_id]['estimate'] )
 
-                properties_to_embed.append(censustract_data)
+                properties_to_embed.append( censustract_data )
+
 
             
             # ----------------
@@ -377,34 +382,125 @@ def process_B15002(data):
         processed_results[property_key_T] = (property_value_M+property_value_F)
 
 
+
+    ##############################
+    # Now compute some statistics
+
+    # ed levels
+    E = {'0':1,'1':2,'2':3,'3':4,'4':5}
+
+    # E_i ed level 
+    # w_i weight = population in category
+
+    Npop = processed_results["Total_Total"]
+
+
+
+
+
+    # Mean education level:
+    top_M = 0
+    top_F = 0
+    top = 0
+    bottom_M = 0
+    bottom_F = 0
+    bottom = 0
+    for kM,kF in zip(edM_censuskeys.keys(),edF_censuskeys.keys()):
+
+        if kM<>"Total":
+
+            wi_M = processed_results["Males_Ed"+kM]
+
+            wi_F = processed_results["Females_Ed"+kF]
+
+            wi = wi_M + wi_F
+
+            Ei = E[kM]
+
+            top_M += wi_M*Ei
+            bottom_M += wi_M
+
+            top_F += wi_F*Ei
+            bottom_F += wi_F
+
+            top += wi*Ei
+            bottom += wi
+
+
+    print "Males total = ",bottom_M
+    print "Females total = ",bottom_F
+    print "Total total = ",bottom
+
+    div(top_M,bottom_M,processed_results,"Males_Ed_Mean")
+    div(top_F,bottom_F,processed_results,"Females_Ed_Mean")
+    div(top,bottom,processed_results,"Total_Ed_Mean")
+
+
+
+
+
+
+    # Variance education level:
+    top_M = 0
+    top_F = 0
+    top = 0
+    bottom_M = 0
+    bottom_F = 0
+    bottom = 0
+    for kM,kF in zip(edM_censuskeys.keys(),edF_censuskeys.keys()):
+
+        if kM<>"Total":
+
+            wi_M = processed_results["Males_Ed"+kM]
+
+            wi_F = processed_results["Females_Ed"+kF]
+
+            wi = wi_M + wi_F
+
+            V_M = pow( E[kM]-processed_results["Males_Ed_Mean"]  , 2 )
+            V_F = pow( E[kM]-processed_results["Females_Ed_Mean"], 2 )
+            V =   pow( E[kM]-processed_results["Total_Ed_Mean"]  , 2 )
+
+            top_M += wi_M*V_M
+            bottom_M += wi_M
+
+            top_F += wi_F*V_F
+            bottom_F += wi_F
+
+            top += wi*V
+            bottom += wi
+
+
+    processed_results["Males_Ed_Var"]   = np.sqrt(top_M/bottom_M)
+    processed_results["Females_Ed_Var"] = np.sqrt(top_F/bottom_F)
+    processed_results["Total_Ed_Var"]   = np.sqrt(top/bottom)
+
+    sqrtdiv(top_M,bottom_M,processed_results,"Males_Ed_Var")
+    sqrtdiv(top_F,bottom_F,processed_results,"Females_Ed_Var")
+    sqrtdiv(top,bottom,processed_results,"Total_Ed_Var")
+
+
     return processed_results
 
 
+def div(top,bottom,d,key):
+
+    try:
+        d[key] = top/bottom
+    except ZeroDivisionError:
+        d[key] = 0
+
+
+def sqrtdiv(top,bottom,d,key):
+
+    try:
+        d[key] = np.sqrt(top/bottom)
+    except ZeroDivisionError:
+        d[key] = 0
 
 
 if __name__=="__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
