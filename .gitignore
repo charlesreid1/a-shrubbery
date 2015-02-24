@@ -1,3 +1,7 @@
+*.geo.json
+*.topo.json
+*.json
+
 # pelican
 output/
 cache/
