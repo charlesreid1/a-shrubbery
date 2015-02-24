@@ -1,0 +1,40 @@
+{% extends 'base_map.html' %}
+
+{% set mytitle="Education Levels in California Census Tracts" %}
+
+{# ----------- title -------------- #}
+
+{% block title %}{{ mytitle }}{% endblock %}
+
+{# ----------- content ------------- #}
+
+{% block content %}
+
+<link href="{{ SITEURL }}/educationca.css" rel="stylesheet" type="text/css" >
+
+<h1><b>California</b></h1>
+
+<h2><b>{{mytitle}}</b></h2>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <h3>Select a County:</h3>
+        <div id="education_county" style="width: 100%; height: 500px"></div>
+    </div>
+
+    <div class="col-md-6">
+        <h3><div class="county">Census Tracts for County: </div></h3>
+        <div id="education_census" style="width: 100%; height: 500px"></div>
+    </div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js" type="text/javascript"> </script>
+<script src="{{ SITEURL }}/theme/js/leaflet.ajax.min.js" type="text/javascript"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="{{ SITEURL }}/educationca.js" type="text/javascript"> </script>
+
+
+{% endblock %}

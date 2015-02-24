@@ -3,6 +3,16 @@ PageStyle: clear
 save_as: index.html
 
 
+# Mapping Education Levels in California Census Tracts
+
+**Description**: 
+
+**Data**: The GeoJson data used to create the state, county, and census tract layers 
+comes from the US Census Bureau and is accessed using the Census Reporter API. 
+
+<a class="btn btn-info btn-large" href="educationca/">See Education Levels in CA Census Tracts &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<br />
 
 # North Carolina Census Tracts
 
