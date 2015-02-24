@@ -1,4 +1,6 @@
+import os
 import json
+import subprocess
 
 json_file = 'fips.json'
 
@@ -14,6 +16,9 @@ def getStateCode(state):
     getStateCode('CA')
 
     """
+    if not os.path.isfile(json_file):
+        jsonifyStateCodes()
+
     with open(json_file,'r') as f:
         d = json.load(f)
     return d[state]
@@ -26,6 +31,7 @@ def jsonifyStateCodes():
     http://www2.census.gov/geo/docs/reference/state.txt
     and store them in a JSON file.
     """
+    subprocess.call(["curl","-O","http://www2.census.gov/geo/docs/reference/state.txt"])
     with open('state.txt','r') as f:
         contents = f.read()
 
@@ -51,12 +57,12 @@ def jsonifyStateCodes():
                 stateCodes[state_abbrev] = fips
                 stateCodes[state_name] = fips
 
-                print state_name + " : " + fips
+                #print state_name + " : " + fips
 
             except IndexError:
                 pass
     
-    print "Finished parsing file. Dumping to "+json_file+"."
+    print "Finished parsing FIPS file. Dumping to "+json_file+"."
 
     with open(json_file,'w') as f:
         json.dump(stateCodes,f)
