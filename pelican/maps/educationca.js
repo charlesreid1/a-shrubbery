@@ -1,5 +1,5 @@
 
-var url_prefix = "/";
+var url_prefix = "http://charlesreid1.github.io/a-shrubbery/";
 
 ////////////////////////////////////
 // Take care of county map first:
@@ -33,6 +33,8 @@ $.ajax({
 
 
 
+var countyColors = d3.scale.category20c();
+
 var myFillOpacity = 0.20;
 var myThickFillOpacity = 0.90;
 
@@ -50,7 +52,7 @@ function onEachFeature(f, l) {
             */
         });
         l.setStyle({  
-            fillColor: '#CCF',
+            fillColor: countyColors( Math.round(Math.random()*15-1) ), 
             fillOpacity: myFillOpacity,
             stroke: true,
             color: '#222',
@@ -72,7 +74,7 @@ function onEachFeature(f, l) {
 
 var map_census = L.map('education_census').setView([37.7, -119.5], 7); 
 
-var basemapViewer2 = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.run-bike-hike/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{ 
+var basemapViewer2 = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{ 
     maxZoom: 18,
     attribution: "Mapbox"
 }).addTo(map_census);
@@ -111,8 +113,7 @@ function doClick() {
 
 
 
-    // http://en.wikipedia.org/wiki/Carolina_blue
-    red = '#56A0D3';
+    red = '#4099FF';
 
     these_layer_ids = Object.keys(this._layers);
 
@@ -284,9 +285,9 @@ function onEachCensusFeature(f, l) {
         });
         */
         l.setStyle({  
-            fillColor: '#FCC',
-            fillOpacity: myFillOpacity,
-            stroke: true,
+            fillColor: countyColors( Math.round(Math.random()*15-1) ), 
+            fillOpacity: 0.50,
+            stroke: false,
             color: '#222',
             weight: 1
         });

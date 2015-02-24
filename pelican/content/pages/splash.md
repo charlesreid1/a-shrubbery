@@ -5,6 +5,8 @@ save_as: index.html
 
 # Mapping Education Levels in California Census Tracts
 
+<img width="300px" src="images/splash_educationca.png" alt="Education Levels in California Census Tracts" />
+
 **Description**: 
 
 **Data**: The GeoJson data used to create the state, county, and census tract layers 
