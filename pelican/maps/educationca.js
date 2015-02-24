@@ -1,4 +1,6 @@
 
+var url_prefix = "/";
+
 ////////////////////////////////////
 // Take care of county map first:
 //
@@ -12,9 +14,9 @@ var basemapViewer = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}
 
 
 
-// counties in north carolina
+// counties in california
 //rooturl = "http://api.censusreporter.org/1.0/geo/show/tiger2013?geo_ids=050|04000US37";
-rooturl = "/educationca.geo.json"
+var rooturl = url_prefix + "educationca.geo.json"
 
 // initialize empty GeoJson
 var geoj = L.geoJson(false, {
@@ -54,7 +56,11 @@ function onEachFeature(f, l) {
             color: '#222',
             weight: 1
         });
-        l.bindPopup("County: "+f.properties['name']+"<br />GeoID: "+f.properties['geoid']);
+        var out = [];
+        for(key in f.properties){
+            out.push(key+": "+f.properties[key]);
+        }
+        l.bindPopup(out.join("<br />"));
     }
 }
 
@@ -202,9 +208,8 @@ function doClick() {
 
     var geo_id = this.feature.properties.geoid;
 
-    census_url = "http://api.censusreporter.org/1.0/geo/show/tiger2013?geo_ids=140|"+geo_id;
-
-
+    //censusurl = "http://api.censusreporter.org/1.0/geo/show/tiger2013?geo_ids=140|"+geo_id;
+    var censusurl = url_prefix + "educationca" + geo_id + ".geo.json";
 
 
     // initialize empty GeoJson
@@ -216,7 +221,7 @@ function doClick() {
     // Center and zoom the map.
     $.ajax({
         type: "GET",
-        url: census_url,
+        url: censusurl,
         success: function (data) {
 
             // remove the previous census tracts layer here
@@ -285,6 +290,10 @@ function onEachCensusFeature(f, l) {
             color: '#222',
             weight: 1
         });
-        l.bindPopup(f.properties['name']);
+        var out = [];
+        for(key in f.properties){
+            out.push(key+": "+f.properties[key]);
+        }
+        l.bindPopup(out.join("<br />"));
     }
 }

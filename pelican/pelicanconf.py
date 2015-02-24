@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = u'charlesreid1'
 SITENAME = u'A Shrubbery'
-#SITEURL = '/a-shrubbery'
+SITEURL = '/a-shrubbery'
 
 PATH = 'content'
 
@@ -94,7 +94,15 @@ TEMPLATE_PAGES['nccensusmain.js'] = 'nccensusmain.js'
 TEMPLATE_PAGES['educationca.html']  = 'educationca/index.html'
 TEMPLATE_PAGES['educationca.css']   = 'educationca.css'
 TEMPLATE_PAGES['educationca.js']    = 'educationca.js'
-TEMPLATE_PAGES['educationca.geo.json'] = 'educationca.geo.json'
+
+
+# Add all the geojson for education ca map
+geojson_path = "maps/educationca.geojson"
+EXTRA_TEMPLATES_PATHS += [geojson_path]
+import os
+for f in os.listdir(geojson_path):
+    if f.endswith(".json"):
+        TEMPLATE_PAGES["educationca.geojson/"+f] = f
 
 
 
