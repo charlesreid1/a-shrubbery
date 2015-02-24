@@ -52,14 +52,12 @@ function enhanceLayer(f,l){
 
 var topoLayer = new L.TopoJSON();
  
-$.getJSON('education_CA.topo.json')
+$.getJSON('geojson/education_CA_05000US06001.geo.json')
   .done(addTopoData);
  
 function addTopoData(topoData){  
-
-  console.log(topoData);
-
-  topoLayer.addData(topoData);
+  //console.log(topoData['geography']);
+  topoLayer.addData(topoData['geography']);
   topoLayer.addTo(map);
 }
 
