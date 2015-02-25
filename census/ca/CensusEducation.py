@@ -427,10 +427,6 @@ def process_B15002(data):
             bottom += wi
 
 
-    print "Males total = ",bottom_M
-    print "Females total = ",bottom_F
-    print "Total total = ",bottom
-
     div(top_M,bottom_M,processed_results,"Males_Ed_Mean")
     div(top_F,bottom_F,processed_results,"Females_Ed_Mean")
     div(top,bottom,processed_results,"Total_Ed_Mean")
@@ -470,10 +466,6 @@ def process_B15002(data):
             top += wi*V
             bottom += wi
 
-
-    processed_results["Males_Ed_Var"]   = np.sqrt(top_M/bottom_M)
-    processed_results["Females_Ed_Var"] = np.sqrt(top_F/bottom_F)
-    processed_results["Total_Ed_Var"]   = np.sqrt(top/bottom)
 
     sqrtdiv(top_M,bottom_M,processed_results,"Males_Ed_Var")
     sqrtdiv(top_F,bottom_F,processed_results,"Females_Ed_Var")
