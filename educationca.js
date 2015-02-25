@@ -1,5 +1,6 @@
 
-var url_prefix = "http://charlesreid1.github.io/a-shrubbery/";
+//var url_prefix = "http://charlesreid1.github.io/a-shrubbery/";
+var url_prefix = "/"
 
 ////////////////////////////////////
 // Take care of county map first:
