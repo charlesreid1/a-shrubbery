@@ -193,12 +193,12 @@ def process_B15002(data):
     """
     5 education levels:
     
-    0       Less than high school 
-    1       High school, associates degree, partial college
-    2       Bachelors degree
-    3       Masters or Professional
-    4       Doctorate
-    (5)     Total
+    1       Less than high school 
+    2       High school, associates degree, partial college
+    3       Bachelors degree
+    4       Masters or Professional
+    5       Doctorate
+    (6)     Total
 
     Two sexes:
     (+)     Male
@@ -208,12 +208,12 @@ def process_B15002(data):
     Keys look like this:
 
     Male_Total
-    Male_EdLevel0
     Male_EdLevel1
+    Male_EdLevel2
     ...
     Female_Total
-    Femael_EdLevel0
     Femael_EdLevel1
+    Femael_EdLevel2
     ...
     """
 
@@ -243,7 +243,7 @@ def process_B15002(data):
     edM_censuskeys = OrderedDict()
 
     # Males with less than high school education
-    edM_censuskeys['0'] = ["B15002003",
+    edM_censuskeys['1'] = ["B15002003",
                            "B15002004",
                            "B15002005",
                            "B15002006",
@@ -253,20 +253,20 @@ def process_B15002(data):
                            "B15002010"]
 
     # Males with high school, associates, or some college education
-    edM_censuskeys['1'] = ["B15002011",
+    edM_censuskeys['2'] = ["B15002011",
                            "B15002012",
                            "B15002013",
                            "B15002014"]
 
     # Males with Bachelors
-    edM_censuskeys['2'] = ["B15002015"]
+    edM_censuskeys['3'] = ["B15002015"]
 
     # Males with Masters or Prof.
-    edM_censuskeys['3'] = ["B15002016",
+    edM_censuskeys['4'] = ["B15002016",
                            "B15002017"]
 
     # Males with doctorates
-    edM_censuskeys['4'] = ["B15002018"]
+    edM_censuskeys['5'] = ["B15002018"]
 
     # Total males
     edM_censuskeys['Total'] = ["B15002002"]
@@ -279,7 +279,7 @@ def process_B15002(data):
     edF_censuskeys = OrderedDict()
 
     # Females with less than high school education
-    edF_censuskeys['0'] = ["B15002020",
+    edF_censuskeys['1'] = ["B15002020",
                            "B15002021",
                            "B15002022",
                            "B15002023",
@@ -289,20 +289,20 @@ def process_B15002(data):
                            "B15002027"]
 
     # Females with high school, associates, or some college education
-    edF_censuskeys['1'] = ["B15002028",
+    edF_censuskeys['2'] = ["B15002028",
                            "B15002029",
                            "B15002030",
                            "B15002031"]
 
     # Females with Bachelors
-    edF_censuskeys['2'] = ["B15002032"]
+    edF_censuskeys['3'] = ["B15002032"]
 
     # Females with Masters or Prof.
-    edF_censuskeys['3'] = ["B15002033",
+    edF_censuskeys['4'] = ["B15002033",
                            "B15002034"]
 
     # Females with doctorates
-    edF_censuskeys['4'] = ["B15002035"]
+    edF_censuskeys['5'] = ["B15002035"]
 
     # Total females
     edF_censuskeys['Total'] = ["B15002019"]
@@ -335,13 +335,13 @@ def process_B15002(data):
     #
     # Male:
     #   Total
-    #   Education level 0
     #   Education level 1
+    #   Education level 2
     #   ...
     # Female:
     #   Total
-    #   Education level 0
     #   Education level 1
+    #   Education level 2
     #   ...
     #
     for kM,kF in zip(edM_censuskeys.keys(),edF_censuskeys.keys()):
@@ -387,7 +387,7 @@ def process_B15002(data):
     # Now compute some statistics
 
     # ed levels
-    E = {'0':1,'1':2,'2':3,'3':4,'4':5}
+    E = {'1':1,'2':2,'3':3,'4':4,'5':5}
 
     # E_i ed level 
     # w_i weight = population in category
