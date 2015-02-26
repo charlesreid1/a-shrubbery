@@ -53,15 +53,13 @@ var randomColors = d3.scale.category20c();
 //        .domain([1,4])
 //        .range(["#ffffcc","#c2e699","#78c679","#31a354","#006837"]);
 
-colorbrewer = ['rgb(255,255,217)','rgb(237,248,177)','rgb(199,233,180)','rgb(127,205,187)','rgb(65,182,196)','rgb(29,145,192)','rgb(34,94,168)','rgb(37,52,148)','rgb(8,29,88)'];
-
 var stateMeanEducationColor = d3.scale.quantize()
         .domain([1.5,3.5])
-        .range(colorbrewer);
+        .range(['rgb(255,255,217)','rgb(237,248,177)','rgb(199,233,180)','rgb(127,205,187)','rgb(65,182,196)','rgb(29,145,192)','rgb(34,94,168)','rgb(37,52,148)','rgb(8,29,88)']);
 
 var tractMeanEducationColor = d3.scale.quantize()
         .domain([1.5,3.5])
-        .range(colorbrewer);
+        .range(['rgb(255,255,217)','rgb(237,248,177)','rgb(199,233,180)','rgb(127,205,187)','rgb(65,182,196)','rgb(29,145,192)','rgb(34,94,168)','rgb(37,52,148)','rgb(8,29,88)']);
 
 
 ///////////////////////////////
@@ -325,54 +323,17 @@ function onEachCensusFeature(f, l) {
 
 /////////////////////////////////////////////////////////
 
-width = 500;
-
-height = 100;
-
-/// //var z = d3.scale.linear().domain(d3.range(0,1,0.1)).range(d3.range(0,1,0.1));
-/// var z = d3.scale.linear().domain([0,1]);
-/// console.log(z.domain()[0]);
-/// console.log(z.domain()[1]);
-/// console.log(z.domain()[3]);
-/// console.log(z.domain()[9]);
-
-// A position encoding for the key only.
-var xkey = d3.scale.quantize()
-        .domain([1.5,3.5])
-        .range(d3.range(0,width,Math.round(width/9.0)).reverse());
-
-var xAxis = d3.svg.axis()
-    .scale(xkey)
-    .orient("bottom")
-    .tickSize(13)
-    .tickValues(stateMeanEducationColor.domain());
-
-var svg = d3.select("div#education_county_scale").append("svg")
-    .attr("width", width)
-    .attr("height", height);
-
 var g = svg.append("g")
     .attr("class", "key")
-    .attr("transform", "translate(10,60)");
-
-state_dom0 = stateMeanEducationColor.domain()[0];
-state_dom1 = stateMeanEducationColor.domain()[1];
-state_step = (state_dom1 - state_dom0)/stateMeanEducationColor.range().length;
-stateMeanEducationColorDomain = d3.range( state_dom0, state_dom1, state_step );
+    .attr("transform", "translate(40,40)");
 
 g.selectAll("rect")
     .data(stateMeanEducationColor.range().map(function(d, i) {
-      x0 = i ? xkey(stateMeanEducationColorDomain[i]) : xkey.range()[0];
-      console.log("x0 = "+x0);
-
-      x1 = i ? i < stateMeanEducationColorDomain.length ? xkey(stateMeanEducationColorDomain[i-1]) : xkey.range()[1] : xkey.range()[0];
-      console.log("x1 = "+x1);
       return {
-        x0 : x0,
-        x1 : x1,
+        x0: i ? x(stateMeanEducationColor.domain()[i - 1]) : x.range()[0],
+        x1: i < stateMeanEducationColor.domain().length ? x(stateMeanEducationColor.domain()[i]) : x.range()[1],
         z: d
       };
-
     }))
   .enter().append("rect")
     .attr("height", 8)
@@ -383,5 +344,10 @@ g.selectAll("rect")
 g.call(xAxis).append("text")
     .attr("class", "caption")
     .attr("y", -6)
-    .text("Mean Education Level");
+    .text("Population per square mile");
+
+
+
+
+
 

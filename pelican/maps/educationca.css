@@ -24,3 +24,22 @@ polyline{
     stroke-width: 2px;
     fill: none;
 }
+
+
+
+svg {
+  font: 12px sans-serif;
+}
+
+.caption {
+  font-weight: bold;
+}
+
+.key path {
+  display: none;
+}
+
+.key line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
