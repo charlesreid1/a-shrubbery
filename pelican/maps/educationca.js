@@ -54,11 +54,11 @@ var randomColors = d3.scale.category20c();
 //        .range(["#ffffcc","#c2e699","#78c679","#31a354","#006837"]);
 
 var stateMeanEducationColor = d3.scale.quantize()
-        .domain([1.0,3.0])
+        .domain([1.5,3.5])
         .range(['rgb(255,255,217)','rgb(237,248,177)','rgb(199,233,180)','rgb(127,205,187)','rgb(65,182,196)','rgb(29,145,192)','rgb(34,94,168)','rgb(37,52,148)','rgb(8,29,88)']);
 
 var tractMeanEducationColor = d3.scale.quantize()
-        .domain([2.0,3.0])
+        .domain([1.5,3.5])
         .range(['rgb(255,255,217)','rgb(237,248,177)','rgb(199,233,180)','rgb(127,205,187)','rgb(65,182,196)','rgb(29,145,192)','rgb(34,94,168)','rgb(37,52,148)','rgb(8,29,88)']);
 
 
@@ -66,7 +66,7 @@ var tractMeanEducationColor = d3.scale.quantize()
 
 
 
-var myFillOpacity = 0.60;
+var myFillOpacity = 0.40;
 var myThickFillOpacity = 0.90;
 
 

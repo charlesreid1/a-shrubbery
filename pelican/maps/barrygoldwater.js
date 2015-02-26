@@ -1,3 +1,4 @@
+// prefix defined in common.js
 
 // create the map, assign to the mao div, and set it's lat, long, and zoom level (12)
 //var map = L.map('map').setView([-100.0,35.0], 12);
@@ -54,8 +55,6 @@ function enhanceLayer(f,l){
 
 
 
-var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-//var prefix = "/";
 var url = prefix+"barrygoldwater_red.json"
 
 

@@ -1,14 +1,12 @@
+// prefix defined in common.js 
+//
 //// pass variable from Jinja to Javascript
 //var jinjaData = $('#jinja-site-url');
 //var SITEURL = jinjaData[0]['dataset']['siteurl'];
 
-
-
 key1 = 'A_Below100PovLn_PublicTrans_CountyPct'
 key2 = 'B_Btwn100_149PovLn_PublicTrans_CountyPct'
 key3 = 'C_Above150PovLn_PublicTrans_CountyPct'
-
-
 
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
 var m1 = L.map('map1').setView([37.7, -122.4], 6);
@@ -104,8 +102,6 @@ function enhanceLayer3(f,l){
     }
 }
 
-// "/"+SITEURL+
-var prefix = "http://charlesreid1.github.io/a-shrubbery/";
 var geoj1 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer1}).addTo(m1);
 var geoj2 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer2}).addTo(m2);
 var geoj3 = new L.geoJson.ajax(prefix+"cacommuterincome.geojson",{onEachFeature:enhanceLayer3}).addTo(m3);
