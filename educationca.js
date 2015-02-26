@@ -53,13 +53,23 @@ var randomColors = d3.scale.category20c();
 //        .domain([1,4])
 //        .range(["#ffffcc","#c2e699","#78c679","#31a354","#006837"]);
 
+colorbrewer = ['rgb(255,255,217)',
+               'rgb(237,248,177)',
+               'rgb(199,233,180)',
+               'rgb(127,205,187)',
+               'rgb(65,182,196)',
+               'rgb(29,145,192)',
+               'rgb(34,94,168)',
+               'rgb(37,52,148)',
+               'rgb(8,29,88)'];
+
 var stateMeanEducationColor = d3.scale.quantize()
         .domain([1.5,3.5])
-        .range(['rgb(255,255,217)','rgb(237,248,177)','rgb(199,233,180)','rgb(127,205,187)','rgb(65,182,196)','rgb(29,145,192)','rgb(34,94,168)','rgb(37,52,148)','rgb(8,29,88)']);
+        .range(colorbrewer);
 
 var tractMeanEducationColor = d3.scale.quantize()
         .domain([1.5,3.5])
-        .range(['rgb(255,255,217)','rgb(237,248,177)','rgb(199,233,180)','rgb(127,205,187)','rgb(65,182,196)','rgb(29,145,192)','rgb(34,94,168)','rgb(37,52,148)','rgb(8,29,88)']);
+        .range(colorbrewer);
 
 
 ///////////////////////////////
@@ -319,3 +329,70 @@ function onEachCensusFeature(f, l) {
         //l.bindPopup(out.join("<br />"));
     }
 }
+
+
+/////////////////////////////////////////////////////////
+
+width = 300;
+
+height = 100;
+
+/// //var z = d3.scale.linear().domain(d3.range(0,1,0.1)).range(d3.range(0,1,0.1));
+/// var z = d3.scale.linear().domain([0,1]);
+/// console.log(z.domain()[0]);
+/// console.log(z.domain()[1]);
+/// console.log(z.domain()[3]);
+/// console.log(z.domain()[9]);
+//
+
+state_dom0 = stateMeanEducationColor.domain()[0];
+state_dom1 = stateMeanEducationColor.domain()[1];
+state_step = (state_dom1 - state_dom0)/(stateMeanEducationColor.range().length);
+stateMeanEducationColorDomain = d3.range( state_dom0, state_dom1+state_step, state_step );
+
+
+// A position encoding for the key only.
+var xkey = d3.scale.linear()
+        .domain([1.5,3.5])
+        .range([0,240]);
+
+var xAxis = d3.svg.axis()
+    .scale(xkey)
+    .orient("bottom")
+    .tickSize(13)
+    .tickValues(stateMeanEducationColorDomain);
+
+var svg = d3.select("div#education_county_scale").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var g = svg.append("g")
+    .attr("class", "key")
+    .attr("transform", "translate(10,60)");
+
+/*
+domain is input
+range is output
+domain input... 
+range output...
+ */
+
+g.selectAll("rect")
+    .data(stateMeanEducationColor.range().map(function(d, i) {
+      return {
+            x0: i ? xkey(stateMeanEducationColorDomain[i]) : xkey.range()[0],
+            x1: i < stateMeanEducationColorDomain.length ? xkey(stateMeanEducationColorDomain[i+1]) : xkey.range()[1],
+            z: d
+      };
+
+    }))
+  .enter().append("rect")
+    .attr("height", 8)
+    .attr("x", function(d) { return d.x0; })
+    .attr("width", function(d) { return d.x1 - d.x0; })
+    .style("fill", function(d) { return d.z; });
+
+g.call(xAxis).append("text")
+    .attr("class", "caption")
+    .attr("y", -6)
+    .text("Mean Education Level");
