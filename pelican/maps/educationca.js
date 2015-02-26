@@ -53,7 +53,15 @@ var randomColors = d3.scale.category20c();
 //        .domain([1,4])
 //        .range(["#ffffcc","#c2e699","#78c679","#31a354","#006837"]);
 
-colorbrewer = ['rgb(255,255,217)','rgb(237,248,177)','rgb(199,233,180)','rgb(127,205,187)','rgb(65,182,196)','rgb(29,145,192)','rgb(34,94,168)','rgb(37,52,148)','rgb(8,29,88)'];
+colorbrewer = ['rgb(255,255,217)',
+               'rgb(237,248,177)',
+               'rgb(199,233,180)',
+               'rgb(127,205,187)',
+               'rgb(65,182,196)',
+               'rgb(29,145,192)',
+               'rgb(34,94,168)',
+               'rgb(37,52,148)',
+               'rgb(8,29,88)'];
 
 var stateMeanEducationColor = d3.scale.quantize()
         .domain([1.5,3.5])
@@ -372,8 +380,8 @@ range output...
 g.selectAll("rect")
     .data(stateMeanEducationColor.range().map(function(d, i) {
       return {
-            x0: i ? xkey(stateMeanEducationColorDomain[i - 1]) : xkey.range()[0],
-            x1: i < stateMeanEducationColorDomain.length ? xkey(stateMeanEducationColorDomain[i]) : xkey.range()[1],
+            x0: i ? xkey(stateMeanEducationColorDomain[i]) : xkey.range()[0],
+            x1: i < stateMeanEducationColorDomain.length ? xkey(stateMeanEducationColorDomain[i+1]) : xkey.range()[1],
             z: d
       };
 
