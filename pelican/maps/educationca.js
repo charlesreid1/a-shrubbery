@@ -325,7 +325,7 @@ function onEachCensusFeature(f, l) {
 
 /////////////////////////////////////////////////////////
 
-width = 500;
+width = 300;
 
 height = 100;
 
@@ -335,17 +335,24 @@ height = 100;
 /// console.log(z.domain()[1]);
 /// console.log(z.domain()[3]);
 /// console.log(z.domain()[9]);
+//
+
+state_dom0 = stateMeanEducationColor.domain()[0];
+state_dom1 = stateMeanEducationColor.domain()[1];
+state_step = (state_dom1 - state_dom0)/(stateMeanEducationColor.range().length);
+stateMeanEducationColorDomain = d3.range( state_dom0, state_dom1+state_step, state_step );
+
 
 // A position encoding for the key only.
-var xkey = d3.scale.quantize()
+var xkey = d3.scale.linear()
         .domain([1.5,3.5])
-        .range(d3.range(0,width,Math.round(width/9.0)).reverse());
+        .range([0,240]);
 
 var xAxis = d3.svg.axis()
     .scale(xkey)
     .orient("bottom")
     .tickSize(13)
-    .tickValues(stateMeanEducationColor.domain());
+    .tickValues(stateMeanEducationColorDomain);
 
 var svg = d3.select("div#education_county_scale").append("svg")
     .attr("width", width)
@@ -355,22 +362,19 @@ var g = svg.append("g")
     .attr("class", "key")
     .attr("transform", "translate(10,60)");
 
-state_dom0 = stateMeanEducationColor.domain()[0];
-state_dom1 = stateMeanEducationColor.domain()[1];
-state_step = (state_dom1 - state_dom0)/stateMeanEducationColor.range().length;
-stateMeanEducationColorDomain = d3.range( state_dom0, state_dom1, state_step );
+/*
+domain is input
+range is output
+domain input... 
+range output...
+ */
 
 g.selectAll("rect")
     .data(stateMeanEducationColor.range().map(function(d, i) {
-      x0 = i ? xkey(stateMeanEducationColorDomain[i]) : xkey.range()[0];
-      console.log("x0 = "+x0);
-
-      x1 = i ? i < stateMeanEducationColorDomain.length ? xkey(stateMeanEducationColorDomain[i-1]) : xkey.range()[1] : xkey.range()[0];
-      console.log("x1 = "+x1);
       return {
-        x0 : x0,
-        x1 : x1,
-        z: d
+            x0: i ? xkey(stateMeanEducationColorDomain[i - 1]) : xkey.range()[0],
+            x1: i < stateMeanEducationColorDomain.length ? xkey(stateMeanEducationColorDomain[i]) : xkey.range()[1],
+            z: d
       };
 
     }))
