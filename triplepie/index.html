@@ -45,8 +45,11 @@
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 
-	 <!-- load my style sheet -->
-     <link rel="stylesheet" type="text/css" href="/a-shrubbery/mapstyles.css">
+	<!-- load my style sheet -->
+    <link rel="stylesheet" type="text/css" href="/a-shrubbery/mapstyles.css">
+
+	<!-- load common vars -->
+    <script src="/a-shrubbery/common.js"></script>
 
     <!-- end map header -->
 
@@ -182,7 +185,9 @@ living under the poverty line.
         County getting 9 people, for a population of exp(5 + 9) ~ 1.2 M,
         which is way off from its actual population of 0.7 M, but is closer 
         to 1.2 M (logarithmically speaking) than the next lowest interval, 
-        which is exp(5 + 8) ~ 0.4 M.
+        which is exp(5 + 8) ~ 0.4 M, in the end we must live with such 
+        approximations to have, in return, the convenience of digesting in a 
+        single glance such an immense amount of information.
         </p>
         <p>This is a good illustration of the problem of population
         data and how multiscale it is: if we had one person represent
