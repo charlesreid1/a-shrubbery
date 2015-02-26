@@ -1,6 +1,4 @@
-
-var url_prefix = "http://charlesreid1.github.io/a-shrubbery/";
-//var url_prefix = "/"
+// prefix defined in common.js
 
 ////////////////////////////////////
 // Take care of county map first:
@@ -17,11 +15,11 @@ var basemapViewer = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}
 
 // counties in california
 //rooturl = "http://api.censusreporter.org/1.0/geo/show/tiger2013?geo_ids=050|04000US37";
-var rooturl = url_prefix + "educationca.geo.json"
+var rooturl = prefix + "educationca.geo.json"
 
 // initialize empty GeoJson
 var geoj = L.geoJson(false, {
-        onEachFeature: onEachFeature
+        onEachFeature: onEachCounty
     }).addTo(map_county);
 
 $.ajax({
@@ -34,15 +32,47 @@ $.ajax({
 
 
 
-var countyColors = d3.scale.category20c();
 
-var myFillOpacity = 0.20;
+////////////////////////////////
+// Colors
+
+
+// Random colors for political maps
+var randomColors = d3.scale.category20c();
+
+
+//// Variable-interval color scale
+//// https://gist.github.com/mbostock/5144735
+//var variableC = d3.scale.threshold()
+//        .domain([30, 60, 120, 360])
+//        .range(["#ffffcc","#c2e699","#78c679","#31a354","#006837"]);
+
+// Constant-interval color scale
+// http://bl.ocks.org/mbostock/4060606
+//var constantC = d3.scale.threshold()
+//        .domain([1,4])
+//        .range(["#ffffcc","#c2e699","#78c679","#31a354","#006837"]);
+
+var stateMeanEducationColor = d3.scale.quantize()
+        .domain([1.0,3.0])
+        .range(['rgb(255,255,217)','rgb(237,248,177)','rgb(199,233,180)','rgb(127,205,187)','rgb(65,182,196)','rgb(29,145,192)','rgb(34,94,168)','rgb(37,52,148)','rgb(8,29,88)']);
+
+var tractMeanEducationColor = d3.scale.quantize()
+        .domain([2.0,3.0])
+        .range(['rgb(255,255,217)','rgb(237,248,177)','rgb(199,233,180)','rgb(127,205,187)','rgb(65,182,196)','rgb(29,145,192)','rgb(34,94,168)','rgb(37,52,148)','rgb(8,29,88)']);
+
+
+///////////////////////////////
+
+
+
+var myFillOpacity = 0.60;
 var myThickFillOpacity = 0.90;
 
 
 
 
-function onEachFeature(f, l) {
+function onEachCounty(f, l) {
     if (f.properties) {
         l.on({
             click: doClick,
@@ -53,17 +83,19 @@ function onEachFeature(f, l) {
             */
         });
         l.setStyle({  
-            fillColor: countyColors( Math.round(Math.random()*15-1) ), 
+            /*fillColor: randomColors( Math.round(Math.random()*15-1) ), */
+            fillColor: stateMeanEducationColor(f.properties['Total_Ed_Mean']),
             fillOpacity: myFillOpacity,
             stroke: true,
             color: '#222',
             weight: 1
         });
-        var out = [];
-        for(key in f.properties){
-            out.push(key+": "+f.properties[key]);
-        }
-        l.bindPopup(out.join("<br />"));
+
+        //var out = [];
+        //for(key in f.properties){
+        //    out.push(key+": "+f.properties[key]);
+        //}
+        //l.bindPopup(out.join("<br />"));
     }
 }
 
@@ -211,7 +243,7 @@ function doClick() {
     var geo_id = this.feature.properties.geoid;
 
     //censusurl = "http://api.censusreporter.org/1.0/geo/show/tiger2013?geo_ids=140|"+geo_id;
-    var censusurl = url_prefix + "educationca" + geo_id + ".geo.json";
+    var censusurl = prefix + "educationca" + geo_id + ".geo.json";
 
 
     // initialize empty GeoJson
@@ -230,19 +262,6 @@ function doClick() {
             //
             // do this by getting layers and removing them
             map_census.eachLayer(function(layer){
-                //if(layer._tiles){
-                //    var a = 0;
-                ////} else if( d._popup ) {
-                ////    var a = 0;
-                //} else {
-                //    //console.log(d['_features']['properties']['name']);
-                //    //console.log(d);
-                //}
-
-                //d['_layers'].each(function(d2){
-                //    d2.remove();
-                //});
-                //layer.removeLayer(map_census);
                 if(layer._tiles) {
                     var a = 0;
                 } else {
@@ -286,16 +305,17 @@ function onEachCensusFeature(f, l) {
         });
         */
         l.setStyle({  
-            fillColor: countyColors( Math.round(Math.random()*15-1) ), 
+            /*fillColor: countyColors( Math.round(Math.random()*15-1) ), */
+            fillColor: tractMeanEducationColor(f.properties['Total_Ed_Mean']),
             fillOpacity: 0.50,
             stroke: false,
             color: '#222',
             weight: 1
         });
-        var out = [];
-        for(key in f.properties){
-            out.push(key+": "+f.properties[key]);
-        }
-        l.bindPopup(out.join("<br />"));
+        //var out = [];
+        //for(key in f.properties){
+        //    out.push(key+": "+f.properties[key]);
+        //}
+        //l.bindPopup(out.join("<br />"));
     }
 }
