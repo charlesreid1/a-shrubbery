@@ -13,6 +13,12 @@
     opacity:0.8; 
 }
 
+.ordinalkey rect {
+    fill:white;
+    stroke:none;
+    opacity:0.8; 
+}
+
 
 path.slice{
     stroke-width:2px;

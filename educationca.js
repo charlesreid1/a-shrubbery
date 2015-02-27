@@ -71,6 +71,24 @@ var tractMeanEducationColor = d3.scale.quantize()
         .domain([1.5,3.5])
         .range(colorbrewer);
 
+short_ed_categories = ['<HS',  
+                       'HS,As',
+                       'Ba',   
+                       'Ma',   
+                       'PhD'];
+ed_categories = ['1 Less than high school',
+                 '2 High school, associates degree',
+                 '3 Bachelors degree',
+                 '4 Masters degree',
+                 '5 PhD/Professional School'];
+
+var categoriesEducationScale = d3.scale.ordinal()
+    .domain(ed_categories)
+    .range([colorbrewer[0],
+            colorbrewer[2],
+            colorbrewer[4],
+            colorbrewer[6],
+            colorbrewer[8]]);
 
 ///////////////////////////////
 
@@ -126,7 +144,6 @@ var basemapViewer2 = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z
 
 
 ////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
 //
 // change mouse click behavior of county map
 //
@@ -152,11 +169,13 @@ function doClick() {
     var county = this.feature.properties.name;
 
     var $tooltip = $('.county');
-    $tooltip.text("County: "+county).show();
+    $tooltip.text(county).show();
 
 
-
-    red = '#4099FF';
+    //red = '#4099FF';
+    //red = '#fb6a4a';
+    //red = '#9e9ac8';
+    red = '#df65b0';
 
     these_layer_ids = Object.keys(this._layers);
 
@@ -205,9 +224,6 @@ function doClick() {
             these_layer_ids.forEach( function(this_layer_id) {
 
                 those_layer_ids.forEach( function(that_layer_id) {
-
-                    //console.log("this_layer_id = "+this_layer_id);
-                    //console.log("that_layer_id = "+that_layer_id);
 
                     // these_layer_ids usually has one element,
                     // unless a county has two non-continguous parts.
@@ -332,23 +348,33 @@ function onEachCensusFeature(f, l) {
 
 
 /////////////////////////////////////////////////////////
-
-width = 300;
-
-height = 100;
-
-/// //var z = d3.scale.linear().domain(d3.range(0,1,0.1)).range(d3.range(0,1,0.1));
-/// var z = d3.scale.linear().domain([0,1]);
-/// console.log(z.domain()[0]);
-/// console.log(z.domain()[1]);
-/// console.log(z.domain()[3]);
-/// console.log(z.domain()[9]);
 //
+//
+// Scales 
+// ordinal and linear
 
-state_dom0 = stateMeanEducationColor.domain()[0];
-state_dom1 = stateMeanEducationColor.domain()[1];
-state_step = (state_dom1 - state_dom0)/(stateMeanEducationColor.range().length);
-stateMeanEducationColorDomain = d3.range( state_dom0, state_dom1+state_step, state_step );
+var scales_width = 300;
+var scales_height = 140;
+
+var svg = d3.select("div#education_county_scale").append("svg")
+    .attr("width",  scales_width)
+    .attr("height", scales_height);
+
+
+
+
+// ----------------------------------------
+//
+// Linear color scale
+
+var lincolor_xpos = 10;
+var lincolor_ypos = 100;
+
+
+var state_dom0 = stateMeanEducationColor.domain()[0];
+var state_dom1 = stateMeanEducationColor.domain()[1];
+var state_step = (state_dom1 - state_dom0)/(stateMeanEducationColor.range().length);
+var stateMeanEducationColorDomain = d3.range( state_dom0, state_dom1+state_step, state_step );
 
 
 // A position encoding for the key only.
@@ -362,13 +388,9 @@ var xAxis = d3.svg.axis()
     .tickSize(13)
     .tickValues(stateMeanEducationColorDomain);
 
-var svg = d3.select("div#education_county_scale").append("svg")
-    .attr("width", width)
-    .attr("height", height);
-
 var g = svg.append("g")
     .attr("class", "key")
-    .attr("transform", "translate(10,60)");
+    .attr("transform", "translate("+lincolor_xpos+","+lincolor_ypos+")");
 
 /*
 domain is input
@@ -392,7 +414,75 @@ g.selectAll("rect")
     .attr("width", function(d) { return d.x1 - d.x0; })
     .style("fill", function(d) { return d.z; });
 
+var lincolor_text_ypos = -6;
 g.call(xAxis).append("text")
     .attr("class", "caption")
-    .attr("y", -6)
+    .attr("y", lincolor_text_ypos)
     .text("Mean Education Level");
+
+
+
+// ----------------------------------------
+//
+// Ordinal color scale
+
+var ordinalcolor_xpos = 30;
+var ordinalcolor_ypos = 15;
+
+// the overall container
+var g2 = svg.append("g")
+    .attr("class", "ordinalkey")
+    .attr("transform", "translate(0,0)");
+
+// shape for each discrete ordinal value
+// (these will be invisible, and are only
+//  added to make the legend)
+g2.selectAll("rect")
+    .data(categoriesEducationScale.domain().map(function(d, i) {
+        return {
+            name: d,
+            color: categoriesEducationScale(d)
+        };
+    }))
+    .enter().append("rect") /*.attr("d",function(d) { return d.name; })*/
+    .attr("data-legend",function(d) { return d.name;})
+    .attr("data-legend-pos",function(d) { return d.name;})
+    .attr("class", "ordinalkey")
+    .style("opacity","0.0")
+    .style("fill", function(d) { return d.color; });
+
+
+/*
+legend_data = [{'cat' : ed_categories[0], 'dat' : 1.0},
+               {'cat' : ed_categories[1], 'dat' : 2.0},  
+               {'cat' : ed_categories[2], 'dat' : 3.0},  
+               {'cat' : ed_categories[3], 'dat' : 4.0},  
+               {'cat' : ed_categories[4], 'dat' : 5.0}];
+*/
+
+var legend = svg.append("g")
+  .attr("class","ordinalkey")
+  .attr("transform","translate("+ordinalcolor_xpos+","+ordinalcolor_ypos+")")
+  .style("font-size","12px")
+  .style("font-color","#000")
+  .call(d3.legend);
+
+/*
+// select tags with class mylegend 
+// bind it to legend_data
+// create one <g> tag for each legend entry
+
+var g = svg.selectAll(".legend")
+    .data(legend_data)
+    .enter().append("g")
+    .attr("class","legend");
+
+g.append("path")
+    .attr("data-legend", function(d){
+        return d.cat; })
+    .attr("data-legend-pos",function(d,i) {
+        return categories[i]; })
+    .style("fill", function(d) { 
+        return stateMeanEducationColor(d.dat); });
+*/
+
