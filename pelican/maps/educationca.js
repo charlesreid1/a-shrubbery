@@ -172,7 +172,10 @@ function doClick() {
     $tooltip.text(county).show();
 
 
-    red = '#4099FF';
+    //red = '#4099FF';
+    //red = '#fb6a4a';
+    //red = '#9e9ac8';
+    red = '#df65b0';
 
     these_layer_ids = Object.keys(this._layers);
 
