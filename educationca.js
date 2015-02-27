@@ -485,4 +485,3 @@ g.append("path")
     .style("fill", function(d) { 
         return stateMeanEducationColor(d.dat); });
 */
-
