@@ -40,10 +40,14 @@ TEMPLATE_PAGES = {'blog.html':'blog.html'}
 
 EXTRA_TEMPLATES_PATHS = ['maps']
 
-# add map stuff
+###########################################
+# Maps
 
+# Common
 TEMPLATE_PAGES['mapstyles.css'] = 'mapstyles.css'
+TEMPLATE_PAGES['common.js'] = 'common.js'
 
+# Maps
 TEMPLATE_PAGES['nycstreets.html'] = 'nycstreets/index.html'
 TEMPLATE_PAGES['nycstreets.js']   = 'nycstreets.js'
 
@@ -65,16 +69,16 @@ TEMPLATE_PAGES['d3basicmap.html'] = 'd3basicmap/index.html'
 TEMPLATE_PAGES['d3basicmap.js']   = 'd3basicmap.js'
 TEMPLATE_PAGES['d3basicmap.json'] = 'd3basicmap.json'
 
-#TEMPLATE_PAGES['barrygoldwater_d3.html'] = 'barrygoldwater_d3/index.html'
-#TEMPLATE_PAGES['barrygoldwater_d3.js']   = 'barrygoldwater_d3.js'
-#TEMPLATE_PAGES['barrygoldwater_d3.json'] = 'barrygoldwater_d3.json'
-
 TEMPLATE_PAGES['nationalmaptile.html'] = 'nationalmaptile/index.html'
 TEMPLATE_PAGES['nationalmaptile.js']   = 'nationalmaptile.js'
 
 TEMPLATE_PAGES['barrygoldwater.html'] = 'barrygoldwater/index.html'
 TEMPLATE_PAGES['barrygoldwater.js']   = 'barrygoldwater.js'
 TEMPLATE_PAGES['barrygoldwater_red.json'] = 'barrygoldwater_red.json'
+
+#TEMPLATE_PAGES['barrygoldwater_d3.html'] = 'barrygoldwater_d3/index.html'
+#TEMPLATE_PAGES['barrygoldwater_d3.js']   = 'barrygoldwater_d3.js'
+#TEMPLATE_PAGES['barrygoldwater_d3.json'] = 'barrygoldwater_d3.json'
 
 TEMPLATE_PAGES['caclick.html']  = 'caclick/index.html'
 TEMPLATE_PAGES['caclick.css']   = 'caclick.css'
