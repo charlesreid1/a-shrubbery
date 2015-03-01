@@ -386,8 +386,10 @@ function doCountyClick() {
                 .domain([0, 1])
                 .range(["#ada", "#595"]);
 
+
+
             data.features.forEach(function(d){
-                console.log(d.properties['Total_Ed_Mean']);
+                console.log(d.properties);//['Total_Ed_Mean']);
             });
 
             console.log(d3.max(data.features,function(d){
