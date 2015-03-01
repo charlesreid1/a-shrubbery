@@ -1,6 +1,9 @@
 // prefix defined in common.js
 
+
 ////////////////////////////////////
+// County Map
+
 // Take care of county map first:
 //
 var zoomOrig = 6;
@@ -103,9 +106,9 @@ var myThickFillOpacity = 0.90;
 function onEachCounty(f, l) {
     if (f.properties) {
         l.on({
-            click: doClick,
-            mouseover: doMouseOver,
-            mouseout: doMouseOut
+            click: doCountyClick,
+            mouseover: doCountyMouseOver,
+            mouseout: doCountyMouseOut
             /*
             These are defined below...
             */
@@ -130,6 +133,8 @@ function onEachCounty(f, l) {
 
 
 ////////////////////////////////////
+// Census Tract Map
+
 // Take care of census map next:
 //
 
@@ -143,12 +148,23 @@ var basemapViewer2 = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z
 
 
 
+
+////////////////////////////////////////////
+// Scatterplot 
+
+var scattersvg = d3.select("div#scatterplot").append("svg")
+    .attr("width",  scales_width)
+    .attr("height", scales_height);
+
+
+
+
 ////////////////////////////////////////////////////////////////////////
 //
 // change mouse click behavior of county map
 //
 
-function doMouseOver() {
+function doCountyMouseOver() {
     this.bringToFront();
     this.setStyle({
         weight:3,
@@ -156,7 +172,7 @@ function doMouseOver() {
     });
 }
 
-function doMouseOut() {
+function doCountyMouseOut() {
     this.bringToBack();
     this.setStyle({
         weight:1,
@@ -164,24 +180,38 @@ function doMouseOut() {
     });
 }
 
-function doClick() {
+function doCountyClick() {
+    /*
+
+    We do a couple of things here:
+
+    1) de-highlight all counties
+        [may want to update this behavior]
+    2) highlight the clicked county 
+
+    3) zoom to that county's census tracts 
+        in the census tract map 
+
+    4) update scatterplot
+
+     */
+
+
 
     var county = this.feature.properties.name;
 
     var $tooltip = $('.county');
     $tooltip.text(county).show();
 
-
-    //red = '#4099FF';
-    //red = '#fb6a4a';
-    //red = '#9e9ac8';
     red = '#df65b0';
 
     these_layer_ids = Object.keys(this._layers);
 
 
-
-    // First, make sure no counties are red.
+    // -------------------------------------
+    // Step 1:
+    // De-highlight all counties
+    // 
     // Restore any previously red counties
     // to their original color.
     geoj.eachLayer(function(layer) {
@@ -212,7 +242,10 @@ function doClick() {
 
 
 
-    // Now make the county the user clicked red.
+    // -------------------------------------
+    // Step 2:
+    // Make the county the user clicked red.
+    //
     // Some counties have multiple pieces,
     // so we need to use var these_layer_ids
     geoj.eachLayer(function(layer) {
@@ -261,7 +294,9 @@ function doClick() {
 
 
 
-    // Now add census tracts for this county to the census tract map.
+    // -------------------------------------
+    // Step 3:
+    // Add census tracts for this county to the census tract map.
     //
     // Do this by grabbing the geo_id for the county,
     // and form that into a Census Reporter API URL.
@@ -277,37 +312,116 @@ function doClick() {
             onEachFeature: onEachCensusFeature
         }).addTo(map_census);
 
-    // Get the bounds for the census tract geometries.
-    // Center and zoom the map.
+
+    // Census tract data
     $.ajax({
         type: "GET",
         url: censusurl,
         success: function (data) {
 
-            // remove the previous census tracts layer here
+            // ---------------------------
+            // Zoom to the county's census tracts
+            // on the census tract map.
             //
-            // do this by getting layers and removing them
+            // This involves a few steps:
+            // 1) Remove previous census tract layers
+            // 2) Get bounds for the census tract geometries.
+            // 3) Center and zoom the map.
+
+            // -------
+            // 1. Remove the previous census tracts layer here
             map_census.eachLayer(function(layer){
                 if(layer._tiles) {
                     var a = 0;
                 } else {
                     // this also removes census_geoj, 
-                    // so we have to re-add it...
+                    // i.e., the layer we're trying to add,
+                    // so we have to re-add it in a few lines...
                     map_census.removeLayer(layer);
                 }
             });
-
             census_geoj.addTo(map_census);
             census_geoj.addData(data);
+
+            // -------
+            // 2. Get census tract bounds
             var bounds = census_geoj.getBounds();
+
+            // ------
+            // 3. Fit map to bounds
             //map_census.panInsideBounds(bounds);
             //map_census.setZoom( map_census.getBoundsZoom(bounds) );
             map_census.fitBounds(bounds,animate=true);
 
 
+
+
+            // -------------------------------------
+            // Step 4: Scatter Plot
+
+            // Update the scatter plot
+            // to show each census tract
+            // in the selected county,
+            // one circle per census tract
+            //
+            // This will not use the properties
+            // of the county, but rather
+            // will use the properties of each
+            // census tract that is in our county.
+            //
+
+            // This is another multi-step procedure:
+            //
+            // 1. Remove existing dots from scatterplot
+            // 2. Add new dots to scatterplot
+
+
+            // -------
+            // 1) Remove existing dots
+
+
+            // -------
+            // 2) Add new dots
+            var greenColor = d3.scale.linear()
+                .domain([0, 1])
+                .range(["#ada", "#595"]);
+
+            data.features.forEach(function(d){
+                console.log(d.properties['Total_Ed_Mean']);
+            });
+
+            console.log(d3.max(data.features,function(d){
+                            return d.properties['Total_Ed_Mean'];
+                        })
+                    );
+            
+
+
+            var scatterg = scattersvg.selectAll("circle")
+                .data(data.features)
+                .enter()
+                .append("circle")
+                .attr("cx", function(d) {
+                    return 100 + 50*Math.random();
+                })
+                .attr("cy", function(d) {
+                     return 100 + 50*Math.random();
+                })
+                .attr("r", function(d) {
+                     return 5*d.properties['Total_Ed_Mean'];
+                })
+                .attr("fill",function(d) {
+                    return greenColor(0.5);
+                });
+
+
+
+
+
         }
     });
 
+    // NOTE:
     // Right here is the wrong place to use the 
     // Ajax data to set the map bounds. 
     //
@@ -318,18 +432,25 @@ function doClick() {
     // It took me a long while to figure that out.
 
 
+
+    // -------------------------------------
+    // Step 5: Bar Chart
+
+    // You can obtain properties of this county
+    // by using this.feature:
+    //var county = this.feature.properties.name;
+    //console.log(this.feature.properties);
+
 }
 
 
 function onEachCensusFeature(f, l) {
     if (f.properties) {
-        /*
         l.on({
-            click: doClick,
-            mouseover: doMouseOver,
-            mouseout: doMouseOut
+            click: doCensusClick,
+            mouseover: doCensusMouseOver,
+            mouseout: doCensusMouseOut
         });
-        */
         l.setStyle({  
             /*fillColor: countyColors( Math.round(Math.random()*15-1) ), */
             fillColor: tractMeanEducationColor(f.properties['Total_Ed_Mean']),
@@ -345,6 +466,10 @@ function onEachCensusFeature(f, l) {
         //l.bindPopup(out.join("<br />"));
     }
 }
+
+
+
+
 
 
 /////////////////////////////////////////////////////////
@@ -485,4 +610,26 @@ g.append("path")
     .style("fill", function(d) { 
         return stateMeanEducationColor(d.dat); });
 */
+
+
+
+
+
+
+
+
+
+function doCensusMouseOver() {}
+function doCensusMouseOut() {}
+function doCensusClick() {
+    /* 
+     when user clicks census tract,
+     highlight that census tract
+     on the scatter plot.
+     */
+}
+
+
+
+
 
