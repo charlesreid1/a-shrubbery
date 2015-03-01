@@ -125,11 +125,11 @@ function onEachCounty(f, l) {
             weight: 1
         });
 
-        var out = [];
-        for(key in f.properties){
-            out.push(key+": "+f.properties[key]);
-        }
-        l.bindPopup(out.join("<br />"));
+        //var out = [];
+        //for(key in f.properties){
+        //    out.push(key+": "+f.properties[key]);
+        //}
+        //l.bindPopup(out.join("<br />"));
     }
 }
 
@@ -194,6 +194,7 @@ function doCountyClick() {
 
     1) de-highlight all counties
         [may want to update this behavior]
+
     2) highlight the clicked county 
 
     3) zoom to that county's census tracts 
@@ -219,12 +220,17 @@ function doCountyClick() {
     // Step 1:
     // De-highlight all counties
     // 
-    // Restore any previously red counties
+    // Restore any previously hilited counties
     // to their original color.
     geoj.eachLayer(function(layer) {
 
         // get leaflet ids for every shape in this county's layer
         those_layer_ids = Object.keys(layer._layers);
+
+        // NOTE: this is necessary because
+        // some counties/census tracts have
+        // islands or other non-contiguous 
+        // entities
 
         // for each shape making up this county,
         those_layer_ids.forEach( function(that_layer_id) {
@@ -232,8 +238,8 @@ function doCountyClick() {
             var that_layer = layer['_layers'][that_layer_id]
             var options = that_layer['options'];
             
-            // Check if county is alrady red. 
-            // If so, make it un-red.
+            // Check if county is alrady hilited. 
+            // If so, make it un-hilited.
             if(options['fillColor']){
                 // Get the county's current color.
                 orig_fillColor = options['fillColor'];
@@ -258,7 +264,7 @@ function doCountyClick() {
     geoj.eachLayer(function(layer) {
 
         those_layer_ids = Object.keys(layer._layers);
-        
+
         if( layer['_options'] ){
 
             these_layer_ids.forEach( function(this_layer_id) {
@@ -326,6 +332,7 @@ function doCountyClick() {
         url: censusurl,
         success: function (data) {
 
+
             // ---------------------------
             // Zoom to the county's census tracts
             // on the census tract map.
@@ -363,6 +370,7 @@ function doCountyClick() {
 
 
 
+
             // -------------------------------------
             // Step 4: Scatter Plot
 
@@ -395,7 +403,6 @@ function doCountyClick() {
                 .range(["#ada", "#595"]);
 
 
-
             /*
             data.features.forEach(function(d){
                 console.log(d.properties);//['Total_Ed_Mean']);
@@ -407,13 +414,19 @@ function doCountyClick() {
             );
             */
 
-
             var xkey = 'Total_Ed_Mean';
+            var xlabel = 'Average Education Level';
             var ykey = 'Total_Ed_Var';
+            var ylabel = 'Educational Diversity (Variance)';
             var rkey = 'Total_Total';
 
+            var xmin = d3.min(data.features, function(d) { return d.properties[xkey]; });
             var xmax = d3.max(data.features, function(d) { return d.properties[xkey]; });
+
+            var ymin = d3.min(data.features, function(d) { return d.properties[ykey]; });
             var ymax = d3.max(data.features, function(d) { return d.properties[ykey]; });
+
+            var rmin = d3.min(data.features, function(d) { return Math.log(d.properties[rkey]); });
             var rmax = d3.max(data.features, function(d) { return Math.log(d.properties[rkey]); });
 
             var scatterg = scattersvg.selectAll("circle")
@@ -431,10 +444,11 @@ function doCountyClick() {
                     return scatter_padding + ynorm*plotheight;
                 })
                 .attr("r", function(d) {
-                    if (rmax>0) {
-                        var rnorm = Math.log(d.properties[rkey])/rmax;
-                        var r0 = 20;
-                        return r0*rnorm;
+                    var r0 = 6;
+                    var rnorm = Math.log(d.properties[rkey])/rmax;
+                    var result = r0*rnorm;
+                    if (isFinite(result)) {
+                        return result;
                     } else {
                         return 0;
                     }
@@ -442,6 +456,81 @@ function doCountyClick() {
                 .attr("fill",function(d) {
                     return greenColor(Math.random());
                 });
+
+            // -------
+            // 3) Remove existing axis labels
+            scattersvg.selectAll("g.axis").remove();
+            scattersvg.selectAll("text.axislabel").remove();
+            scattersvg.selectAll("text.axislabel").remove();
+
+            // -------
+            // 4) Construct the scatterplot axes
+            
+            var xrange0 = scatter_padding
+            var xrange1 = scatter_width - scatter_padding
+
+            var yrange0 = scatter_height - scatter_padding
+            var yrange1 = scatter_padding
+
+            // Create scales to map values to pixel locations
+            var xScale = d3.scale.linear()
+                    .domain([1,4])
+                    .range([xrange0,xrange1])
+            var yScale = d3.scale.linear()
+                    .domain([0,1])
+                    .range([yrange0,yrange1])
+
+            // Create axes from scales 
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient("bottom")
+                .ticks(5);
+            
+            var yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left")
+            	.ticks(10)
+            	.tickFormat(function(d) { return Math.round(d*100)/100; });
+
+            // Translate x and y axes
+            //
+            // xtrans = x translation of y axis
+            // ytrans = y tanslation of x axis
+            xtrans = scatter_padding;
+            ytrans = scatter_height - scatter_padding;
+
+            scattersvg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + ytrans + ")")
+                .call(xAxis);
+            scattersvg.append("g")
+                .attr("class", "y axis")
+                .attr("transform", "translate(" + xtrans + ",0)")
+                .call(yAxis);
+
+            // Axis labels
+            xloc = scatter_width - (scatter_width/2);
+            yloc = scatter_height - scatter_padding/2
+            scattersvg.append("text")
+                .attr("class", "axislabel")
+                .attr("id","xaxislabel")
+                .attr("text-anchor", "middle")
+                .attr("x",xloc)
+                .attr("y",yloc)
+                .text(xlabel);
+
+            xloc = 0 - (scatter_height/2);
+            yloc = scatter_padding/10;
+            scattersvg.append("text")
+                .attr("class", "axislabel")
+                .attr("id","yaxislabel")
+                .attr("text-anchor", "middle")
+                .attr("x",xloc)
+                .attr("y",yloc)
+                .attr("dy", "1em")
+                .attr("transform", "rotate(-90)")
+                .text(ylabel);
+
 
         }
     });
@@ -484,11 +573,11 @@ function onEachCensusFeature(f, l) {
             color: '#222',
             weight: 1
         });
-        var out = [];
-        for(key in f.properties){
-            out.push(key+": "+f.properties[key]);
-        }
-        l.bindPopup(out.join("<br />"));
+        //var out = [];
+        //for(key in f.properties){
+        //    out.push(key+": "+f.properties[key]);
+        //}
+        //l.bindPopup(out.join("<br />"));
     }
 }
 
@@ -641,17 +730,125 @@ g.append("path")
 
 
 
-
-
+///////////////////////////////////////////////////////////////
+// Link census tract map to D3 scatterplot
 
 function doCensusMouseOver() {}
+
 function doCensusMouseOut() {}
+
 function doCensusClick() {
-    /* 
-     when user clicks census tract,
-     highlight that census tract
-     on the scatter plot.
-     */
+
+    var tract = this.feature.properties.name;
+    var geo_id = this.feature.properties.geoid;
+
+    console.log(tract);
+    console.log(geo_id);
+
+    these_layer_ids = Object.keys(this._layers);
+
+    ////////////////////////////////////
+    // When a user clicks on a census tract,
+    // highlight that census tract
+    // on the D3 scatter plot.
+
+    red2 = '#df65b0';
+
+    // -------------------------------------
+    // Step 1:
+    // De-highlight all census tracts
+    // 
+    // Restore any previously hilited counties
+    // to their original color.
+    map_census.eachLayer(function(layer) {
+        //console.log(layer);
+
+        // get leaflet ids for every shape in this census tract's layer
+        those_layer_ids = Object.keys(layer._map._layers);
+
+        // NOTE: this is necessary because
+        // some counties/census tracts have
+        // islands or other non-contiguous 
+        // entities
+
+        // for each shape making up this county,
+        those_layer_ids.forEach( function(that_layer_id) {
+
+            var that_layer = layer['_map']['_layers'][that_layer_id]
+            var options = that_layer['_map']['options'];
+
+            // Check if county is alrady hilited. 
+            // If so, make it un-hilited.
+            if(options['fillColor']){
+                // Get the county's current color.
+                orig_fillColor = options['fillColor'];
+                if(options['fillColor']===red) {
+                    that_layer.setStyle({
+                            'fillColor'   : options['originalFillColor'],
+                            'fillOpacity' : myFillOpacity
+                    });
+                }
+            }
+        });
+    });
+
+
+
+    // -------------------------------------
+    // Step 2:
+    // Make the county the user clicked red.
+    //
+    // Some counties have multiple pieces,
+    // so we need to use var these_layer_ids
+    map_census.eachLayer(function(layer) {
+
+        those_layer_ids = Object.keys(layer._map._layers);
+
+        if( layer['_map']['options'] ){
+
+            these_layer_ids.forEach( function(this_layer_id) {
+
+                those_layer_ids.forEach( function(that_layer_id) {
+
+                    // NOTE:
+                    // These _layer_id variables usually have one element,
+                    // unless a county/tract has two non-continguous parts.
+
+                    if( this_layer_id==that_layer_id ) {
+
+                        var that_layer = layer['_map']['_layers'][that_layer_id]
+                        var options = that_layer['_map']['options'];
+
+                        if(options['fillColor']){
+
+                            // Get the county's current color.
+                            orig_fillColor = options['fillColor'];
+
+                            // Check if county is already red.
+                            // If not, make it red.
+                            if( orig_fillColor===red) {
+                                var a=0;
+
+                            } else {
+                                // Set style to red 
+                                that_layer.setStyle({
+                                    'fillColor' : red,
+                                    'fillOpacity' : myThickFillOpacity,
+                                    'originalFillColor' : orig_fillColor
+                                });
+                                
+// Now commences
+// a long cascade
+// of }s 
+// and )s 
+// and ;s
+                            }
+                        }
+                    } 
+                });
+            });
+        }
+    });
 }
 
 
