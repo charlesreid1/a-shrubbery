@@ -238,6 +238,11 @@ def process_B15002(data):
     # Table Keys
     # ----------------
 
+    # number of education levels on our scale
+    Ned = 5
+    Ned1  = [j+1 for j in range(Ned)]
+    Ned1s = [str(j+1) for j in range(Ned)]
+
     #######
     # DOODZ
     edM_censuskeys = OrderedDict()
@@ -386,15 +391,11 @@ def process_B15002(data):
     ##############################
     # Now compute some statistics
 
-    # ed levels
-    E = {'1':1,'2':2,'3':3,'4':4,'5':5}
 
     # E_i ed level 
     # w_i weight = population in category
 
     Npop = processed_results["Total_Total"]
-
-
 
 
 
@@ -405,33 +406,28 @@ def process_B15002(data):
     bottom_M = 0
     bottom_F = 0
     bottom = 0
-    for kM,kF in zip(edM_censuskeys.keys(),edF_censuskeys.keys()):
+    
+    for ik,k in zip(Ned1,Ned1s):
 
-        if kM<>"Total":
+        wi_M = processed_results["Males_Ed"+k]
 
-            wi_M = processed_results["Males_Ed"+kM]
+        wi_F = processed_results["Females_Ed"+k]
 
-            wi_F = processed_results["Females_Ed"+kF]
+        wi = wi_M + wi_F
 
-            wi = wi_M + wi_F
+        top_M += wi_M*ik
+        bottom_M += wi_M
 
-            Ei = E[kM]
+        top_F += wi_F*ik
+        bottom_F += wi_F
 
-            top_M += wi_M*Ei
-            bottom_M += wi_M
-
-            top_F += wi_F*Ei
-            bottom_F += wi_F
-
-            top += wi*Ei
-            bottom += wi
+        top += wi*ik
+        bottom += wi
 
 
     div(top_M,bottom_M,processed_results,"Males_Ed_Mean")
     div(top_F,bottom_F,processed_results,"Females_Ed_Mean")
     div(top,bottom,processed_results,"Total_Ed_Mean")
-
-
 
 
 
@@ -443,34 +439,69 @@ def process_B15002(data):
     bottom_M = 0
     bottom_F = 0
     bottom = 0
-    for kM,kF in zip(edM_censuskeys.keys(),edF_censuskeys.keys()):
+    for ik,k in zip(Ned1,Ned1s):
 
-        if kM<>"Total":
+        wi_M = processed_results["Males_Ed"+k]
+        wi_F = processed_results["Females_Ed"+k]
+        wi = wi_M + wi_F
 
-            wi_M = processed_results["Males_Ed"+kM]
+        V_M = pow( processed_results["Males_Ed"+k]-processed_results["Males_Ed_Mean"]  , 2 )
+        V_F = pow( processed_results["Females_Ed"+k]-processed_results["Females_Ed_Mean"], 2 )
+        V =   pow( processed_results["Total_Ed"+k]-processed_results["Total_Ed_Mean"]  , 2 )
 
-            wi_F = processed_results["Females_Ed"+kF]
+        top_M += wi_M*V_M
+        bottom_M += wi_M
 
-            wi = wi_M + wi_F
+        top_F += wi_F*V_F
+        bottom_F += wi_F
 
-            V_M = pow( E[kM]-processed_results["Males_Ed_Mean"]  , 2 )
-            V_F = pow( E[kM]-processed_results["Females_Ed_Mean"], 2 )
-            V =   pow( E[kM]-processed_results["Total_Ed_Mean"]  , 2 )
-
-            top_M += wi_M*V_M
-            bottom_M += wi_M
-
-            top_F += wi_F*V_F
-            bottom_F += wi_F
-
-            top += wi*V
-            bottom += wi
+        top += wi*V
+        bottom += wi
 
 
     sqrtdiv(top_M,bottom_M,processed_results,"Males_Ed_Var")
     sqrtdiv(top_F,bottom_F,processed_results,"Females_Ed_Var")
     sqrtdiv(top,bottom,processed_results,"Total_Ed_Var")
 
+
+
+
+    # -----------------------------------
+    # Gender Covariance
+    
+    top = 0
+    bottom = 0
+    for ik,k in zip(Ned1,Ned1s):
+
+        wi_M = processed_results["Males_Ed"+k]
+        wi_F = processed_results["Females_Ed"+k]
+        wi = wi_M + wi_F
+
+        sigmaM = (processed_results["Males_Ed"+k]-processed_results["Males_Ed_Mean"])
+        sigmaF = (processed_results["Females_Ed"+k]-processed_results["Females_Ed_Mean"])
+        CV = sigmaM * sigmaF
+
+        top += wi*CV
+        bottom += wi
+
+    div(top,bottom,processed_results,"Gender_Covariance")
+
+
+
+    # -----------------------------------
+    # Gender Imbalance (%)
+
+    top = 0
+    bottom = 0
+    for ik,k in zip(Ned1,Ned1s):
+
+        wi_M = processed_results["Males_Ed"+k]
+        wi_F = processed_results["Females_Ed"+k]
+
+        top     += wi_M - wi_F
+        bottom  += wi_M + wi_F
+
+    div(top,bottom,processed_results,"Gender_Covariance")
 
     return processed_results
 
