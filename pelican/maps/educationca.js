@@ -93,8 +93,11 @@ var categoriesEducationScale = d3.scale.ordinal()
             colorbrewer[6],
             colorbrewer[8]]);
 
-///////////////////////////////
 
+
+
+///////////////////////////////
+// Decorate each county 
 
 
 var myFillOpacity = 0.40;
@@ -122,11 +125,11 @@ function onEachCounty(f, l) {
             weight: 1
         });
 
-        //var out = [];
-        //for(key in f.properties){
-        //    out.push(key+": "+f.properties[key]);
-        //}
-        //l.bindPopup(out.join("<br />"));
+        var out = [];
+        for(key in f.properties){
+            out.push(key+": "+f.properties[key]);
+        }
+        l.bindPopup(out.join("<br />"));
     }
 }
 
@@ -152,9 +155,13 @@ var basemapViewer2 = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z
 ////////////////////////////////////////////
 // Scatterplot 
 
+var scatter_width  = 400;
+var scatter_height = 400;
+var scatter_padding = 80;
+
 var scattersvg = d3.select("div#scatterplot").append("svg")
-    .attr("width",  scales_width)
-    .attr("height", scales_height);
+    .attr("width",  scatter_width)
+    .attr("height", scatter_height);
 
 
 
@@ -378,6 +385,7 @@ function doCountyClick() {
 
             // -------
             // 1) Remove existing dots
+            scattersvg.selectAll("circle").remove();
 
 
             // -------
@@ -388,6 +396,7 @@ function doCountyClick() {
 
 
 
+            /*
             data.features.forEach(function(d){
                 console.log(d.properties);//['Total_Ed_Mean']);
             });
@@ -395,30 +404,44 @@ function doCountyClick() {
             console.log(d3.max(data.features,function(d){
                             return d.properties['Total_Ed_Mean'];
                         })
-                    );
-            
+            );
+            */
 
+
+            var xkey = 'Total_Ed_Mean';
+            var ykey = 'Total_Ed_Var';
+            var rkey = 'Total_Total';
+
+            var xmax = d3.max(data.features, function(d) { return d.properties[xkey]; });
+            var ymax = d3.max(data.features, function(d) { return d.properties[ykey]; });
+            var rmax = d3.max(data.features, function(d) { return Math.log(d.properties[rkey]); });
 
             var scatterg = scattersvg.selectAll("circle")
                 .data(data.features)
                 .enter()
                 .append("circle")
                 .attr("cx", function(d) {
-                    return 100 + 50*Math.random();
+                    var xnorm = d.properties[xkey]/xmax;
+                    var plotwidth = (scatter_width - 2*scatter_padding);
+                    return scatter_padding + xnorm*plotwidth;
                 })
                 .attr("cy", function(d) {
-                     return 100 + 50*Math.random();
+                    var ynorm = d.properties[ykey]/ymax;
+                    var plotheight = (scatter_height - 2*scatter_padding);
+                    return scatter_padding + ynorm*plotheight;
                 })
                 .attr("r", function(d) {
-                     return 5*d.properties['Total_Ed_Mean'];
+                    if (rmax>0) {
+                        var rnorm = Math.log(d.properties[rkey])/rmax;
+                        var r0 = 20;
+                        return r0*rnorm;
+                    } else {
+                        return 0;
+                    }
                 })
                 .attr("fill",function(d) {
-                    return greenColor(0.5);
+                    return greenColor(Math.random());
                 });
-
-
-
-
 
         }
     });
@@ -461,11 +484,11 @@ function onEachCensusFeature(f, l) {
             color: '#222',
             weight: 1
         });
-        //var out = [];
-        //for(key in f.properties){
-        //    out.push(key+": "+f.properties[key]);
-        //}
-        //l.bindPopup(out.join("<br />"));
+        var out = [];
+        for(key in f.properties){
+            out.push(key+": "+f.properties[key]);
+        }
+        l.bindPopup(out.join("<br />"));
     }
 }
 
@@ -477,7 +500,7 @@ function onEachCensusFeature(f, l) {
 /////////////////////////////////////////////////////////
 //
 //
-// Scales 
+// Color Scales 
 // ordinal and linear
 
 var scales_width = 300;
