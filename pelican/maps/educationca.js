@@ -1,7 +1,11 @@
 // prefix defined in common.js
 
+
+
+// Make non-responsive
 $("head").find('meta[name="viewport"]')
     .remove();
+
 
 ////////////////////////////////////
 // County Map
@@ -476,7 +480,7 @@ function doCountyClick() {
 
             // Create scales to map values to pixel locations
             var xScale = d3.scale.linear()
-                    .domain([1,4])
+                    .domain([1.5,4.5])
                     .range([xrange0,xrange1])
             var yScale = d3.scale.linear()
                     .domain([0,1])
@@ -571,9 +575,9 @@ function onEachCensusFeature(f, l) {
             /*fillColor: countyColors( Math.round(Math.random()*15-1) ), */
             fillColor: tractMeanEducationColor(f.properties['Total_Ed_Mean']),
             fillOpacity: 0.50,
-            stroke: false,
+            stroke: true,
             color: '#222',
-            weight: 1
+            weight: 0.5
         });
         //var out = [];
         //for(key in f.properties){
@@ -735,9 +739,21 @@ g.append("path")
 ///////////////////////////////////////////////////////////////
 // Link census tract map to D3 scatterplot
 
-function doCensusMouseOver() {}
+function doCensusMouseOver() {
+    this.bringToFront();
+    this.setStyle({
+        weight:2,
+        opacity: 1
+    });
+}
 
-function doCensusMouseOut() {}
+function doCensusMouseOut() {
+    this.bringToBack();
+    this.setStyle({
+        weight:0.5,
+        opacity:0.5
+    });
+}
 
 function doCensusClick() {
 
@@ -785,13 +801,13 @@ function doCensusClick() {
             // Step 1:
             // De-highlight all census tracts
             // 
-            // Check if county is alrady hilited. 
+            // Check if tract is alrady hilited. 
             // If so, make it un-hilited.
             if(options['fillColor']){
-                // Get the county's current color.
+                // Get the tract's current color.
                 orig_fillColor = options['fillColor'];
                 if(options['fillColor']===red2) {
-                    that_layer.setStyle({
+                    layer.setStyle({
                             'fillColor'   : options['originalFillColor'],
                             'fillOpacity' : myFillOpacity
                     });
@@ -800,27 +816,28 @@ function doCensusClick() {
 
             // -------------------------------------
             // Step 2:
-            // Make the county the user clicked red.
+            // Make the tract the user clicked red.
             //
+            these_layer_ids.forEach(function(this_layer_id){
 
-            these_layer_ids = Object.keys(this._layers);
-            if( this_layer_id==that_layer_id ) {
-                if(options['fillColor']){
-                    // Get the county's current color.
-                    orig_fillColor = options['fillColor'];
+                if( this_layer_id==that_layer_id ) {
+                    if(options['fillColor']){
+                        // Get the county's current color.
+                        orig_fillColor = options['fillColor'];
 
-                    // Check if county is already red.
-                    // If not, make it red.
-                    if( orig_fillColor!=red2) {
-                        // set style to red 
-                        that_layer.setStyle({
-                            'fillColor' : red,
-                            'fillOpacity' : myThickFillOpacity,
-                            'originalFillColor' : orig_fillColor
-                        });
+                        // Check if county is already red.
+                        // If not, make it red.
+                        if( orig_fillColor!=red2) {
+                            // set style to red 
+                            layer.setStyle({
+                                'fillColor' : red,
+                                'fillOpacity' : myThickFillOpacity,
+                                'originalFillColor' : orig_fillColor
+                            });
+                        }
                     }
                 }
-            }
+            });
 
             /*
             console.log('Layer id:');
