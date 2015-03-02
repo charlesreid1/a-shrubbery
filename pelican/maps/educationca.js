@@ -378,7 +378,9 @@ function doCountyClick() {
 
 
             // -------------------------------------
+            //
             // Step 4: Scatter Plot
+            //
 
             // Update the scatter plot
             // to show each census tract
@@ -439,6 +441,12 @@ function doCountyClick() {
                 .data(data.features)
                 .enter()
                 .append("circle")
+                .attr("geoid",function(d) {
+                    return d.properties['geoid'];
+                })
+                .attr("id",function(d) {
+                    return d.properties['geoid'];
+                })
                 .attr("cx", function(d) {
                     var xnorm = d.properties[xkey]/xmax;
                     var plotwidth = (scatter_width - 2*scatter_padding);
@@ -735,6 +743,36 @@ g.append("path")
 
 
 
+/////////////////////////////////////////////////////////
+// Extend D3 to make moving circles and things
+// to the front/back easier...
+//
+// http://stackoverflow.com/questions/14167863/how-can-i-bring-a-circle-to-the-front-with-d3
+//
+// Call like this:
+//
+// circles.on("mouseover",function(){
+//     var sel = d3.select(this);
+//     sel.moveToFront();
+// });
+
+d3.selection.prototype.moveToFront = function() {
+  return this.each(function(){
+    this.parentNode.appendChild(this);
+  });
+};
+
+d3.selection.prototype.moveToBack = function() { 
+    return this.each(function() { 
+        var firstChild = this.parentNode.firstChild; 
+        if (firstChild) { 
+            this.parentNode.insertBefore(this, firstChild); 
+        } 
+    }); 
+};
+
+
+
 
 ///////////////////////////////////////////////////////////////
 // Link census tract map to D3 scatterplot
@@ -755,10 +793,16 @@ function doCensusMouseOut() {
     });
 }
 
+
+
+
+
+
+
 function doCensusClick() {
 
     var tract = this.feature.properties.name;
-    var geo_id = this.feature.properties.geoid;
+    var tract_geo_id = this.feature.properties.geoid;
 
     // leaflet ids for clicked census tract
     these_layer_ids = Object.keys(this._layers);
@@ -768,12 +812,21 @@ function doCensusClick() {
     // When a user clicks on a census tract,
     // highlight that census tract
     // on the D3 scatter plot.
+    //
+    // This has two parts:
+    // 1) Highlight census tract on map
+    // 2) Highlight corresponding scatter plot element
+
+
+    // --------------------------
+    // Step 1: 
+    // Highlight census tract on map
 
     red2 = '#df65b0';
 
 
     //console.log(these_layer_ids);
-    //console.log(geo_id);
+    //console.log(tract_geo_id);
 
     map_census.eachLayer(function(layer) {
 
@@ -798,7 +851,7 @@ function doCensusClick() {
             var options = layer['options'];
 
             // -------------------------------------
-            // Step 1:
+            // Step 1A:
             // De-highlight all census tracts
             // 
             // Check if tract is alrady hilited. 
@@ -815,7 +868,7 @@ function doCensusClick() {
             }
 
             // -------------------------------------
-            // Step 2:
+            // Step 1B:
             // Make the tract the user clicked red.
             //
             these_layer_ids.forEach(function(this_layer_id){
@@ -838,29 +891,31 @@ function doCensusClick() {
                     }
                 }
             });
-
-            /*
-            console.log('Layer id:');
-            console.log(that_layer_id);
-
-            console.log('Options:');
-            console.log(options);
-            */
-
         }
-
-        /*
-        console.log(layer._leaflet_id);
-        console.log(these_layer_ids);
-        */
-
-        /*
-        // get leaflet ids for every shape in the current 
-        // census_map layer
-        those_layer_ids = Object.keys(layer._layers);
-        */
-
     });
+
+
+    // --------------------------
+    // Step 2: 
+
+    // Highlight tract's dot on scatterplot
+    //console.log(tract_geo_id);
+
+    // There is always only one circle per census tract.
+    d3.selectAll("circle[geoid='"+tract_geo_id+"']")
+            .style("fill-opacity",1)
+            .attr("fill",red2)
+            .moveToFront();
+    /*(
+
+    scattersvg.selectAll("circle[geoid='"+tract_geo_id+"']")
+            .attr('opacity',1)
+            .attr("fill",red2);
+
+    mycirc.attr("fill",function(d) {
+        return red2;
+    });
+    */
 
 }
 
@@ -868,150 +923,4 @@ function doCensusClick() {
 
 
 
-
-
-
-
-
-
-
-    // -------------------------------------
-    // Step 1:
-    // De-highlight all census tracts
-    // 
-    // Restore any previously hilited counties
-    // to their original color.
-    /*
-    map_census.eachLayer(function(layer) {
-        console.log(layer);
-
-        // get leaflet ids for every shape in the current layer 
-        those_layer_ids = Object.keys(layer._map._layers);
-
-        // NOTE: 
-        // some counties/census tracts have
-        // islands or other non-contiguous 
-        // entities
-
-        // for each shape making up the current layer,
-        those_layer_ids.forEach( function(that_layer_id) {
-
-            var that_layer = layer['_map']['_layers'][that_layer_id]
-            var options = that_layer['_map']['options'];
-
-            // Check if county is alrady hilited. 
-            // If so, make it un-hilited.
-            if(options['fillColor']){
-                // Get the county's current color.
-                orig_fillColor = options['fillColor'];
-                if(options['fillColor']===red) {
-                    that_layer.setStyle({
-                            'fillColor'   : options['originalFillColor'],
-                            'fillOpacity' : myFillOpacity
-                    });
-                }
-            }
-        });
-    });
-    */
-
-
-
-    // -------------------------------------
-    // Step 2:
-    // Make the county the user clicked red.
-    //
-    // Some counties have multiple pieces,
-    // so we need to use var these_layer_ids
-    /*
-
-
-    map_census.eachLayer(function(layer) {
-
-        // get leaflet ids for every shape in the current layer 
-        those_layer_ids = Object.keys(layer._map._layers);
-
-
-        // Double loop to highlight census tracts
-        // has two parts:
-        //
-        // For each geoid making up the census tract
-        // that the user clicked (usually 1, but could be 
-        // more than 1)
-        //
-        // For each geoid of each layer 
-        // in the census tract map
-        //
-        // NOTE:
-        // If you're looking for efficiency gains, 
-        // you could probably do a lot better 
-        // than this.
-
-
-
-
-        // for each shape making up the current layer,
-        those_layer_ids.forEach( function(that_layer_id) {
-            var a = 0;
-        });
-
-
-        ////// those_layer_ids = Object.keys(layer._map._layers);
-
-        ////// if( layer['_map']['options'] ){
-
-        //////     these_layer_ids.forEach( function(this_layer_id) {
-
-        //////         those_layer_ids.forEach( function(that_layer_id) {
-
-        //////             // NOTE:
-        //////             // These _layer_id variables usually have one element,
-        //////             // unless a county/tract has two non-continguous parts.
-
-        //////             if( this_layer_id==that_layer_id ) {
-
-        //////                 var that_layer = layer['_map']['_layers'][that_layer_id]
-        //////                 var options = that_layer['_map']['options'];
-
-        //////                 if(options['fillColor']){
-
-        //////                     // Get the county's current color.
-        //////                     orig_fillColor = options['fillColor'];
-
-        //////                     // Check if county is already red.
-        //////                     // If not, make it red.
-        //////                     if( orig_fillColor===red) {
-        //////                         var a=0;
-
-        //////                     } else {
-        //////                         // Set style to red 
-        //////                         that_layer.setStyle({
-        //////                             'fillColor' : red,
-        //////                             'fillOpacity' : myThickFillOpacity,
-        //////                             'originalFillColor' : orig_fillColor
-        //////                         });
-
-
-        //////                     }
-        //////                 }
-        //////             } 
-        //////         });
-        //////     });
-        ////// }
-
-// Now commences
-// a long cascade
-// of }s 
-// and )s 
-// and ;s
-
-    });
-
-
-    // -------------------------------------
-    // Step 3:
-    // 
-
-}
-    */
 
