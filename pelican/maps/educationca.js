@@ -1,5 +1,7 @@
 // prefix defined in common.js
 
+$("head").find('meta[name="viewport"]')
+    .remove();
 
 ////////////////////////////////////
 // County Map
@@ -204,8 +206,6 @@ function doCountyClick() {
 
      */
 
-
-
     var county = this.feature.properties.name;
 
     var $tooltip = $('.county');
@@ -224,7 +224,8 @@ function doCountyClick() {
     // to their original color.
     geoj.eachLayer(function(layer) {
 
-        // get leaflet ids for every shape in this county's layer
+        // get leaflet ids for every shape in the current 
+        // geoj layer
         those_layer_ids = Object.keys(layer._layers);
 
         // NOTE: this is necessary because
@@ -232,7 +233,8 @@ function doCountyClick() {
         // islands or other non-contiguous 
         // entities
 
-        // for each shape making up this county,
+        // for each shape making up the current 
+        // geoj layer, 
         those_layer_ids.forEach( function(that_layer_id) {
 
             var that_layer = layer['_layers'][that_layer_id]
@@ -742,10 +744,9 @@ function doCensusClick() {
     var tract = this.feature.properties.name;
     var geo_id = this.feature.properties.geoid;
 
-    console.log(tract);
-    console.log(geo_id);
-
+    // leaflet ids for clicked census tract
     these_layer_ids = Object.keys(this._layers);
+
 
     ////////////////////////////////////
     // When a user clicks on a census tract,
@@ -754,24 +755,128 @@ function doCensusClick() {
 
     red2 = '#df65b0';
 
+
+    //console.log(these_layer_ids);
+    //console.log(geo_id);
+
+    map_census.eachLayer(function(layer) {
+
+        // For each of these leaflet ids,
+        // we need to obtain the shapes
+        // in that particular layer
+        // and change their fill color.
+        that_layer_id = layer._leaflet_id;
+        
+        // NOTE:
+        // when we were doing eachLayer() method
+        // for geojson data,
+        // we used Object.keys(layer._layers) 
+        // 
+        // but now we're doing eachLayer() method
+        // of leaflet map.
+        //
+        // So we use layer._leaflet_id 
+
+        if(layer['options']){
+
+            var options = layer['options'];
+
+            // -------------------------------------
+            // Step 1:
+            // De-highlight all census tracts
+            // 
+            // Check if county is alrady hilited. 
+            // If so, make it un-hilited.
+            if(options['fillColor']){
+                // Get the county's current color.
+                orig_fillColor = options['fillColor'];
+                if(options['fillColor']===red2) {
+                    that_layer.setStyle({
+                            'fillColor'   : options['originalFillColor'],
+                            'fillOpacity' : myFillOpacity
+                    });
+                }
+            }
+
+            // -------------------------------------
+            // Step 2:
+            // Make the county the user clicked red.
+            //
+
+            these_layer_ids = Object.keys(this._layers);
+            if( this_layer_id==that_layer_id ) {
+                if(options['fillColor']){
+                    // Get the county's current color.
+                    orig_fillColor = options['fillColor'];
+
+                    // Check if county is already red.
+                    // If not, make it red.
+                    if( orig_fillColor!=red2) {
+                        // set style to red 
+                        that_layer.setStyle({
+                            'fillColor' : red,
+                            'fillOpacity' : myThickFillOpacity,
+                            'originalFillColor' : orig_fillColor
+                        });
+                    }
+                }
+            }
+
+            /*
+            console.log('Layer id:');
+            console.log(that_layer_id);
+
+            console.log('Options:');
+            console.log(options);
+            */
+
+        }
+
+        /*
+        console.log(layer._leaflet_id);
+        console.log(these_layer_ids);
+        */
+
+        /*
+        // get leaflet ids for every shape in the current 
+        // census_map layer
+        those_layer_ids = Object.keys(layer._layers);
+        */
+
+    });
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
     // -------------------------------------
     // Step 1:
     // De-highlight all census tracts
     // 
     // Restore any previously hilited counties
     // to their original color.
+    /*
     map_census.eachLayer(function(layer) {
-        //console.log(layer);
+        console.log(layer);
 
-        // get leaflet ids for every shape in this census tract's layer
+        // get leaflet ids for every shape in the current layer 
         those_layer_ids = Object.keys(layer._map._layers);
 
-        // NOTE: this is necessary because
+        // NOTE: 
         // some counties/census tracts have
         // islands or other non-contiguous 
         // entities
 
-        // for each shape making up this county,
+        // for each shape making up the current layer,
         those_layer_ids.forEach( function(that_layer_id) {
 
             var that_layer = layer['_map']['_layers'][that_layer_id]
@@ -791,6 +896,7 @@ function doCensusClick() {
             }
         });
     });
+    */
 
 
 
@@ -800,58 +906,95 @@ function doCensusClick() {
     //
     // Some counties have multiple pieces,
     // so we need to use var these_layer_ids
+    /*
+
+
     map_census.eachLayer(function(layer) {
 
+        // get leaflet ids for every shape in the current layer 
         those_layer_ids = Object.keys(layer._map._layers);
 
-        if( layer['_map']['options'] ){
 
-            these_layer_ids.forEach( function(this_layer_id) {
+        // Double loop to highlight census tracts
+        // has two parts:
+        //
+        // For each geoid making up the census tract
+        // that the user clicked (usually 1, but could be 
+        // more than 1)
+        //
+        // For each geoid of each layer 
+        // in the census tract map
+        //
+        // NOTE:
+        // If you're looking for efficiency gains, 
+        // you could probably do a lot better 
+        // than this.
 
-                those_layer_ids.forEach( function(that_layer_id) {
 
-                    // NOTE:
-                    // These _layer_id variables usually have one element,
-                    // unless a county/tract has two non-continguous parts.
 
-                    if( this_layer_id==that_layer_id ) {
 
-                        var that_layer = layer['_map']['_layers'][that_layer_id]
-                        var options = that_layer['_map']['options'];
+        // for each shape making up the current layer,
+        those_layer_ids.forEach( function(that_layer_id) {
+            var a = 0;
+        });
 
-                        if(options['fillColor']){
 
-                            // Get the county's current color.
-                            orig_fillColor = options['fillColor'];
+        ////// those_layer_ids = Object.keys(layer._map._layers);
 
-                            // Check if county is already red.
-                            // If not, make it red.
-                            if( orig_fillColor===red) {
-                                var a=0;
+        ////// if( layer['_map']['options'] ){
 
-                            } else {
-                                // Set style to red 
-                                that_layer.setStyle({
-                                    'fillColor' : red,
-                                    'fillOpacity' : myThickFillOpacity,
-                                    'originalFillColor' : orig_fillColor
-                                });
-                                
+        //////     these_layer_ids.forEach( function(this_layer_id) {
+
+        //////         those_layer_ids.forEach( function(that_layer_id) {
+
+        //////             // NOTE:
+        //////             // These _layer_id variables usually have one element,
+        //////             // unless a county/tract has two non-continguous parts.
+
+        //////             if( this_layer_id==that_layer_id ) {
+
+        //////                 var that_layer = layer['_map']['_layers'][that_layer_id]
+        //////                 var options = that_layer['_map']['options'];
+
+        //////                 if(options['fillColor']){
+
+        //////                     // Get the county's current color.
+        //////                     orig_fillColor = options['fillColor'];
+
+        //////                     // Check if county is already red.
+        //////                     // If not, make it red.
+        //////                     if( orig_fillColor===red) {
+        //////                         var a=0;
+
+        //////                     } else {
+        //////                         // Set style to red 
+        //////                         that_layer.setStyle({
+        //////                             'fillColor' : red,
+        //////                             'fillOpacity' : myThickFillOpacity,
+        //////                             'originalFillColor' : orig_fillColor
+        //////                         });
+
+
+        //////                     }
+        //////                 }
+        //////             } 
+        //////         });
+        //////     });
+        ////// }
+
 // Now commences
 // a long cascade
 // of }s 
 // and )s 
 // and ;s
-                            }
-                        }
-                    } 
-                });
-            });
-        }
+
     });
+
+
+    // -------------------------------------
+    // Step 3:
+    // 
+
 }
-
-
-
-
+    */
 

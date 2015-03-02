@@ -1,0 +1,28 @@
+{% extends 'base_map.html' %}
+
+{% set mytitle="Non-Responsive Test" %}
+
+{# ----------- title -------------- #}
+
+{% block title %}{{ mytitle }}{% endblock %}
+
+{# ----------- content ------------- #}
+
+{% block content %}
+
+<link href="{{ SITEURL }}/theme/css/non-responsive.css" rel="stylesheet" type="text/css" >
+
+<h3>Non-responsive grid system</h3>
+<div class="row">
+    <div class="col-xs-4">One third</div>
+    <div class="col-xs-4">One third</div>
+    <div class="col-xs-4">One third</div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="../../dist/js/bootstrap.min.js"></script>
+
+{% endblock %}

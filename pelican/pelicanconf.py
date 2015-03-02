@@ -109,6 +109,8 @@ for f in os.listdir(geojson_path):
         TEMPLATE_PAGES["educationca.geojson/"+f] = f
 
 
+TEMPLATE_PAGES['test.html']  = 'test.html'
+TEMPLATE_PAGES['test.css']   = 'test.css'
 
 # --------------8<---------------------
 
