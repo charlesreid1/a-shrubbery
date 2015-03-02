@@ -107,7 +107,7 @@ var categoriesEducationScale = d3.scale.ordinal()
 
 
 var myFillOpacity = 0.40;
-var myThickFillOpacity = 0.90; 
+var myThickFillOpacity = 0.60; 
 
 var myMouseOutFillOpacity = 0.40;
 var myMouseOverThickFillOpacity = 1.0; 
@@ -416,17 +416,6 @@ function doCountyClick() {
                 .range(["#ada", "#595"]);
 
 
-            /*
-            data.features.forEach(function(d){
-                console.log(d.properties);//['Total_Ed_Mean']);
-            });
-
-            console.log(d3.max(data.features,function(d){
-                            return d.properties['Total_Ed_Mean'];
-                        })
-            );
-            */
-
             var xkey = 'Total_Ed_Mean';
             var xlabel = 'Average Education Level';
             var ykey = 'Total_Ed_Var';
@@ -446,6 +435,7 @@ function doCountyClick() {
                 .data(data.features)
                 .enter()
                 .append("circle")
+                .attr("class","inactive")
                 .attr("geoid",function(d) {
                     return d.properties['geoid'];
                 })
@@ -474,7 +464,10 @@ function doCountyClick() {
                 })
                 .attr("fill",function(d) {
                     return greenColor(Math.random());
-                });
+                })
+                .on("mouseover",doScatterMouseOver)
+                .on("mouseout", doScatterMouseOut)
+                .on("click",    doScatterMouseClick);
 
             // -------
             // 3) Remove existing axis labels
@@ -606,7 +599,6 @@ function onEachCensusFeature(f, l) {
 
 
 /////////////////////////////////////////////////////////
-//
 //
 // Color Scales 
 // ordinal and linear
@@ -783,19 +775,39 @@ d3.selection.prototype.moveToBack = function() {
 // Link census tract map to D3 scatterplot
 
 function doCensusMouseOver() {
+
     this.bringToFront();
     this.setStyle({
         weight:2,
         opacity:myMouseOverThickFillOpacity
     });
+
+    var tract = this.feature.properties.name;
+    var tract_geo_id = this.feature.properties.geoid;
+
+    // --------------------------
+    // Add census tract outline 
+    d3.selectAll("circle[geoid='"+tract_geo_id+"']")
+        .attr("class","active")
+        .moveToFront();
 }
 
 function doCensusMouseOut() {
+
     this.bringToBack();
     this.setStyle({
         weight:0.5,
         opacity: myMouseOutFillOpacity
     });
+
+    var tract = this.feature.properties.name;
+    var tract_geo_id = this.feature.properties.geoid;
+
+    // --------------------------
+    // Remove census tract outline
+    d3.selectAll("circle[geoid='"+tract_geo_id+"']")
+        .attr("class","inactive");
+
 }
 
 
@@ -805,6 +817,9 @@ function doCensusClick() {
 
     var tract = this.feature.properties.name;
     var tract_geo_id = this.feature.properties.geoid;
+
+    var $tooltip = $('.census');
+    $tooltip.text(tract).show();
 
     // leaflet ids for clicked census tract
     these_layer_ids = Object.keys(this._layers);
@@ -825,10 +840,6 @@ function doCensusClick() {
     // Highlight census tract on map
 
     red2 = '#df65b0';
-
-
-    //console.log(these_layer_ids);
-    //console.log(tract_geo_id);
 
     map_census.eachLayer(function(layer) {
 
@@ -885,7 +896,7 @@ function doCensusClick() {
                         if( orig_fillColor!=red2) {
                             // set style to red 
                             layer.setStyle({
-                                'fillColor' : red,
+                                'fillColor' : red2,
                                 'fillOpacity' : myThickFillOpacity,
                                 'originalFillColor' : orig_fillColor
                             });
@@ -901,7 +912,6 @@ function doCensusClick() {
     // Step 2: 
 
     // Highlight tract's dot on scatterplot
-    //console.log(tract_geo_id);
 
     // -------
     // Step 2A: remove hiliting
@@ -925,21 +935,216 @@ function doCensusClick() {
         .attr("fill",red2)
         .moveToFront();
 
-    /*(
-
-    scattersvg.selectAll("circle[geoid='"+tract_geo_id+"']")
-            .attr('opacity',1)
-            .attr("fill",red2);
-
-    mycirc.attr("fill",function(d) {
-        return red2;
-    });
-    */
-
 }
 
+/////////////////////////////////////////////////////////
+//
+//
+function doScatterMouseOver(d) {
+    geo_id = d.properties['geoid'];
+    d3.selectAll("circle[geoid='"+geo_id+"']")
+        .attr("class","active");
+}
+
+function doScatterMouseOut(d) {
+    geo_id = d.properties['geoid'];
+    d3.selectAll("circle[geoid='"+geo_id+"']")
+        .attr("class","inactive");
+}
+
+function doScatterMouseClick(d) {
+
+    // user clicked scatter plot point,
+    // so highlight scatter plot point
+    // then highlight corresponding census tract
+
+    // get leaflet layer based on geoid
+
+    var tract        = d.properties.name;
+    var this_geo_id  = d.properties.geoid;
 
 
+    // --------------------------
+    // Step 1: 
+    // Highlight scatter plot point 
+
+
+    // --------------------------
+    // Step 2: 
+    // Highlight census tract on map
+    //
+    // since much of this is shared with doCensusClick,
+    // these two methods could be consolidated into a 
+    // function that takes a geoid.
+
+    red3 = '#df65b0';
+
+
+    // Before we modify the layers,
+    // we need to create a map
+    // of geoids to leaflet ids.
+    //
+    // This was not necessary before
+    // because our leaflet id was stored
+    // together with our geoid.
+    //
+    // But for the scatterplot, each dot
+    // only knows the geoid - not the leaflet id. 
+    //
+    // NOTE:
+    // We could fix this by adding the leaflet id
+    // as an attribute of the circles...
+    var leaflet_to_geoid = {}
+
+    map_census.eachLayer(function(layer) {
+        if(layer['options']) {
+            if(layer['_layers']) {
+
+                layers = layer['_layers'];
+                for(var key in layers){
+
+                    // NOTE:
+                    // This will probably choke 
+                    // on highlighting multi-entity 
+                    // census tracts...
+                    //
+                    // This is one-to-many, not one-to-one
+                    var lay = layers[key];
+                    leaflet_id = lay._leaflet_id;
+                    geo_id = lay.feature.properties['geoid'];
+                    leaflet_to_geoid[leaflet_id] = geo_id
+                }
+
+            }
+        }
+    });
+
+    //
+    map_census.eachLayer(function(layer) {
+        if(layer['_leaflet_id']) {
+            leaflet_id = layer['_leaflet_id'];
+            if(leaflet_to_geoid[leaflet_id]) {
+                that_geo_id = leaflet_to_geoid[leaflet_id];
+                if( this_geo_id == that_geo_id ) {
+                    layer.setStyle({
+                        'fillColor' : red3
+                    });
+                }
+            }
+        }
+    });
+                    
+    //console.log(leaflet_to_geoid);
+
+
+
+
+
+
+    /*
+
+                // -------------------------------------
+                // Step 1A:
+                // De-highlight all census tracts
+                // 
+                // Check if tract is alrady hilited. 
+                // If so, make it un-hilited.
+                if(options['fillColor']){
+                    // Get the tract's current color.
+                    orig_fillColor = options['fillColor'];
+                    if(options['fillColor']===red2) {
+                        layer.setStyle({
+                                'fillColor'   : options['originalFillColor'],
+                                'fillOpacity' : myFillOpacity
+                        });
+                    }
+                }
+
+                // -------------------------------------
+                // Step 1B:
+                // Make the tract the user clicked red.
+                //
+                if(this_geo_id==layer.properties.geoid){
+
+                    if(options['fillColor']){
+                        // Get the county's current color.
+                        orig_fillColor = options['fillColor'];
+
+                        // Check if county is already red.
+                        // If not, make it red.
+                        if( orig_fillColor!=red2) {
+                            // set style to red 
+                            layer.setStyle({
+                                'fillColor' : red2,
+                                'fillOpacity' : myThickFillOpacity,
+                                'originalFillColor' : orig_fillColor
+                            });
+                        }
+                    }
+                }
+            }
+        }
+    */
+
+        /*
+        if(layer.feature) {
+
+            var $tooltip = $('.census');
+            $tooltip.text(tract).show();
+
+            console.log(layer);
+
+            // -------------------------------------
+            // Step 2A:
+            // De-highlight all census tracts
+            // 
+            // Check if tract is alrady hilited. 
+            // If so, make it un-hilited.
+            if(layer['_options']){
+
+                var options = layer['options'];
+
+                if(options['fillColor']){
+                    // Get the tract's current color.
+                    orig_fillColor = options['fillColor'];
+                    if(options['fillColor']===red3) {
+                        layer.setStyle({
+                                'fillColor'   : options['originalFillColor'],
+                                'fillOpacity' : myFillOpacity
+                        });
+                    }
+                }
+
+            }
+
+            // -------------------------------------
+            // Step 2B:
+            // 
+            // Make the tract the user clicked red.
+            var options = layer['options'];
+            if( layer.feature.properties.geoid==this_geo_id ) {
+                console.log("Yay!");
+                if(options['fillColor']){
+                    // Get the tract's current color.
+                    orig_fillColor = options['fillColor'];
+
+                    // Check if county is already red.
+                    // If not, make it red.
+                    if( orig_fillColor!=red3) {
+                        // set style to red 
+                        layer.setStyle({
+                            'fillColor' : red3,
+                            'fillOpacity' : myThickFillOpacity,
+                            'originalFillColor' : orig_fillColor
+                        });
+                    }
+                }
+            }
+
+        }
+        */
+
+}
 
 
 

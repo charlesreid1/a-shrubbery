@@ -22,6 +22,16 @@ div#bodycontainer {
 	font-size: 12px;
 }
 
+circle.active {
+    stroke: black;
+    stroke-width: 1;
+}
+
+circle.inactive {
+    stroke: none;
+    stroke-width: 1;
+}
+
 circle {
 	fill-opacity: 0.5;
 }
