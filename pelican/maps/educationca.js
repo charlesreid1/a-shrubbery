@@ -107,8 +107,10 @@ var categoriesEducationScale = d3.scale.ordinal()
 
 
 var myFillOpacity = 0.40;
-var myThickFillOpacity = 0.90;
+var myThickFillOpacity = 0.90; 
 
+var myMouseOutFillOpacity = 0.40;
+var myMouseOverThickFillOpacity = 1.0; 
 
 
 
@@ -161,6 +163,9 @@ var basemapViewer2 = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z
 ////////////////////////////////////////////
 // Scatterplot 
 
+var myScatterFillOpacity = 0.40;
+var myScatterThickFillOpacity = 0.90; 
+
 var scatter_width  = 400;
 var scatter_height = 400;
 var scatter_padding = 80;
@@ -181,7 +186,7 @@ function doCountyMouseOver() {
     this.bringToFront();
     this.setStyle({
         weight:3,
-        opacity: 1
+        opacity:myMouseOverThickFillOpacity
     });
 }
 
@@ -189,7 +194,7 @@ function doCountyMouseOut() {
     this.bringToBack();
     this.setStyle({
         weight:1,
-        opacity:0.8
+        opacity:myMouseOutFillOpacity
     });
 }
 
@@ -781,7 +786,7 @@ function doCensusMouseOver() {
     this.bringToFront();
     this.setStyle({
         weight:2,
-        opacity: 1
+        opacity:myMouseOverThickFillOpacity
     });
 }
 
@@ -789,12 +794,9 @@ function doCensusMouseOut() {
     this.bringToBack();
     this.setStyle({
         weight:0.5,
-        opacity:0.5
+        opacity: myMouseOutFillOpacity
     });
 }
-
-
-
 
 
 
@@ -901,11 +903,28 @@ function doCensusClick() {
     // Highlight tract's dot on scatterplot
     //console.log(tract_geo_id);
 
-    // There is always only one circle per census tract.
+    // -------
+    // Step 2A: remove hiliting
+    // (restore original color from object's properties)
+    d3.selectAll("circle[fill='"+red2+"']")
+            .attr("fill",function(d) { 
+                if(d.properties['originalFill']) {
+                    return d.properties['originalFill'];
+                }
+            })
+            .moveToBack();
+
+    // -------
+    // Step 2B: hilite circle 
+    // (save original color in object's properties)
     d3.selectAll("circle[geoid='"+tract_geo_id+"']")
-            .style("fill-opacity",1)
-            .attr("fill",red2)
-            .moveToFront();
+        .each(function(d){
+            d.properties['originalFill'] = this.attributes.fill.value;
+        })
+        .style("fill-opacity",myScatterThickFillOpacity)
+        .attr("fill",red2)
+        .moveToFront();
+
     /*(
 
     scattersvg.selectAll("circle[geoid='"+tract_geo_id+"']")
