@@ -445,9 +445,9 @@ def process_B15002(data):
         wi_F = processed_results["Females_Ed"+k]
         wi = wi_M + wi_F
 
-        V_M = pow( processed_results["Males_Ed"+k]-processed_results["Males_Ed_Mean"]  , 2 )
-        V_F = pow( processed_results["Females_Ed"+k]-processed_results["Females_Ed_Mean"], 2 )
-        V =   pow( processed_results["Total_Ed"+k]-processed_results["Total_Ed_Mean"]  , 2 )
+        V_M = pow( ik-processed_results["Males_Ed_Mean"]  , 2 )
+        V_F = pow( ik-processed_results["Females_Ed_Mean"], 2 )
+        V =   pow( ik-processed_results["Total_Ed_Mean"]  , 2 )
 
         top_M += wi_M*V_M
         bottom_M += wi_M
@@ -477,8 +477,8 @@ def process_B15002(data):
         wi_F = processed_results["Females_Ed"+k]
         wi = wi_M + wi_F
 
-        sigmaM = (processed_results["Males_Ed"+k]-processed_results["Males_Ed_Mean"])
-        sigmaF = (processed_results["Females_Ed"+k]-processed_results["Females_Ed_Mean"])
+        sigmaM = (ik-processed_results["Males_Ed_Mean"])
+        sigmaF = (ik-processed_results["Females_Ed_Mean"])
         CV = sigmaM * sigmaF
 
         top += wi*CV
@@ -501,9 +501,10 @@ def process_B15002(data):
         top     += wi_M - wi_F
         bottom  += wi_M + wi_F
 
-    div(top,bottom,processed_results,"Gender_Covariance")
+    divpct(top,bottom,processed_results,"Gender_Imbalance")
 
     return processed_results
+
 
 
 def div(top,bottom,d,key):
@@ -512,6 +513,14 @@ def div(top,bottom,d,key):
         d[key] = top/bottom
     except ZeroDivisionError:
         d[key] = 0
+
+
+def divpct(top,bottom,d,key):
+
+    try:
+        d[key] = (top/bottom)*100.0
+    except ZeroDivisionError:
+        d[key] = 0.0
 
 
 def sqrtdiv(top,bottom,d,key):
