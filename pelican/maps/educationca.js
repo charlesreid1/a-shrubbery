@@ -82,43 +82,66 @@ var randomColors = d3.scale.category20c();
 
 
 
-/////////////////////////////
-// We are gonna distribute these points
-// according to an assumed distribution
-// of education levels.
-//
-// In particular, I'm going to assume
-// educations are distributed according to
-// a Weibull distribution, with
-// lamba = 1
-// k = 1.5
-//
-// Procedure looks like this:
-// turn our interval [a,b] into [0,1]
-// split [0,1] into N parts
-// transform the N interval values x
-// into values of the CDF F(x)
-// //
+// // // /////////////////////////////
+// // // // We are gonna distribute these points
+// // // // according to an assumed distribution
+// // // // of education levels.
+// // // //
+// // // // In particular, I'm going to assume
+// // // // educations are distributed according to
+// // // // a Weibull distribution, with
+// // // // lamba = 1
+// // // // k = 1.5
+// // // //
+// // // // Procedure looks like this:
+// // // // turn our interval [a,b] into [0,1]
+// // // // split [0,1] into N parts
+// // // // transform the N interval values x
+// // // // into values of the CDF F(x)
+// // // // //
+// // // 
+// // // var weibull_domain = [],
+// // //     xreal0 = 1.0,
+// // //     xreal1 = 5.0;
+// // // 
+// // // N = 10;
+// // // for (var i = 0; i < N; i++) {
+// // //     // Weibull CDF
+// // //     // see Wikipedia
+// // // 
+// // //     // start with our xhat location
+// // //     // (xhat = scaled x, [0,1])
+// // //     xhat = 0.1*(i+1);
+// // //     Fxhat = 1 - Math.exp(-xhat*Math.sqrt(xhat));
+// // // 
+// // //     xreal = xreal0 + (xhat)*(xreal1 - xreal0)
+// // //     Fxreal = xreal0 + (Fxhat)*(xreal1 - xreal0)
+// // // 
+// // //     weibull_domain.push(Fxreal);
+// // // }
+// // // 
+// // // colorbrewer = ['rgb(255,255,255)',
+// // //                'rgb(255,255,217)',
+// // //                'rgb(237,248,177)',
+// // //                'rgb(199,233,180)',
+// // //                'rgb(127,205,187)',
+// // //                'rgb(65,182,196)',
+// // //                'rgb(29,145,192)',
+// // //                'rgb(34,94,168)',
+// // //                'rgb(37,52,148)',
+// // //                'rgb(8,29,88)'];
+// // // 
+// // // var stateMeanEducationColor = d3.scale.quantize()
+// // //         .domain(weibull_domain)
+// // //         .range(colorbrewer);
+// // // 
+// // // var tractMeanEducationColor = d3.scale.quantize()
+// // //         .domain(weibull_domain)
+// // //         .range(colorbrewer);
 
-var weibull_domain = [],
-    xreal0 = 1.0,
-    xreal1 = 5.0;
 
-N = 10;
-for (var i = 0; i < N; i++) {
-    // Weibull CDF
-    // see Wikipedia
 
-    // start with our xhat location
-    // (xhat = scaled x, [0,1])
-    xhat = 0.1*(i+1);
-    Fxhat = 1 - Math.exp(-xhat*Math.sqrt(xhat));
-
-    xreal = xreal0 + (xhat)*(xreal1 - xreal0)
-    Fxreal = xreal0 + (Fxhat)*(xreal1 - xreal0)
-
-    weibull_domain.push(Fxreal);
-}
+stateMeanEducationColorDom = [1.5,3.5]
 
 colorbrewer = ['rgb(255,255,255)',
                'rgb(255,255,217)',
@@ -130,17 +153,21 @@ colorbrewer = ['rgb(255,255,255)',
                'rgb(34,94,168)',
                'rgb(37,52,148)',
                'rgb(8,29,88)'];
-
 var stateMeanEducationColor = d3.scale.quantize()
-        .domain(weibull_domain)
+        .domain([1.5,3.5])
         .range(colorbrewer);
-
 var tractMeanEducationColor = d3.scale.quantize()
-        .domain(weibull_domain)
+        .domain([1.5,3.5])
         .range(colorbrewer);
 
 
 
+
+var grays = ['rgb(247,247,247)',
+             'rgb(204,204,204)',
+             'rgb(150,150,150)',
+             'rgb(99,99,99)',
+             'rgb(37,37,37)'];
 
 short_ed_categories = ['<HS',  
                        'HS,As',
@@ -155,11 +182,11 @@ ed_categories = ['1 Less than high school',
 
 var categoriesEducationScale = d3.scale.ordinal()
     .domain(ed_categories)
-    .range([colorbrewer[0],
-            colorbrewer[2],
-            colorbrewer[4],
-            colorbrewer[6],
-            colorbrewer[9]]);
+    .range([grays[0],
+            grays[1],
+            grays[2],
+            grays[3],
+            grays[4]]);
 
 
 
@@ -614,11 +641,13 @@ function doCountyClick() {
             var yrange1 = scatter_padding
 
             // Create scales to map values to pixel locations
+            var mean_education_dom = [1.5,4.0];
+            var var_education_dom = [0.8,4];
             var xScale = d3.scale.linear()
-                    .domain([1.0,5.0])
+                    .domain(mean_education_dom)
                     .range([xrange0,xrange1])
             var yScale = d3.scale.linear()
-                    .domain([1.0,5.0])
+                    .domain(var_education_dom)
                     .range([yrange0,yrange1])
 
             // Create axes from scales 
