@@ -62,7 +62,66 @@ var randomColors = d3.scale.category20c();
 //        .domain([1,4])
 //        .range(["#ffffcc","#c2e699","#78c679","#31a354","#006837"]);
 
-colorbrewer = ['rgb(255,255,217)',
+// colorbrewer = ['rgb(255,255,217)',
+//                'rgb(237,248,177)',
+//                'rgb(199,233,180)',
+//                'rgb(127,205,187)',
+//                'rgb(65,182,196)',
+//                'rgb(29,145,192)',
+//                'rgb(34,94,168)',
+//                'rgb(37,52,148)',
+//                'rgb(8,29,88)'];
+// 
+// var stateMeanEducationColor = d3.scale.quantize()
+//         .domain([1.5,3.5])
+//         .range(colorbrewer);
+// 
+// var tractMeanEducationColor = d3.scale.quantize()
+//         .domain([1.5,3.5])
+//         .range(colorbrewer);
+
+
+
+/////////////////////////////
+// We are gonna distribute these points
+// according to an assumed distribution
+// of education levels.
+//
+// In particular, I'm going to assume
+// educations are distributed according to
+// a Weibull distribution, with
+// lamba = 1
+// k = 1.5
+//
+// Procedure looks like this:
+// turn our interval [a,b] into [0,1]
+// split [0,1] into N parts
+// transform the N interval values x
+// into values of the CDF F(x)
+// //
+
+var weibull_domain = [],
+    xreal0 = 1.0,
+    xreal1 = 5.0;
+
+N = 10;
+for (var i = 0; i < N; i++) {
+    // Weibull CDF
+    // see Wikipedia
+
+    // start with our xhat location
+    // (xhat = scaled x, [0,1])
+    xhat = 0.1*(i+1);
+    Fxhat = 1 - Math.exp(-xhat*Math.sqrt(xhat));
+
+    xreal = xreal0 + (xhat)*(xreal1 - xreal0)
+    Fxreal = xreal0 + (Fxhat)*(xreal1 - xreal0)
+
+    weibull_domain.push(Fxreal);
+}
+
+colorbrewer = ['rgb(255,255,255)',
+               'rgb(255,255,217)',
                'rgb(237,248,177)',
                'rgb(199,233,180)',
                'rgb(127,205,187)',
@@ -73,12 +132,15 @@ colorbrewer = ['rgb(255,255,217)',
                'rgb(8,29,88)'];
 
 var stateMeanEducationColor = d3.scale.quantize()
-        .domain([1.5,3.5])
+        .domain(weibull_domain)
         .range(colorbrewer);
 
 var tractMeanEducationColor = d3.scale.quantize()
-        .domain([1.5,3.5])
+        .domain(weibull_domain)
         .range(colorbrewer);
+
+
+
 
 short_ed_categories = ['<HS',  
                        'HS,As',
@@ -97,7 +159,7 @@ var categoriesEducationScale = d3.scale.ordinal()
             colorbrewer[2],
             colorbrewer[4],
             colorbrewer[6],
-            colorbrewer[8]]);
+            colorbrewer[9]]);
 
 
 
@@ -106,8 +168,8 @@ var categoriesEducationScale = d3.scale.ordinal()
 // Decorate each county 
 
 
-var myFillOpacity = 0.40;
-var myThickFillOpacity = 0.60; 
+var myFillOpacity = 0.60;
+var myThickFillOpacity = 0.80; 
 
 var myMouseOutFillOpacity = 0.40;
 var myMouseOverThickFillOpacity = 1.0; 
@@ -179,13 +241,13 @@ var scattersvg = d3.select("div#scatterplot").append("svg")
 
 ////////////////////////////////////////////////////////////////////////
 //
-// change mouse click behavior of county map
+// change mouse behavior of county map
 //
 
 function doCountyMouseOver() {
     this.bringToFront();
     this.setStyle({
-        weight:3,
+        weight: 3,
         opacity:myMouseOverThickFillOpacity
     });
 }
@@ -193,7 +255,7 @@ function doCountyMouseOver() {
 function doCountyMouseOut() {
     this.bringToBack();
     this.setStyle({
-        weight:1,
+        weight: 1,
         opacity:myMouseOutFillOpacity
     });
 }
@@ -384,6 +446,67 @@ function doCountyClick() {
 
             // -------------------------------------
             //
+            // In-between convenience step:
+            //
+            // Create a leaflet-to-geoid map
+            // 
+            // This was not necessary before
+            // because our leaflet id was stored
+            // together with our geoid.
+            //
+            // But for the scatterplot, each dot
+            // only knows the geoid - not the leaflet id. 
+            //
+            // NOTE:
+            // We could fix this by adding the leaflet id
+            // as an attribute of the circles...
+
+            var leafletid_to_geoid = {};
+            var geoid_to_leafletid = {};
+
+            map_census.eachLayer(function(layer) {
+                if(layer['options']) {
+                    if(layer['_layers']) {
+
+                        layers = layer['_layers'];
+                        for(var key in layers){
+
+                            // NOTE:
+                            // This will probably choke 
+                            // on highlighting multi-entity 
+                            // census tracts...
+                            //
+                            // This is one-to-many, not one-to-one
+                            var lay = layers[key];
+                            leaflet_id = lay._leaflet_id;
+                            geo_id = lay.feature.properties['geoid'];
+
+                            leafletid_to_geoid[leaflet_id] = geo_id
+                            geoid_to_leafletid[geo_id] = leaflet_id
+                        }
+
+                    }
+                }
+            });
+
+            // Next we'll use this to
+            // add leaflet id as an attribute
+            // to each circle, 
+            // to make it easy to grab
+            // a reference to the leaflet
+            // object corresponding to the 
+            // dot.
+
+            // Done w in-between 
+            // convenience step
+            //
+            // -------------------------------------
+
+
+
+
+            // -------------------------------------
+            //
             // Step 4: Scatter Plot
             //
 
@@ -435,9 +558,13 @@ function doCountyClick() {
                 .data(data.features)
                 .enter()
                 .append("circle")
-                .attr("class","inactive")
+                .attr("class","inactive scattercircles")
                 .attr("geoid",function(d) {
                     return d.properties['geoid'];
+                })
+                .attr("leafletid",function(d) {
+                    var geoid = d.properties['geoid'];
+                    return geoid_to_leafletid[geoid];
                 })
                 .attr("id",function(d) {
                     return d.properties['geoid'];
@@ -453,14 +580,15 @@ function doCountyClick() {
                     return scatter_padding + ynorm*plotheight;
                 })
                 .attr("r", function(d) {
-                    var r0 = 6;
-                    var rnorm = Math.log(d.properties[rkey])/rmax;
-                    var result = r0*rnorm;
-                    if (isFinite(result)) {
-                        return result;
-                    } else {
-                        return 0;
-                    }
+                    var r0 = 5;
+                    //var rnorm = Math.log(d.properties[rkey])/rmax;
+                    //var result = r0*rnorm;
+                    //if (isFinite(result)) {
+                    //    return result;
+                    //} else {
+                    //    return 0;
+                    //}
+                    return r0;
                 })
                 .attr("fill",function(d) {
                     return greenColor(Math.random());
@@ -468,6 +596,7 @@ function doCountyClick() {
                 .on("mouseover",doScatterMouseOver)
                 .on("mouseout", doScatterMouseOut)
                 .on("click",    doScatterMouseClick);
+
 
             // -------
             // 3) Remove existing axis labels
@@ -486,10 +615,10 @@ function doCountyClick() {
 
             // Create scales to map values to pixel locations
             var xScale = d3.scale.linear()
-                    .domain([1.5,4.5])
+                    .domain([1.0,5.0])
                     .range([xrange0,xrange1])
             var yScale = d3.scale.linear()
-                    .domain([0,1])
+                    .domain([1.0,5.0])
                     .range([yrange0,yrange1])
 
             // Create axes from scales 
@@ -603,7 +732,7 @@ function onEachCensusFeature(f, l) {
 // Color Scales 
 // ordinal and linear
 
-var scales_width = 300;
+var scales_width = 350;
 var scales_height = 140;
 
 var svg = d3.select("div#education_county_scale").append("svg")
@@ -629,8 +758,8 @@ var stateMeanEducationColorDomain = d3.range( state_dom0, state_dom1+state_step,
 
 // A position encoding for the key only.
 var xkey = d3.scale.linear()
-        .domain([1.5,3.5])
-        .range([0,240]);
+        .domain([1.0,5.0])
+        .range([0,450]);
 
 var xAxis = d3.svg.axis()
     .scale(xkey)
@@ -651,11 +780,11 @@ range output...
 
 g.selectAll("rect")
     .data(stateMeanEducationColor.range().map(function(d, i) {
-      return {
-            x0: i ? xkey(stateMeanEducationColorDomain[i]) : xkey.range()[0],
-            x1: i < stateMeanEducationColorDomain.length ? xkey(stateMeanEducationColorDomain[i+1]) : xkey.range()[1],
-            z: d
-      };
+        return {
+              x0: i ? xkey(stateMeanEducationColorDomain[i]) : xkey.range()[0],
+              x1: i < stateMeanEducationColorDomain.length ? xkey(stateMeanEducationColorDomain[i+1]) : xkey.range()[1],
+              z: d
+        };
 
     }))
   .enter().append("rect")
@@ -775,16 +904,13 @@ d3.selection.prototype.moveToBack = function() {
 // Link census tract map to D3 scatterplot
 
 function doCensusMouseOver() {
-
     this.bringToFront();
     this.setStyle({
-        weight:2,
+        weight: 2.0,
         opacity:myMouseOverThickFillOpacity
     });
-
     var tract = this.feature.properties.name;
     var tract_geo_id = this.feature.properties.geoid;
-
     // --------------------------
     // Add census tract outline 
     d3.selectAll("circle[geoid='"+tract_geo_id+"']")
@@ -796,7 +922,7 @@ function doCensusMouseOut() {
 
     this.bringToBack();
     this.setStyle({
-        weight:0.5,
+        weight: 0.5,
         opacity: myMouseOutFillOpacity
     });
 
@@ -917,12 +1043,12 @@ function doCensusClick() {
     // Step 2A: remove hiliting
     // (restore original color from object's properties)
     d3.selectAll("circle[fill='"+red2+"']")
-            .attr("fill",function(d) { 
-                if(d.properties['originalFill']) {
-                    return d.properties['originalFill'];
-                }
-            })
-            .moveToBack();
+        .attr("fill",function(d) { 
+            if(d.properties['originalFill']) {
+                return d.properties['originalFill'];
+            }
+        })
+    .moveToBack();
 
     // -------
     // Step 2B: hilite circle 
@@ -931,7 +1057,7 @@ function doCensusClick() {
         .each(function(d){
             d.properties['originalFill'] = this.attributes.fill.value;
         })
-        .style("fill-opacity",myScatterThickFillOpacity)
+    .style("fill-opacity",myScatterThickFillOpacity)
         .attr("fill",red2)
         .moveToFront();
 
@@ -942,14 +1068,56 @@ function doCensusClick() {
 //
 function doScatterMouseOver(d) {
     geo_id = d.properties['geoid'];
+
+    // make scatterplot dot active
     d3.selectAll("circle[geoid='"+geo_id+"']")
-        .attr("class","active");
+        .attr("class","active scattercircles");
+
+    this_layer_id = d3.select(this).attr("leafletid");
+
+    // outline the census tract on the map
+    // (make it active)
+    map_census.eachLayer(function(layer) {
+
+        // For each of these leaflet ids,
+        // we need to obtain the shapes
+        // in that particular layer
+        that_layer_id = layer._leaflet_id;
+
+        if (this_layer_id==that_layer_id) {
+            layer.setStyle({
+                weight: 2.0,
+                opacity: myMouseOverThickFillOpacity
+            });
+        }
+    });
 }
 
 function doScatterMouseOut(d) {
     geo_id = d.properties['geoid'];
+
+    // make scatterplot dot inactive
     d3.selectAll("circle[geoid='"+geo_id+"']")
-        .attr("class","inactive");
+        .attr("class","inactive scattercircles");
+
+    this_layer_id = d3.select(this).attr("leafletid");
+
+    // remove outline on the census tract on the map
+    // (make it inactive)
+    map_census.eachLayer(function(layer) {
+
+        // For each of these leaflet ids,
+        // we need to obtain the shapes
+        // in that particular layer
+        that_layer_id = layer._leaflet_id;
+
+        if (this_layer_id==that_layer_id) {
+            layer.setStyle({
+                weight: 0.5,
+                opacity: myMouseOverThickFillOpacity
+            });
+        }
+    });
 }
 
 function doScatterMouseClick(d) {
@@ -960,13 +1128,36 @@ function doScatterMouseClick(d) {
 
     // get leaflet layer based on geoid
 
-    var tract        = d.properties.name;
-    var this_geo_id  = d.properties.geoid;
+    var tract  = d.properties.name;
+    var geo_id = d.properties['geoid'];
+
+
+    red3 = '#df65b0';
 
 
     // --------------------------
     // Step 1: 
     // Highlight scatter plot point 
+
+    // 1A: clear old highlighting 
+    d3.selectAll("circle[fill='"+red3+"']")
+        .attr("fill",function(d) { 
+            if(d.properties['originalFill']) {
+                return d.properties['originalFill'];
+            }
+        })
+    .moveToBack();
+
+    // 1B: save old color, set new color
+    d3.selectAll("circle[geoid='"+geo_id+"']")
+        .each(function(d){
+            d.properties['originalFill'] = this.attributes.fill.value;
+        })
+    d3.selectAll("circle[geoid='"+geo_id+"']")
+        .attr("class","active selected scattercircles")
+        .attr("fill",red3)
+        .moveToFront();
+
 
 
     // --------------------------
@@ -976,173 +1167,36 @@ function doScatterMouseClick(d) {
     // since much of this is shared with doCensusClick,
     // these two methods could be consolidated into a 
     // function that takes a geoid.
-
-    red3 = '#df65b0';
-
-
-    // Before we modify the layers,
-    // we need to create a map
-    // of geoids to leaflet ids.
-    //
-    // This was not necessary before
-    // because our leaflet id was stored
-    // together with our geoid.
-    //
-    // But for the scatterplot, each dot
-    // only knows the geoid - not the leaflet id. 
-    //
-    // NOTE:
-    // We could fix this by adding the leaflet id
-    // as an attribute of the circles...
-    var leaflet_to_geoid = {}
-
+    this_layer_id = d3.select(this).attr("leafletid");
     map_census.eachLayer(function(layer) {
-        if(layer['options']) {
-            if(layer['_layers']) {
 
-                layers = layer['_layers'];
-                for(var key in layers){
+        var that_layer_id = layer._leaflet_id;
 
-                    // NOTE:
-                    // This will probably choke 
-                    // on highlighting multi-entity 
-                    // census tracts...
-                    //
-                    // This is one-to-many, not one-to-one
-                    var lay = layers[key];
-                    leaflet_id = lay._leaflet_id;
-                    geo_id = lay.feature.properties['geoid'];
-                    leaflet_to_geoid[leaflet_id] = geo_id
-                }
+        var options_ = layer['_options'];
+        var options = layer['options'];
 
+        if (this_layer_id==that_layer_id) {
+
+            // This is pretty wonky.
+            // I can't figure out when I use options or _options,
+            // layers or _layers,
+            // or what.
+
+            var opts = layer['_layers'][this_layer_id-1]['options'];
+            var orig_fillColor = opts['fillColor'];
+            layer.setStyle({
+                fillColor: red3,
+                originalFillColor: orig_fillColor
+            });
+        } else if(options) {
+            if(options['fillColor']==red3) {
+                layer.setStyle({
+                    fillColor : options['originalFillColor']
+                });
             }
         }
+
     });
-
-    //
-    map_census.eachLayer(function(layer) {
-        if(layer['_leaflet_id']) {
-            leaflet_id = layer['_leaflet_id'];
-            if(leaflet_to_geoid[leaflet_id]) {
-                that_geo_id = leaflet_to_geoid[leaflet_id];
-                if( this_geo_id == that_geo_id ) {
-                    layer.setStyle({
-                        'fillColor' : red3
-                    });
-                }
-            }
-        }
-    });
-                    
-    //console.log(leaflet_to_geoid);
-
-
-
-
-
-
-    /*
-
-                // -------------------------------------
-                // Step 1A:
-                // De-highlight all census tracts
-                // 
-                // Check if tract is alrady hilited. 
-                // If so, make it un-hilited.
-                if(options['fillColor']){
-                    // Get the tract's current color.
-                    orig_fillColor = options['fillColor'];
-                    if(options['fillColor']===red2) {
-                        layer.setStyle({
-                                'fillColor'   : options['originalFillColor'],
-                                'fillOpacity' : myFillOpacity
-                        });
-                    }
-                }
-
-                // -------------------------------------
-                // Step 1B:
-                // Make the tract the user clicked red.
-                //
-                if(this_geo_id==layer.properties.geoid){
-
-                    if(options['fillColor']){
-                        // Get the county's current color.
-                        orig_fillColor = options['fillColor'];
-
-                        // Check if county is already red.
-                        // If not, make it red.
-                        if( orig_fillColor!=red2) {
-                            // set style to red 
-                            layer.setStyle({
-                                'fillColor' : red2,
-                                'fillOpacity' : myThickFillOpacity,
-                                'originalFillColor' : orig_fillColor
-                            });
-                        }
-                    }
-                }
-            }
-        }
-    */
-
-        /*
-        if(layer.feature) {
-
-            var $tooltip = $('.census');
-            $tooltip.text(tract).show();
-
-            console.log(layer);
-
-            // -------------------------------------
-            // Step 2A:
-            // De-highlight all census tracts
-            // 
-            // Check if tract is alrady hilited. 
-            // If so, make it un-hilited.
-            if(layer['_options']){
-
-                var options = layer['options'];
-
-                if(options['fillColor']){
-                    // Get the tract's current color.
-                    orig_fillColor = options['fillColor'];
-                    if(options['fillColor']===red3) {
-                        layer.setStyle({
-                                'fillColor'   : options['originalFillColor'],
-                                'fillOpacity' : myFillOpacity
-                        });
-                    }
-                }
-
-            }
-
-            // -------------------------------------
-            // Step 2B:
-            // 
-            // Make the tract the user clicked red.
-            var options = layer['options'];
-            if( layer.feature.properties.geoid==this_geo_id ) {
-                console.log("Yay!");
-                if(options['fillColor']){
-                    // Get the tract's current color.
-                    orig_fillColor = options['fillColor'];
-
-                    // Check if county is already red.
-                    // If not, make it red.
-                    if( orig_fillColor!=red3) {
-                        // set style to red 
-                        layer.setStyle({
-                            'fillColor' : red3,
-                            'fillOpacity' : myThickFillOpacity,
-                            'originalFillColor' : orig_fillColor
-                        });
-                    }
-                }
-            }
-
-        }
-        */
 
 }
 

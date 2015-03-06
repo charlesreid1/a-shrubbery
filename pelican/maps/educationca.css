@@ -32,10 +32,11 @@ circle.inactive {
     stroke-width: 1;
 }
 
-circle {
+circle.scattercircles {
 	fill-opacity: 0.5;
 }
-circle:hover {
+
+circle.scattercircles:hover {
   fill-opacity: 0.9;
 }
 
