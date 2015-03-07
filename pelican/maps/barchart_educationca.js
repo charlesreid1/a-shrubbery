@@ -57,27 +57,21 @@ d3.select(".example")
       // y = gender imbalance
       var scale = [];
       data.forEach(function(d) { 
-          //console.log(" [ "+d.properties[xkey]+" , "+d.properties[ykey]+" ] ");
           scale.push( [d.properties[xkey],d.properties[ykey]] );
       });
       scale.sort(compareIndex1);
-      console.log(scale);
-
-
 
 
       // Update the x-scale.
-      xScale.domain(
-            data.forEach(function(d) { 
-                return d.properties[xkey];
-            })
-        )
-        .rangeRoundBands([0, width - margin.left - margin.right], xRoundBands);
+      console.log(xScale.length);
+      xScale
+          .domain(scale.map(function(s) { return s[0];} ))
+          .rangeRoundBands([0, width - margin.left - margin.right], xRoundBands);
          
 
       // Update the y-scale.
       yScale
-          .domain(d3.extent(data.map(function(d) { return d.properties[ykey];} )))
+          .domain(d3.extent(scale.map(function(s) { return s[1];} )))
           .range([height - margin.top - margin.bottom, 0])
           .nice();
           
