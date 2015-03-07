@@ -1,6 +1,10 @@
-console.log("Hello from barchart");
+function columnChart(k) {
 
 /*
+ *
+ * example of how to call this:
+ *
+
 d3.select("body").append("div").attr("class","example");
 
 var data = [{"letter" : "A", "frequency" : 0.08167},
@@ -18,15 +22,16 @@ d3.select(".example")
       .y(function(d, i) { return d[1]; }));
 */
 
-function columnChart(k) {
+
+
   var xkey = k[0],
       ykey = k[1];
   var margin = {top: 30, right: 10, bottom: 50, left: 50},
       width = 10,
       height = 10,
       xRoundBands = 0.2,
-      xValue = function(d) { return d[0]; },
-      yValue = function(d) { return d[1]; },
+      xValue = function(d) { return d[xkey]; },
+      yValue = function(d) { return d[ykey]; },
       xScale = d3.scale.ordinal(),
       yScale = d3.scale.linear(),
       yAxis = d3.svg.axis().scale(yScale).orient("left"),
@@ -36,22 +41,43 @@ function columnChart(k) {
   function chart(selection) {
     selection.each(function(data) {
 
-      // Convert data to standard representation greedily;
-      // this is needed for nondeterministic accessors.
-      //data = data.map(function(d, i) {
-      //  return [xValue.call(data, d, i), yValue.call(data, d, i)];
-      //});
+      // if we sort, 
+      // we probably do it here:
+      // grab values then sort then pass to scale
+
+      //
+      // sort on array value 1
+      //
+      // sort: via https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+      function compareIndex1(a, b) {
+        return a[1] - b[1];
+      }
+
+      // x = name
+      // y = gender imbalance
+      var scale = [];
+      data.forEach(function(d) { 
+          //console.log(" [ "+d.properties[xkey]+" , "+d.properties[ykey]+" ] ");
+          scale.push( [d.properties[xkey],d.properties[ykey]] );
+      });
+      scale.sort(compareIndex1);
+      console.log(scale);
+
+
 
 
       // Update the x-scale.
-      xScale
-          .domain(data.map(function(d) { return d[xkey];} ))
-          .rangeRoundBands([0, width - margin.left - margin.right], xRoundBands);
+      xScale.domain(
+            data.forEach(function(d) { 
+                return d.properties[xkey];
+            })
+        )
+        .rangeRoundBands([0, width - margin.left - margin.right], xRoundBands);
          
 
       // Update the y-scale.
       yScale
-          .domain(d3.extent(data.map(function(d) { return d[ykey];} )))
+          .domain(d3.extent(data.map(function(d) { return d.properties[ykey];} )))
           .range([height - margin.top - margin.bottom, 0])
           .nice();
           
@@ -78,9 +104,9 @@ function columnChart(k) {
       var bar = svg.select(".bars").selectAll(".bar").data(data);
       bar.enter().append("rect");
       bar.exit().remove();
-      bar .attr("class", function(d, i) { return d[ykey] < 0 ? "bar negative" : "bar positive"; })
+      bar .attr("class", function(d, i) { return d.properties[ykey] < 0 ? "bar negative" : "bar positive"; })
           .attr("x", function(d) { return X(d); })
-          .attr("y", function(d, i) { return d[ykey] < 0 ? Y0() : Y(d); })
+          .attr("y", function(d, i) { return d.properties[ykey] < 0 ? Y0() : Y(d); })
           .attr("width", xScale.rangeBand())
           .attr("height", function(d, i) { return Math.abs( Y(d) - Y0() ); });
 
@@ -105,7 +131,7 @@ function columnChart(k) {
 
 // The x-accessor for the path generator; xScale ∘ xValue.
   function X(d) {
-    return xScale(d[xkey]);
+    return xScale(d.properties[xkey]);
   }
 
   function Y0() {
@@ -114,7 +140,7 @@ function columnChart(k) {
 
   // The x-accessor for the path generator; yScale ∘ yValue.
   function Y(d) {
-    return yScale(d[ykey]);
+    return yScale(d.properties[ykey]);
   }
 
   chart.margin = function(_) {
@@ -149,4 +175,3 @@ function columnChart(k) {
 
   return chart;
 }
-

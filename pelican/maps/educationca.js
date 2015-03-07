@@ -1,7 +1,5 @@
 // prefix defined in common.js
 
-
-
 // Make non-responsive
 $("head").find('meta[name="viewport"]')
     .remove();
@@ -39,22 +37,20 @@ $.ajax({
     success: function (data) {
         geoj.addData(data);
 
-        console.log("Hello from ajax");
-
         ///////////////////////////
         // add bar chart
         d3.select("#barchart")
-          .datum(data);
-        //    .call(columnChart(['name','Gender_Imbalance'])
-        //      .width(400)
-        //      .height(400)
-        //      .x(function(d, i) { return d[0]; })
-        //      .y(function(d, i) { return d[1]; }));
-        ///////////////////////////
-
+          .datum(data.features)
+            .call(columnChart(['name','Gender_Imbalance'])
+              .width(400)
+              .height(400));
+                /*
+              .x(function(d, i) { return d[xkey]; })
+              .y(function(d, i) { return d[ykey]; }));
+              */
+        /////////////////////////
     }
 });
-
 
 
 
@@ -327,6 +323,8 @@ function doCountyClick() {
         in the census tract map 
 
     4) update scatterplot
+
+    5) update bar chart?
 
      */
 
