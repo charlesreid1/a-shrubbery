@@ -38,8 +38,23 @@ $.ajax({
     url: rooturl,
     success: function (data) {
         geoj.addData(data);
+
+        console.log("Hello from ajax");
+
+        ///////////////////////////
+        // add bar chart
+        d3.select("#barchart")
+          .datum(data);
+        //    .call(columnChart(['name','Gender_Imbalance'])
+        //      .width(400)
+        //      .height(400)
+        //      .x(function(d, i) { return d[0]; })
+        //      .y(function(d, i) { return d[1]; }));
+        ///////////////////////////
+
     }
 });
+
 
 
 
@@ -223,6 +238,8 @@ function onEachCounty(f, l) {
             color: '#222',
             weight: 1
         });
+
+
 
         //var out = [];
         //for(key in f.properties){
