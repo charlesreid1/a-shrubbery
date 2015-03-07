@@ -1,3 +1,53 @@
+div.somespace {
+    height: 5px;
+}
+
+/*
+div#bodycontainer {
+    width: 1000px;
+}
+*/
+
+/* for scatterplot */
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+
+.axis text {
+	font-family: sans-serif;
+	font-size: 12px;
+}
+
+circle.active {
+    stroke: black;
+    stroke-width: 1;
+}
+
+circle.inactive {
+    stroke: none;
+    stroke-width: 1;
+}
+
+circle.scattercircles {
+	fill-opacity: 0.5;
+}
+
+circle.scattercircles:hover {
+  fill-opacity: 0.9;
+}
+
+.axislabel {
+	font-family: sans-serif;
+	font-size: 14px;
+}
+
+/* end for scatterplot */
+
+
 
 .activecounty {
     fillColor: #ff0000;

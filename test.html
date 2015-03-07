@@ -140,34 +140,20 @@
 <div class="container" id="bodycontainer">
 
 
-<h2>CA Counties: Random</h2>
+<link href="/a-shrubbery/theme/css/non-responsive.css" rel="stylesheet" type="text/css" >
 
-<p>This map demonstrates the use of Leaflet and Leaflet layer styling to visualize information
-contained in GeoJSON.</p>
+<h3>Non-responsive grid system</h3>
+<div class="row">
+    <div class="col-xs-4">One third</div>
+    <div class="col-xs-4">One third</div>
+    <div class="col-xs-4">One third</div>
+</div>
 
-<p>Python is used together with the Census Reporter API to get GeoJSON information 
-for each of California's counties. A random number between 0 and 10 is then assigned
-to each county, and that random number is used to change the color of each county.
-</p>
-
-<p>But why? Because the next step is to use census data, rather than random numbers,
-to control the style of the GeoJSON layers.
-</p>
-
-<p>More details <a href="http://charlesreid1.com/wiki/Leaflet_Quantile_Map">on the charlesreid1.com wiki</a>.
-</p>
-
-<div id="map" style="width:800px;"></div>
-
-<meta id="jinja-site-url" data-siteurl="/a-shrubbery"></meta>
-<script src="/a-shrubbery/theme/js/leaflet.ajax.min.js" type="text/javascript"></script>
-<script src="/a-shrubbery/carandom.js" type="text/javascript"></script>
-
-<!--
-eventually i'd like to use this
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
--->
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="../../dist/js/bootstrap.min.js"></script>
 
 
 
