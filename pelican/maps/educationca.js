@@ -7,12 +7,14 @@ $("head").find('meta[name="viewport"]')
     .remove();
 
 
+var pop_limit = 40;
+
 ////////////////////////////////////
 // County Map
 
 // Take care of county map first:
 //
-var zoomOrig = 6;
+var zoomOrig = 5;
 var map_county = L.map('education_county').setView([37.7, -119.5], zoomOrig);
 
 var basemapViewer = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{ 
@@ -579,14 +581,14 @@ function doCountyClick() {
             var ylabel = 'Educational Diversity (Variance)';
             var rkey = 'Total_Total';
 
-            var xmin = d3.min(data.features, function(d) { return d.properties[xkey]; });
-            var xmax = d3.max(data.features, function(d) { return d.properties[xkey]; });
+            var xmin = d3.min(data.features, function(d) { if(d.properties['Total_Total']>pop_limit) { return d.properties[xkey]; } });
+            var xmax = d3.max(data.features, function(d) { if(d.properties['Total_Total']>pop_limit) { return d.properties[xkey]; } });
 
-            var ymin = d3.min(data.features, function(d) { return d.properties[ykey]; });
-            var ymax = d3.max(data.features, function(d) { return d.properties[ykey]; });
+            var ymin = d3.min(data.features, function(d) { if(d.properties['Total_Total']>pop_limit) { return d.properties[ykey]; } });
+            var ymax = d3.max(data.features, function(d) { if(d.properties['Total_Total']>pop_limit) { return d.properties[ykey]; } });
 
-            var rmin = d3.min(data.features, function(d) { return Math.log(d.properties[rkey]); });
-            var rmax = d3.max(data.features, function(d) { return Math.log(d.properties[rkey]); });
+            var rmin = d3.min(data.features, function(d) { if(d.properties['Total_Total']>pop_limit) { return Math.log(d.properties[rkey]); } });
+            var rmax = d3.max(data.features, function(d) { if(d.properties['Total_Total']>pop_limit) { return Math.log(d.properties[rkey]); } });
 
             //var mean_education_dom = [1.0,4.0];
             //var var_education_dom = [0.5,4];
@@ -611,32 +613,23 @@ function doCountyClick() {
                 .attr("cx",function(d) {
                     // each x value is shifted by 1.5 (the mean education domain left point)
                     var xnorm = (d.properties[xkey] - mean_education_dom[0])/(mean_education_dom[1] - mean_education_dom[0]);
-                    return scatter_xpadding + xnorm*(scatter_width - 2*scatter_xpadding);
+                    if(xnorm > 0.01) {
+                        return scatter_xpadding + xnorm*(scatter_width - 2*scatter_xpadding);
+                    }
                 })
                 .attr("cy",function(d) {
-
                     var ynorm = (d.properties[ykey] - var_education_dom[0])/(var_education_dom[1] - var_education_dom[0]);
-                    //var ynorm = (var_education_dom[0] - d.properties[ykey])/(var_education_dom[0] - var_education_dom[1]);
-
-                    //console.log('-----------');
-                    //console.log(d.properties['name']);
-                    //console.log("y = "+d.properties[ykey]);
-                    //console.log("ynorm = ("+d.properties[ykey]+" - "+var_education_dom[0]+")/("+var_education_dom[1]+" - "+var_education_dom[0]+")");
-                    //console.log("ynorm = ("+var_education_dom[0]+" - "+d.properties[ykey]+")/("+var_education_dom[0]+" - "+var_education_dom[1]+")");
-                    //console.log(ynorm);
-
-                    return (1-ynorm)*(scatter_height - 2*scatter_ypadding) + scatter_ypadding;
+                    if(ynorm > 0.01) {
+                        return (1-ynorm)*(scatter_height - 2*scatter_ypadding) + scatter_ypadding;
+                    }
                 })
                 .attr("r", function(d) {
                     var r0 = 5;
-                    //var rnorm = Math.log(d.properties[rkey])/rmax;
-                    //var result = r0*rnorm;
-                    //if (isFinite(result)) {
-                    //    return result;
-                    //} else {
-                    //    return 0;
-                    //}
-                    return r0;
+                    if(d.properties['Total_Total']>pop_limit) {
+                        return r0;
+                    } else {
+                        return 0;
+                    }
                 })
                 .attr("fill",function(d) {
                     return greenColor(Math.random());
@@ -1007,6 +1000,9 @@ function doCensusClick() {
     // leaflet ids for clicked census tract
     these_layer_ids = Object.keys(this._layers);
 
+    
+    var red2 = '#df65b0';
+
 
     ////////////////////////////////////
     // When a user clicks on a census tract,
@@ -1017,77 +1013,44 @@ function doCensusClick() {
     // 1) Highlight census tract on map
     // 2) Highlight corresponding scatter plot element
 
+    these_layer_ids.forEach(function(this_layer_id){
 
-    // --------------------------
-    // Step 1: 
-    // Highlight census tract on map
+        // --------------------------
+        // Step 1: 
+        // Highlight census tract on map
 
-    red2 = '#df65b0';
+        map_census.eachLayer(function(layer) {
 
-    map_census.eachLayer(function(layer) {
+            var that_layer_id = layer._leaflet_id;
 
-        // For each of these leaflet ids,
-        // we need to obtain the shapes
-        // in that particular layer
-        // and change their fill color.
-        that_layer_id = layer._leaflet_id;
-        
-        // NOTE:
-        // when we were doing eachLayer() method
-        // for geojson data,
-        // we used Object.keys(layer._layers) 
-        // 
-        // but now we're doing eachLayer() method
-        // of leaflet map.
-        //
-        // So we use layer._leaflet_id 
-
-        if(layer['options']){
-
+            var options_ = layer['_options'];
             var options = layer['options'];
 
-            // -------------------------------------
-            // Step 1A:
-            // De-highlight all census tracts
-            // 
-            // Check if tract is alrady hilited. 
-            // If so, make it un-hilited.
-            if(options['fillColor']){
-                // Get the tract's current color.
-                orig_fillColor = options['fillColor'];
-                if(options['fillColor']===red2) {
+            if (this_layer_id==that_layer_id) {
+
+                // This is pretty wonky.
+                // I can't figure out when I use options or _options,
+                // layers or _layers,
+                // or what.
+
+                var orig_fillColor = options['fillColor'];
+                if(options['fillColor']!=red2) {
                     layer.setStyle({
-                            'fillColor'   : options['originalFillColor'],
-                            'fillOpacity' : myFillOpacity
+                        fillColor: red2,
+                        originalFillColor: orig_fillColor
+                    });
+                }
+
+            } else if(options) {
+                if(options['fillColor']==red2) {
+                    layer.setStyle({
+                        fillColor : options['originalFillColor']
                     });
                 }
             }
 
-            // -------------------------------------
-            // Step 1B:
-            // Make the tract the user clicked red.
-            //
-            these_layer_ids.forEach(function(this_layer_id){
+        });
 
-                if( this_layer_id==that_layer_id ) {
-                    if(options['fillColor']){
-                        // Get the county's current color.
-                        orig_fillColor = options['fillColor'];
-
-                        // Check if county is already red.
-                        // If not, make it red.
-                        if( orig_fillColor!=red2) {
-                            // set style to red 
-                            layer.setStyle({
-                                'fillColor' : red2,
-                                'fillOpacity' : myThickFillOpacity,
-                                'originalFillColor' : orig_fillColor
-                            });
-                        }
-                    }
-                }
-            });
-        }
     });
 
 
@@ -1214,6 +1177,13 @@ function doScatterMouseClick(d) {
         .attr("class","active selected scattercircles")
         .attr("fill",red3)
         .moveToFront();
+
+
+
+    // FIXME:
+    // this does not account for the case 
+    // of multiple leaflet IDs
+    // (i.e., counties with multiple entities)
 
 
 
