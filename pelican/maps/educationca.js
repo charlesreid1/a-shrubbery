@@ -227,6 +227,13 @@ function onEachCounty(f, l) {
         //    out.push(key+": "+f.properties[key]);
         //}
         //l.bindPopup(out.join("<br />"));
+        var out = "";
+        out += "Name: "+f.properties['name']+"<br />";
+        out += "GeoID: "+f.properties['geoid']+"<br />";
+        out += "Total Ed Mean: "+f.properties['Total_Ed_Mean']+"<br />";
+        out += "Total Ed Var: "+f.properties['Total_Ed_Var']+"<br />";
+        out += "Total: "+f.properties['Total_Total'];
+        l.bindPopup(out);
     }
 }
 
@@ -257,12 +264,12 @@ var myScatterThickFillOpacity = 0.90;
 
 var scatter_width  = 400;
 var scatter_height = 400;
-var scatter_padding = 80;
+var scatter_xpadding = 80;
+var scatter_ypadding = 80;
 
 var scattersvg = d3.select("div#scatterplot").append("svg")
     .attr("width",  scatter_width)
     .attr("height", scatter_height);
-
 
 
 
@@ -581,6 +588,11 @@ function doCountyClick() {
             var rmin = d3.min(data.features, function(d) { return Math.log(d.properties[rkey]); });
             var rmax = d3.max(data.features, function(d) { return Math.log(d.properties[rkey]); });
 
+            //var mean_education_dom = [1.0,4.0];
+            //var var_education_dom = [0.5,4];
+            var mean_education_dom = [0.9*xmin,1.1*xmax];
+            var var_education_dom = [0.9*ymin,1.1*ymax];
+
             var scatterg = scattersvg.selectAll("circle")
                 .data(data.features)
                 .enter()
@@ -596,15 +608,24 @@ function doCountyClick() {
                 .attr("id",function(d) {
                     return d.properties['geoid'];
                 })
-                .attr("cx", function(d) {
-                    var xnorm = d.properties[xkey]/xmax;
-                    var plotwidth = (scatter_width - 2*scatter_padding);
-                    return scatter_padding + xnorm*plotwidth;
+                .attr("cx",function(d) {
+                    // each x value is shifted by 1.5 (the mean education domain left point)
+                    var xnorm = (d.properties[xkey] - mean_education_dom[0])/(mean_education_dom[1] - mean_education_dom[0]);
+                    return scatter_xpadding + xnorm*(scatter_width - 2*scatter_xpadding);
                 })
-                .attr("cy", function(d) {
-                    var ynorm = d.properties[ykey]/ymax;
-                    var plotheight = (scatter_height - 2*scatter_padding);
-                    return scatter_padding + ynorm*plotheight;
+                .attr("cy",function(d) {
+
+                    var ynorm = (d.properties[ykey] - var_education_dom[0])/(var_education_dom[1] - var_education_dom[0]);
+                    //var ynorm = (var_education_dom[0] - d.properties[ykey])/(var_education_dom[0] - var_education_dom[1]);
+
+                    //console.log('-----------');
+                    //console.log(d.properties['name']);
+                    //console.log("y = "+d.properties[ykey]);
+                    //console.log("ynorm = ("+d.properties[ykey]+" - "+var_education_dom[0]+")/("+var_education_dom[1]+" - "+var_education_dom[0]+")");
+                    //console.log("ynorm = ("+var_education_dom[0]+" - "+d.properties[ykey]+")/("+var_education_dom[0]+" - "+var_education_dom[1]+")");
+                    //console.log(ynorm);
+
+                    return (1-ynorm)*(scatter_height - 2*scatter_ypadding) + scatter_ypadding;
                 })
                 .attr("r", function(d) {
                     var r0 = 5;
@@ -634,15 +655,15 @@ function doCountyClick() {
             // -------
             // 4) Construct the scatterplot axes
             
-            var xrange0 = scatter_padding
-            var xrange1 = scatter_width - scatter_padding
+            var xrange0 = scatter_xpadding
+            var xrange1 = scatter_width - scatter_xpadding 
 
-            var yrange0 = scatter_height - scatter_padding
-            var yrange1 = scatter_padding
+            var yrange0 = scatter_height - scatter_ypadding
+            var yrange1 = scatter_ypadding
 
             // Create scales to map values to pixel locations
-            var mean_education_dom = [1.5,4.0];
-            var var_education_dom = [0.8,4];
+            //(mean_education_dom and var_education_dom 
+            // defined above)
             var xScale = d3.scale.linear()
                     .domain(mean_education_dom)
                     .range([xrange0,xrange1])
@@ -666,8 +687,8 @@ function doCountyClick() {
             //
             // xtrans = x translation of y axis
             // ytrans = y tanslation of x axis
-            xtrans = scatter_padding;
-            ytrans = scatter_height - scatter_padding;
+            xtrans = scatter_xpadding;
+            ytrans = scatter_height - scatter_ypadding;
 
             scattersvg.append("g")
                 .attr("class", "x axis")
@@ -680,7 +701,7 @@ function doCountyClick() {
 
             // Axis labels
             xloc = scatter_width - (scatter_width/2);
-            yloc = scatter_height - scatter_padding/2
+            yloc = scatter_height - scatter_ypadding/2
             scattersvg.append("text")
                 .attr("class", "axislabel")
                 .attr("id","xaxislabel")
@@ -690,7 +711,7 @@ function doCountyClick() {
                 .text(xlabel);
 
             xloc = 0 - (scatter_height/2);
-            yloc = scatter_padding/10;
+            yloc = scatter_ypadding/10;
             scattersvg.append("text")
                 .attr("class", "axislabel")
                 .attr("id","yaxislabel")
@@ -748,6 +769,13 @@ function onEachCensusFeature(f, l) {
         //    out.push(key+": "+f.properties[key]);
         //}
         //l.bindPopup(out.join("<br />"));
+        var out = "";
+        out += "Name: "+f.properties['name']+"<br />";
+        out += "GeoID: "+f.properties['geoid']+"<br />";
+        out += "Total Ed Mean: "+f.properties['Total_Ed_Mean']+"<br />";
+        out += "Total Ed Var: "+f.properties['Total_Ed_Var']+"<br />";
+        out += "Total: "+f.properties['Total_Total'];
+        l.bindPopup(out);
     }
 }
 

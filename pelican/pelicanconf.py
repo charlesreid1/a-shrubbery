@@ -99,6 +99,10 @@ TEMPLATE_PAGES['educationca.html']  = 'educationca/index.html'
 TEMPLATE_PAGES['educationca.css']   = 'educationca.css'
 TEMPLATE_PAGES['educationca.js']    = 'educationca.js'
 
+TEMPLATE_PAGES['buttons.html']  = 'buttons/index.html'
+TEMPLATE_PAGES['buttons.js']    = 'buttons.js'
+
+
 
 # Add all the geojson for education ca map
 geojson_path = "maps/educationca.geojson"
