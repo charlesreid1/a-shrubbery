@@ -121,20 +121,23 @@ via http://jsfiddle.net/jcc5srs3/6/
   fill: #5b77a0;
 }
 
-.bar.positive:hover {
+.bar:hover, .bar.active, .bar.selected {
+  stroke: #000;
+  weight: 1.0;
+}
+
+.bar:hover, .bar.active {
   fill: green;
 }
 
-.bar.negative:hover {
-  fill: green;
-}
 
 
 
-.x.axis path {
+.bar.x.axis path {
     stroke: none;
 }
-.x.axis.zero path {
+
+.bar.x.axis.zero path {
     stroke: #000;
 }
 

@@ -41,9 +41,9 @@ $.ajax({
         // add bar chart
         d3.select("#barchart")
           .datum(data.features)
-            .call(columnChart(['name','Gender_Imbalance'])
-              .width(400)
-              .height(400));
+            .call(columnChart(['name','Gender_Imbalance'],map_county,map_census)
+              .width(500)
+              .height(500));
                 /*
               .x(function(d, i) { return d[xkey]; })
               .y(function(d, i) { return d[ykey]; }));
@@ -299,6 +299,11 @@ function doCountyMouseOver() {
         weight: 3,
         opacity:myMouseOverThickFillOpacity
     });
+
+    var this_geoid = this.feature.properties['geoid'];
+    d3.selectAll(".bar[geoid='"+this_geoid+"']")
+        .classed({'active':true})
+        .style("opacity",0.7);
 }
 
 function doCountyMouseOut() {
@@ -307,6 +312,11 @@ function doCountyMouseOut() {
         weight: 1,
         opacity:myMouseOutFillOpacity
     });
+
+    var this_geoid = this.feature.properties['geoid'];
+    d3.selectAll(".bar[geoid='"+this_geoid+"']")
+        .classed({'active':false})
+        .style("opacity",1.0);
 }
 
 function doCountyClick() {
@@ -319,12 +329,12 @@ function doCountyClick() {
 
     2) highlight the clicked county 
 
+    2-B) update bar chart
+
     3) zoom to that county's census tracts 
         in the census tract map 
 
     4) update scatterplot
-
-    5) update bar chart?
 
      */
 
@@ -432,6 +442,20 @@ function doCountyClick() {
 
 
     // -------------------------------------
+    // Step 2.5: Bar Chart
+    //
+    // Highlight the bar on the bar chart
+    // corresponding to this county.
+
+    this_geoid = this.feature.properties['geoid'];
+    d3.selectAll(".bar[geoid]")
+        .classed({'selected':false});
+    d3.selectAll(".bar[geoid='"+this_geoid+"']")
+        .classed({'selected':true});
+
+
+
+    // -------------------------------------
     // Step 3:
     // Add census tracts for this county to the census tract map.
     //
@@ -450,7 +474,9 @@ function doCountyClick() {
         }).addTo(map_census);
 
 
-    // Census tract data
+    // Ajax: 
+    // Load census tract data
+    // Everything in this block depends on census data
     $.ajax({
         type: "GET",
         url: censusurl,
@@ -746,13 +772,6 @@ function doCountyClick() {
 
 
 
-    // -------------------------------------
-    // Step 5: Bar Chart
-
-    // You can obtain properties of this county
-    // by using this.feature:
-    //var county = this.feature.properties.name;
-    //console.log(this.feature.properties);
 
 }
 
@@ -977,7 +996,7 @@ function doCensusMouseOver() {
     var tract = this.feature.properties.name;
     var tract_geo_id = this.feature.properties.geoid;
     // --------------------------
-    // Add census tract outline 
+    // Add census tract circle outline 
     d3.selectAll("circle[geoid='"+tract_geo_id+"']")
         .attr("class","active")
         .moveToFront();

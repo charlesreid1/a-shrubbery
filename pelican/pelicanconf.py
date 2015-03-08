@@ -18,7 +18,7 @@ DEFAULT_LANG = u'en'
 
 # --------------8<---------------------
 
-SITETAGLINE = "Building a page of map leaflets using Leaflet.js"
+SITETAGLINE = "Building a page of map leaflets using Leaflet.js and D3.js"
 
 
 # to install this theme:
@@ -99,6 +99,7 @@ TEMPLATE_PAGES['educationca.html']  = 'educationca/index.html'
 TEMPLATE_PAGES['educationca.css']   = 'educationca.css'
 TEMPLATE_PAGES['educationca.js']    = 'educationca.js'
 TEMPLATE_PAGES['barchart_educationca.js'] = 'barchart_educationca.js'
+TEMPLATE_PAGES['textblock_educationca.js'] = 'textblock_educationca.js'
 
 TEMPLATE_PAGES['buttons.html']  = 'buttons/index.html'
 TEMPLATE_PAGES['buttons.js']    = 'buttons.js'
