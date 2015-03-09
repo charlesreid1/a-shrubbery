@@ -39,7 +39,7 @@ $.ajax({
 
         ///////////////////////////
         // add bar chart
-        d3.select("#barchart")
+        d3.select('div[id="barchart"]')
           .datum(data.features)
             .call(columnChart(['name','Gender_Imbalance'],map_county,map_census)
               .width(500)
@@ -48,7 +48,44 @@ $.ajax({
               .x(function(d, i) { return d[xkey]; })
               .y(function(d, i) { return d[ykey]; }));
               */
+        
+
+        console.log("Creating bar chart legend");
+        var bcwidth = 350,
+            bcheight = 140;
+        var bclegend = d3.select('div[id="barchart"]').append("svg")
+            .attr("width",bcwidth)
+            .attr("height",bcheight);
+/*
+        // (these will be invisible, and are only
+        //  added to make the legend)
+        var bcg = bclegend.append("g")
+            .attr("class","ordinalkey")
+            .attr("transform","translate(0,0)");
+        bcg.selectAll("rect")
+            .data(gender_imbalance_categories.map(function(d){
+                return {
+                    name: d,
+                    positive: d[0]=='F',
+                    negative: d[0]=='M'
+                };
+            })
+            .enter().append("rect")
+            .attr("data-legend",function(d) { return d.name;})
+            .attr("data-legend-pos",function(d) { return d.name;})
+            .classed('positive',function(d) { return d.positive; })
+            .classed('negative',function(d) { return d.negative; })
+            .style("opacity","0.0");
+*/
+        //var legend = svg.append("g")
+        //  .attr("class","ordinalkey")
+        //  .attr("transform","translate("+ordinalcolor_xpos+","+ordinalcolor_ypos+")")
+        //  .style("font-size","12px")
+        //  .style("font-color","#000")
+        //  .call(d3.legend);
+
         /////////////////////////
+
     }
 });
 
@@ -202,6 +239,11 @@ var categoriesEducationScale = d3.scale.ordinal()
             grays[4]]);
 
 
+
+
+
+gender_imbalance_categories = ['Females better-educated than males (on average)',
+                               'Males better-educated than females (on average)'];
 
 
 ///////////////////////////////

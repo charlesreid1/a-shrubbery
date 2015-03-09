@@ -2,9 +2,15 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
+from util import *
+
+SITEURL = ''
+
 AUTHOR = u'charlesreid1'
 SITENAME = u'A Shrubbery'
 #SITEURL = '/a-shrubbery'
+
+make_common_js('maps/common.js',SITEURL)
 
 PATH = 'content'
 

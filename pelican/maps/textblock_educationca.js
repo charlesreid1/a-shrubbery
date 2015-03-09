@@ -39,7 +39,6 @@ d3.textBlock = function() {
             // first append text to svg:g
             var t = element.append("text")
                 .text(labelvar) // here we set the label property on the text element
-                .text("stuff")
                 .attr("dominant-baseline", "central"); // vertically centered
             // get the bounding box of the just created text element
             var bb = t[0][0].getBBox();
