@@ -99,3 +99,44 @@ svg {
   stroke: #000;
   shape-rendering: crispEdges;
 }
+
+
+/*
+///////////////////////////
+via http://jsfiddle.net/jcc5srs3/6/
+*/
+
+
+.chart rect {
+  stroke: white;
+  fill-opacity: .6;
+  fill: steelblue;
+}
+
+.bar.positive {
+  fill: #e4778a;
+}
+
+.bar.negative {
+  fill: #5b77a0;
+}
+
+.bar:hover, .bar.active, .bar.selected {
+  stroke: #000;
+  weight: 1.0;
+}
+
+.bar:hover, .bar.active {
+  fill: green;
+}
+
+
+
+
+.bar.x.axis path {
+    stroke: none;
+}
+
+.bar.x.axis.zero path {
+    stroke: #000;
+}
