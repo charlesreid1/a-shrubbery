@@ -154,12 +154,10 @@ function doClick() {
     geoj.eachLayer(function(layer) {
 
         that_layer_id = layer._leaflet_id;
-        var options = layer['options'];
-
 
         if( this_layer_id==that_layer_id ) {
 
-            var that_layer = layer['_layers'][that_layer_id]
+            var that_layer = layer['_map']['_layers'][that_layer_id]
             var options = that_layer['options'];
 
             if(options['fillColor']){
