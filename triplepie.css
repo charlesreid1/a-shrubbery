@@ -3,8 +3,7 @@
 }
 
 #map {
-    width: 450px;
-    height: 550px;
+    width: 100%;
 }
 
 .activecounty {
@@ -12,11 +11,9 @@
 }
 
 body {
+    /*
   font: 12px sans-serif;
-}
-
-p.normal {
-    font: 14px;
+  */
 }
 
 .arc path {
@@ -39,4 +36,23 @@ polyline{
     stroke: black;
     stroke-width: 2px;
     fill: none;
+}
+
+
+/*
+floating "keep reading" button
+*/
+.floating-button {
+  position: fixed;
+  width: 75%;
+  bottom: 30px;
+  height: 60px;
+  background-color: none;
+}
+.fa-caret-down {
+    opacity: 0.35;
+}
+
+p.center {
+    text-align: center;
 }

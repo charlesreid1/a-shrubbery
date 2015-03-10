@@ -1,3 +1,4 @@
+// prefix defined in common.js
 
 // create the map, assign to the map div, and set it's lat, long, and zoom level (12)
 var m = L.map('map').setView([38, -118], 6);
@@ -43,5 +44,4 @@ function enhanceLayer(f,l){
 }
 
 
-var prefix = "http://charlesreid1.github.io/a-shrubbery/";
 var geoj = new L.geoJson.ajax(prefix+"carandom.geojson",{onEachFeature:enhanceLayer}).addTo(m);

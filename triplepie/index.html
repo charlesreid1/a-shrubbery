@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,8 +46,11 @@
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 
-	 <!-- load my style sheet -->
-     <link rel="stylesheet" type="text/css" href="/a-shrubbery/mapstyles.css">
+	<!-- load my style sheet -->
+    <link rel="stylesheet" type="text/css" href="/a-shrubbery/mapstyles.css">
+
+	<!-- load common vars -->
+    <script src="/a-shrubbery/common.js"></script>
 
     <!-- end map header -->
 
@@ -126,24 +130,27 @@
         <!--
         <h1>A Shrubbery&nbsp;<i class="fa fa-leaf"></i></h1>
         -->
-        <p>Building a page of map leaflets using Leaflet.js</p>
+        <p>Building a page of map leaflets using Leaflet.js and D3.js</p>
         <p><a class="btn btn-info btn-lg btn-large" 
             href="/a-shrubbery/about.html" role="button">Learn More About It &nbsp;&nbsp;&nbsp; <i class="fa fa-arrow-circle-right"></i></a></p>
     </div>
 </div>
 
 
-<div class="container">
+<div class="container" id="bodycontainer">
 
 
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 <link href="/a-shrubbery/triplepie.css" rel="stylesheet" type="text/css" >
 
-<h1>Commute Method by Povery Status</h1>
+<h1>California</h1>
 
-<p class="normal">This county-by-county map of California is clickable - try selecting a county.
+<h2>Commute Method by Povery Status for California Counties</h2>
 
-<p class="normal">The pie chart to the right displays the method of commuting to work for people 
+<p>This county-by-county map of California is clickable - try selecting a county.
+
+<p>The pie chart to the right displays the method of commuting to work for people 
 living under the poverty line. 
 </p>
 
@@ -152,32 +159,115 @@ living under the poverty line.
 
 <div class="row">
 
-    <div class="col-md-5">
+    <div class="col-md-6">
         <h3>Select a County:</h3>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
         <div id="map"></div>
+        <br />
+        <br />
+        <p><b>Footnote 1</b>:<br /> 
+        Commuter population is indicated by <i class="fa fa-child"></i>.
+        One additional person indicates an increase in number of commuters
+        of one order of magnitude. 
+        The people icons <i class="fa fa-child"></i> are 
+        logarithmic!</p>
+        <br/>
+        <p>The basis is the smallest county, Alpine County, 
+        which has about 500 commuters. Since log(500) is 
+        about 6, we can subtract 5 from the log of every county's 
+        commuter population, and this gives us a good indicator, starting at 
+        1, of the order of magnitude of that county's commuter population.
+        </p>
+        <p>Turn <i class="fa fa-child"></i> into commuter populations with the formula: 
+        </p>
+        <p>Commuter Population = exp( 5 + <i class="fa fa-child"></i> )
+        </p>
+        <p>While rounding logs leads to gross errors, like San Bernadino
+        County getting 9 people, for a commuter population of exp(5 + 9) ~ 1.2 M,
+        which is way off from its actual commuter population of 0.7 M, but is closer 
+        to 1.2 M (logarithmically speaking) than the next lowest interval, 
+        which is exp(5 + 8) ~ 0.4 M, in the end we must live with such 
+        approximations to have, in return, the convenience of digesting in a 
+        single glance such an immense amount of information.
+        </p>
+        <p>This is a good illustration of the problem of commuter population
+        data and how multiscale it is: if we had one person represent
+        a thousand people, Los Angeles County might require multiple 
+        pages of little people. 
+        </p>
+
+        <img src="/a-shrubbery/images/xkcd_logscale.png" width="400px">
+
+        <div class="well" style="font-size: 10px;">
+            <h3>Key</h3>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i> = ~ 1,000 = ~ exp(5+2)
+            </p>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i>
+               <i class="fa fa-child" style="font-size: 16px;"></i>
+               <i class="fa fa-child" style="font-size: 24px;"></i> = ~ 8,000 = ~ exp(5+4)
+            </p>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i>
+               <i class="fa fa-child" style="font-size: 16px;"></i>
+               <i class="fa fa-child" style="font-size: 22px;"></i> 
+               <i class="fa fa-child" style="font-size: 30px;"></i>
+               <i class="fa fa-child" style="font-size: 40px;"></i> = ~ 60,000 = ~ exp(5+6)
+            </p>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i>
+               <i class="fa fa-child" style="font-size: 16px;"></i>
+               <i class="fa fa-child" style="font-size: 22px;"></i> 
+               <i class="fa fa-child" style="font-size: 30px;"></i>
+               <i class="fa fa-child" style="font-size: 40px;"></i> 
+               <i class="fa fa-child" style="font-size: 52px;"></i>
+               <i class="fa fa-child" style="font-size: 66px;"></i> = ~ 400,000 = ~ exp(5+8)
+            </p>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i>
+               <i class="fa fa-child" style="font-size: 16px;"></i>
+               <i class="fa fa-child" style="font-size: 22px;"></i> 
+               <i class="fa fa-child" style="font-size: 30px;"></i>
+               <i class="fa fa-child" style="font-size: 40px;"></i> 
+               <i class="fa fa-child" style="font-size: 52px;"></i>
+               <i class="fa fa-child" style="font-size: 66px;"></i> 
+               <i class="fa fa-child" style="font-size: 82px;"></i> = ~ 1,200,000 = ~ exp(5+9)
+            </p>
+            <p><i class="fa fa-child" style="font-size: 10px;"></i>
+               <i class="fa fa-child" style="font-size: 12px;"></i>
+               <i class="fa fa-child" style="font-size: 16px;"></i>
+               <i class="fa fa-child" style="font-size: 22px;"></i> 
+               <i class="fa fa-child" style="font-size: 30px;"></i>
+               <i class="fa fa-child" style="font-size: 40px;"></i> 
+               <i class="fa fa-child" style="font-size: 52px;"></i>
+               <i class="fa fa-child" style="font-size: 66px;"></i>
+               <i class="fa fa-child" style="font-size: 82px;"></i> 
+               <i class="fa fa-child" style="font-size:100px;"></i> = ~ 3,200,000 = ~ exp(5+10)
+            </p>
+        </div>
+
     </div>
 
-    <div class="col-md-5">
+    <div class="col-md-6">
         <h3><div class="county">County: </div></h3>
-            <div class="cont container1">
-                <center><h3><b>Below Poverty Line</b></h3></center>
-                <div class="graph1"></div> 
-            </div>
-            <div class="cont container2">
-                <center><h3><b>At Poverty Line</b></h3></center>
-                <div class="graph2"></div>
-            </div>
-            <div class="cont container3">
-                <center><h3><b>Above Poverty Line</b></h3></center>
-                <div class="graph3"></div>
-            </div>
+
+        <h3>Commuter Population<sup>1</sup>: <span class="population"></span></h3>
+
+        <div class="cont container1">
+            <center><h3><b>Below Poverty Line</b></h3></center>
+            <div class="graph1"></div> 
+        </div>
+        <div class="cont container2">
+            <center><h3><b>At Poverty Line</b></h3></center>
+            <div class="graph2"></div>
+        </div>
+        <div class="cont container3">
+            <center><h3><b>Above Poverty Line</b></h3></center>
+            <div class="graph3"></div>
+        </div>
     </div>
 
 </div>
-
-
 
 
 <script src="/a-shrubbery/theme/js/leaflet.ajax.min.js" type="text/javascript"></script>

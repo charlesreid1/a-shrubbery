@@ -1,3 +1,5 @@
+// prefix defined in common.js
+//
 var width = 800,
     height = 600;
 
@@ -14,11 +16,6 @@ var svg = d3.select("div.map").append("svg")
     .attr("height", height);
 
 
-// This is a hack.
-// If running locally, change prefix to /
-// Otherwise, keep a-shrubbery
-var prefix = "http://charlesreid1.github.io/a-shrubbery/";
-//var prefix = "/";
 
 d3.json(prefix+"d3basicmap.json", function(error, ca) {
 
