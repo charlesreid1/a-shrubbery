@@ -116,6 +116,7 @@ function doClick() {
 
     these_layer_ids = Object.keys(this._leaflet_id);
 
+    console.log(this);
     console.log(these_layer_ids);
 
 
