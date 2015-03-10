@@ -129,6 +129,7 @@ function doClick() {
 
         that_layer_id = layer._leaflet_id;
 
+        console.log(layer);
         var that_layer = layer['_layers'][that_layer_id]
         var options = that_layer['options'];
 
