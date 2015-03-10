@@ -159,6 +159,8 @@ function doClick() {
 
             these_layer_ids.forEach( function(this_layer_id) {
 
+                console.log(this_layer_id);
+
                 those_layer_ids.forEach( function(that_layer_id) {
 
                     //console.log("this_layer_id = "+this_layer_id);
@@ -228,19 +230,6 @@ function doClick() {
             //
             // do this by getting layers and removing them
             map_census.eachLayer(function(layer){
-                //if(layer._tiles){
-                //    var a = 0;
-                ////} else if( d._popup ) {
-                ////    var a = 0;
-                //} else {
-                //    //console.log(d['_features']['properties']['name']);
-                //    //console.log(d);
-                //}
-
-                //d['_layers'].each(function(d2){
-                //    d2.remove();
-                //});
-                //layer.removeLayer(map_census);
                 if(layer._tiles) {
                     var a = 0;
                 } else {
