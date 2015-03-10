@@ -127,7 +127,7 @@ function doClick() {
     // First, make sure no counties are red.
     // Restore any previously red counties
     // to their original color.
-    basemapViewer.eachLayer(function(layer) {
+    geoj.eachLayer(function(layer) {
 
         // get leaflet ids for every shape in this county's layer
         console.log(layer);
