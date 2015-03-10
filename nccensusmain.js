@@ -127,7 +127,8 @@ function doClick() {
     // to their original color.
     geoj.eachLayer(function(layer) {
 
-        console.log(layer);
+        that_layer_id = layer._leaflet_id;
+        console.log(that_layer_id);
 
         // for each shape making up this county,
         those_layer_ids.forEach( function(that_layer_id) {
