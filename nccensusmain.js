@@ -118,11 +118,11 @@ function doClick() {
     // this used to work, I don't know why it doesn't anymore:
     //these_layer_ids = Object.keys(this._layers);
 
-    these_layer_ids = [this._leaflet_id];
+    these_layer_ids = this._leaflet_id;
 
     //console.log(this);
     //console.log(this._leaflet_id);
-
+    console.log(geoj);
 
     // First, make sure no counties are red.
     // Restore any previously red counties
