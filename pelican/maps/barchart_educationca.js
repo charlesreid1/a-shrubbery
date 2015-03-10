@@ -167,6 +167,27 @@ function columnChart(k,mycountymap,mycensusmap) {
           .call(yAxis);
             
       });
+
+
+      // add textblock with instructions
+      var svg = d3.select("#barchart").selectAll("svg"),
+          xshft = 100,
+          yshft = 100,
+          tb = d3.textBlock().label('Click a county on the left or a bar on the chart to begin.');
+
+      var item = svg.selectAll("rect.lab")
+          .data([0])
+          .enter();
+
+      svg.selectAll("g.lab")
+          item.append("g")
+          .attr("transform",function(d) {
+              return "translate("+xshft+","+yshft+")";
+          })
+      .classed({'lab':true})
+          .attr("width",100)
+          .attr("height",100)
+          .call(tb);
     }
 
 
