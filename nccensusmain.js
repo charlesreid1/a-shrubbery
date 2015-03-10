@@ -118,7 +118,7 @@ function doClick() {
     // this used to work, I don't know why it doesn't anymore:
     //these_layer_ids = Object.keys(this._layers);
 
-    these_layer_ids = this._leaflet_id;
+    this_layer_id = this._leaflet_id;
 
     //console.log(geoj);
 
@@ -161,43 +161,40 @@ function doClick() {
         
         if( layer['_options'] ){
 
-            these_layer_ids.forEach( function(this_layer_id) {
+            those_layer_ids.forEach( function(that_layer_id) {
 
-                those_layer_ids.forEach( function(that_layer_id) {
+                //console.log("this_layer_id = "+this_layer_id);
+                //console.log("that_layer_id = "+that_layer_id);
 
-                    //console.log("this_layer_id = "+this_layer_id);
-                    //console.log("that_layer_id = "+that_layer_id);
+                // these_layer_ids usually has one element,
+                // unless a county has two non-continguous parts.
+                //
+                if( this_layer_id==that_layer_id ) {
 
-                    // these_layer_ids usually has one element,
-                    // unless a county has two non-continguous parts.
-                    //
-                    if( this_layer_id==that_layer_id ) {
+                    var that_layer = layer['_layers'][that_layer_id]
+                    var options = that_layer['options'];
 
-                        var that_layer = layer['_layers'][that_layer_id]
-                        var options = that_layer['options'];
+                    if(options['fillColor']){
 
-                        if(options['fillColor']){
+                        // Get the county's current color.
+                        orig_fillColor = options['fillColor'];
 
-                            // Get the county's current color.
-                            orig_fillColor = options['fillColor'];
+                        // Check if county is already red.
+                        // If not, make it red.
+                        if( orig_fillColor===red) {
+                            var a=0;
 
-                            // Check if county is already red.
-                            // If not, make it red.
-                            if( orig_fillColor===red) {
-                                var a=0;
-
-                            } else {
-                                // set style to red 
-                                that_layer.setStyle({
-                                    'fillColor' : red,
-                                    'fillOpacity' : myThickFillOpacity,
-                                    'originalFillColor' : orig_fillColor
-                                });
-                            }
+                        } else {
+                            // set style to red 
+                            that_layer.setStyle({
+                                'fillColor' : red,
+                                'fillOpacity' : myThickFillOpacity,
+                                'originalFillColor' : orig_fillColor
+                            });
                         }
+                    }
 
-                    } 
-                });
+                } 
             });
         }
     });
