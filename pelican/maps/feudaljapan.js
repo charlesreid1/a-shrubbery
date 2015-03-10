@@ -1,5 +1,6 @@
+console.log("Hello?");
 
-// create the map, assign to the mao div, and set it's lat, long, and zoom level (12)
+// create the map, assign to the map div, and set it's lat, long, and zoom level (12)
 // NYC
 var map = L.map('map').setView([40.59, 139.86], 5);
 
