@@ -114,9 +114,9 @@ function doClick() {
     // http://en.wikipedia.org/wiki/Carolina_blue
     red = '#56A0D3';
 
-    these_layer_ids = Object.keys(this._map._layers);
+    these_layer_ids = Object.keys(this._leaflet_id);
 
-    console.log(this);
+    console.log(these_layer_ids);
 
 
 
