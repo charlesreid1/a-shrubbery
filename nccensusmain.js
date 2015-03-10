@@ -128,27 +128,22 @@ function doClick() {
     geoj.eachLayer(function(layer) {
 
         that_layer_id = layer._leaflet_id;
-        console.log(that_layer_id);
 
-        // for each shape making up this county,
-        those_layer_ids.forEach( function(that_layer_id) {
+        var that_layer = layer['_layers'][that_layer_id]
+        var options = that_layer['options'];
 
-            var that_layer = layer['_layers'][that_layer_id]
-            var options = that_layer['options'];
-            
-            // Check if county is alrady red. 
-            // If so, make it un-red.
-            if(options['fillColor']){
-                // Get the county's current color.
-                orig_fillColor = options['fillColor'];
-                if(options['fillColor']===red) {
-                    that_layer.setStyle({
-                            'fillColor'   : options['originalFillColor'],
-                            'fillOpacity' : myFillOpacity
-                        });
-                }
+        // Check if county is alrady red. 
+        // If so, make it un-red.
+        if(options['fillColor']){
+            // Get the county's current color.
+            orig_fillColor = options['fillColor'];
+            if(options['fillColor']===red) {
+                that_layer.setStyle({
+                        'fillColor'   : options['originalFillColor'],
+                        'fillOpacity' : myFillOpacity
+                    });
             }
-        });
+        }
     });
 
 
