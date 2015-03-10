@@ -5,53 +5,9 @@ $("head").find('meta[name="viewport"]')
     .remove();
 
 
+// any census tracts with population < pop_limit 
+// are not displayed on the scatter plot
 var pop_limit = 40;
-
-////////////////////////////////////
-// County Map
-
-// Take care of county map first:
-//
-var zoomOrig = 5;
-var map_county = L.map('education_county').setView([37.7, -119.5], zoomOrig);
-
-var basemapViewer = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{ 
-    maxZoom: 18,
-    attribution: "Mapbox"
-}).addTo(map_county);
-
-
-
-// counties in california
-//rooturl = "http://api.censusreporter.org/1.0/geo/show/tiger2013?geo_ids=050|04000US37";
-var rooturl = prefix + "educationca.geo.json"
-
-// initialize empty GeoJson
-var geoj = L.geoJson(false, {
-        onEachFeature: onEachCounty
-    }).addTo(map_county);
-
-$.ajax({
-    type: "GET",
-    url: rooturl,
-    success: function (data) {
-        geoj.addData(data);
-
-        ///////////////////////////
-        // add bar chart
-        d3.select("#barchart")
-          .datum(data.features)
-            .call(columnChart(['name','Gender_Imbalance'],map_county,map_census)
-              .width(500)
-              .height(500));
-                /*
-              .x(function(d, i) { return d[xkey]; })
-              .y(function(d, i) { return d[ykey]; }));
-              */
-        /////////////////////////
-    }
-});
-
 
 
 
@@ -203,6 +159,112 @@ var categoriesEducationScale = d3.scale.ordinal()
 
 
 
+gender_imbalance_categories = ['Females better-educated than males (on average)',
+                               'Males better-educated than females (on average)'];
+var gender_imbalance_scale = d3.scale.ordinal()
+    .domain(gender_imbalance_categories)
+    .range(['#e4778a','#5b77a0']);
+
+
+
+
+////////////////////////////////////
+// County Map
+
+// Take care of county map first:
+//
+var zoomOrig = 5;
+var map_county = L.map('education_county').setView([37.7, -119.5], zoomOrig);
+
+var basemapViewer = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{ 
+    maxZoom: 18,
+    attribution: "Mapbox"
+}).addTo(map_county);
+
+
+
+// counties in california
+//rooturl = "http://api.censusreporter.org/1.0/geo/show/tiger2013?geo_ids=050|04000US37";
+var rooturl = prefix + "educationca.geo.json"
+
+// initialize empty GeoJson
+var geoj = L.geoJson(false, {
+        onEachFeature: onEachCounty
+    }).addTo(map_county);
+
+
+
+////////////////////////
+// add bar chart legend
+//
+
+var barlegendw = 400,
+    barlegendh = 140;
+var bclegend_xpos = 80,
+    bclegend_ypos = 100;
+
+var bcsvg= d3.select('div[id="barchartscale"]').append("svg")
+    .attr("width", barlegendw)
+    .attr("height",barlegendh);
+
+var g2 = bcsvg.append("g")
+    .attr("class", "ordinalkey")
+    .attr("transform", "translate(0,0)");
+
+// shape for each discrete ordinal value
+// (these will be invisible, and are only
+//  added to make the legend)
+g2.selectAll("rect")
+    .data(gender_imbalance_scale.domain().map(function(d, i) {
+        return {
+            name: d,
+            color: gender_imbalance_scale(d)
+        };
+    }))
+    .enter().append("rect") /*.attr("d",function(d) { return d.name; })*/
+    .attr("data-legend",function(d) { return d.name;})
+    .attr("class", "ordinalkey")
+    .style("opacity","0.0")
+    .style("fill", function(d) { return d.color; });
+
+var legend = bcsvg.append("g")
+  .attr("class","ordinalkey")
+  .attr("transform","translate("+bclegend_xpos+","+bclegend_ypos+")")
+  .style("font-size","12px")
+  .style("font-color","#000")
+  .call(d3.spacedlegend);
+
+
+/////////////////////////
+// now make the bar chart
+// by calling columnChart
+
+$.ajax({
+    type: "GET",
+    url: rooturl,
+    success: function (data) {
+        geoj.addData(data);
+
+        ///////////////////////////
+        // add bar chart
+        var barw = 450,
+            barh = 420;
+
+        d3.select('div[id="barchart"]')
+          .datum(data.features)
+            .call(columnChart(['name','Gender_Imbalance'],map_county,map_census)
+              .width(barw)
+              .height(barh));
+
+
+        /////////////////////////
+
+    }
+});
+
+
+
+
 
 ///////////////////////////////
 // Decorate each county 
@@ -242,13 +304,15 @@ function onEachCounty(f, l) {
         //    out.push(key+": "+f.properties[key]);
         //}
         //l.bindPopup(out.join("<br />"));
-        var out = "";
-        out += "Name: "+f.properties['name']+"<br />";
-        out += "GeoID: "+f.properties['geoid']+"<br />";
-        out += "Total Ed Mean: "+f.properties['Total_Ed_Mean']+"<br />";
-        out += "Total Ed Var: "+f.properties['Total_Ed_Var']+"<br />";
-        out += "Total: "+f.properties['Total_Total'];
-        l.bindPopup(out);
+
+
+        //var out = "";
+        //out += "Name: "+f.properties['name']+"<br />";
+        //out += "GeoID: "+f.properties['geoid']+"<br />";
+        //out += "Total Ed Mean: "+f.properties['Total_Ed_Mean']+"<br />";
+        //out += "Total Ed Var: "+f.properties['Total_Ed_Var']+"<br />";
+        //out += "Total: "+f.properties['Total_Total'];
+        //l.bindPopup(out);
     }
 }
 
@@ -796,13 +860,15 @@ function onEachCensusFeature(f, l) {
         //    out.push(key+": "+f.properties[key]);
         //}
         //l.bindPopup(out.join("<br />"));
-        var out = "";
-        out += "Name: "+f.properties['name']+"<br />";
-        out += "GeoID: "+f.properties['geoid']+"<br />";
-        out += "Total Ed Mean: "+f.properties['Total_Ed_Mean']+"<br />";
-        out += "Total Ed Var: "+f.properties['Total_Ed_Var']+"<br />";
-        out += "Total: "+f.properties['Total_Total'];
-        l.bindPopup(out);
+
+
+        //var out = "";
+        //out += "Name: "+f.properties['name']+"<br />";
+        //out += "GeoID: "+f.properties['geoid']+"<br />";
+        //out += "Total Ed Mean: "+f.properties['Total_Ed_Mean']+"<br />";
+        //out += "Total Ed Var: "+f.properties['Total_Ed_Var']+"<br />";
+        //out += "Total: "+f.properties['Total_Total'];
+        //l.bindPopup(out);
     }
 }
 

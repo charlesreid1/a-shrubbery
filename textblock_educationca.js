@@ -70,4 +70,3 @@ d3.textBlock = function() {
 
     return my;
 }
-
