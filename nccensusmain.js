@@ -120,6 +120,9 @@ function doClick() {
 
     these_layer_ids = [this._leaflet_id];
 
+    console.log(this);
+    console.log(this._leaflet_id);
+
 
     // First, make sure no counties are red.
     // Restore any previously red counties
