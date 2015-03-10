@@ -120,18 +120,14 @@ function doClick() {
 
     these_layer_ids = this._leaflet_id;
 
-    //console.log(this);
-    //console.log(this._leaflet_id);
-    console.log(geoj);
+    //console.log(geoj);
 
     // First, make sure no counties are red.
     // Restore any previously red counties
     // to their original color.
     geoj.eachLayer(function(layer) {
 
-        // get leaflet ids for every shape in this county's layer
         console.log(layer);
-        those_layer_ids = Object.keys(layer._layers);
 
         // for each shape making up this county,
         those_layer_ids.forEach( function(that_layer_id) {
