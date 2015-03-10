@@ -114,11 +114,11 @@ function doClick() {
     // http://en.wikipedia.org/wiki/Carolina_blue
     red = '#56A0D3';
 
-    these_layer_ids = Object.keys(this._leaflet_id);
 
-    console.log(this);
-    console.log(these_layer_ids);
+    // this used to work, I don't know why it doesn't anymore:
+    //these_layer_ids = Object.keys(this._layers);
 
+    these_layer_ids = [this._leaflet_id];
 
 
     // First, make sure no counties are red.
