@@ -116,7 +116,7 @@ function doClick() {
 
     these_layer_ids = Object.keys(this._map._layers);
 
-    console.log(these_layer_ids);
+    console.log(this);
 
 
 
