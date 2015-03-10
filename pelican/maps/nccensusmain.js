@@ -104,6 +104,7 @@ function doMouseOut() {
 function doClick() {
 
     var county = this.feature.properties.name;
+    var geo_id = this.feature.properties.geoid;
 
     var $tooltip = $('.county');
     $tooltip.text("County: "+county).show();
@@ -113,37 +114,34 @@ function doClick() {
     // http://en.wikipedia.org/wiki/Carolina_blue
     red = '#56A0D3';
 
-    these_layer_ids = Object.keys(this._layers);
 
+    // this used to work, I don't know why it doesn't anymore:
+    //these_layer_ids = Object.keys(this._layers);
 
+    this_layer_id = this._leaflet_id;
 
     // First, make sure no counties are red.
     // Restore any previously red counties
     // to their original color.
     geoj.eachLayer(function(layer) {
 
-        // get leaflet ids for every shape in this county's layer
-        those_layer_ids = Object.keys(layer._layers);
+        that_layer_id = layer._leaflet_id;
 
-        // for each shape making up this county,
-        those_layer_ids.forEach( function(that_layer_id) {
+        var that_layer = layer['_map']['_layers'][that_layer_id]
+        var options = that_layer['options'];
 
-            var that_layer = layer['_layers'][that_layer_id]
-            var options = that_layer['options'];
-            
-            // Check if county is alrady red. 
-            // If so, make it un-red.
-            if(options['fillColor']){
-                // Get the county's current color.
-                orig_fillColor = options['fillColor'];
-                if(options['fillColor']===red) {
-                    that_layer.setStyle({
-                            'fillColor'   : options['originalFillColor'],
-                            'fillOpacity' : myFillOpacity
-                        });
-                }
+        // Check if county is alrady red. 
+        // If so, make it un-red.
+        if(options['fillColor']){
+            // Get the county's current color.
+            orig_fillColor = options['fillColor'];
+            if(options['fillColor']===red) {
+                that_layer.setStyle({
+                        'fillColor'   : options['originalFillColor'],
+                        'fillOpacity' : myFillOpacity
+                    });
             }
-        });
+        }
     });
 
 
@@ -153,49 +151,34 @@ function doClick() {
     // so we need to use var these_layer_ids
     geoj.eachLayer(function(layer) {
 
-        those_layer_ids = Object.keys(layer._layers);
-        
-        if( layer['_options'] ){
+        that_layer_id = layer._leaflet_id;
 
-            these_layer_ids.forEach( function(this_layer_id) {
+        if( this_layer_id==that_layer_id ) {
 
-                those_layer_ids.forEach( function(that_layer_id) {
+            var that_layer = layer['_map']['_layers'][that_layer_id]
+            var options = that_layer['options'];
 
-                    //console.log("this_layer_id = "+this_layer_id);
-                    //console.log("that_layer_id = "+that_layer_id);
+            if(options['fillColor']){
 
-                    // these_layer_ids usually has one element,
-                    // unless a county has two non-continguous parts.
-                    //
-                    if( this_layer_id==that_layer_id ) {
+                // Get the county's current color.
+                orig_fillColor = options['fillColor'];
 
-                        var that_layer = layer['_layers'][that_layer_id]
-                        var options = that_layer['options'];
+                // Check if county is already red.
+                // If not, make it red.
+                if( orig_fillColor===red) {
+                    var a=0;
 
-                        if(options['fillColor']){
+                } else {
+                    // set style to red 
+                    that_layer.setStyle({
+                        'fillColor' : red,
+                        'fillOpacity' : myThickFillOpacity,
+                        'originalFillColor' : orig_fillColor
+                    });
+                }
+            }
 
-                            // Get the county's current color.
-                            orig_fillColor = options['fillColor'];
-
-                            // Check if county is already red.
-                            // If not, make it red.
-                            if( orig_fillColor===red) {
-                                var a=0;
-
-                            } else {
-                                // set style to red 
-                                that_layer.setStyle({
-                                    'fillColor' : red,
-                                    'fillOpacity' : myThickFillOpacity,
-                                    'originalFillColor' : orig_fillColor
-                                });
-                            }
-                        }
-
-                    } 
-                });
-            });
-        }
+        } 
     });
 
 
@@ -228,19 +211,6 @@ function doClick() {
             //
             // do this by getting layers and removing them
             map_census.eachLayer(function(layer){
-                //if(layer._tiles){
-                //    var a = 0;
-                ////} else if( d._popup ) {
-                ////    var a = 0;
-                //} else {
-                //    //console.log(d['_features']['properties']['name']);
-                //    //console.log(d);
-                //}
-
-                //d['_layers'].each(function(d2){
-                //    d2.remove();
-                //});
-                //layer.removeLayer(map_census);
                 if(layer._tiles) {
                     var a = 0;
                 } else {
