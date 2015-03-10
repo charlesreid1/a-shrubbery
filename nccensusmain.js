@@ -130,6 +130,7 @@ function doClick() {
     geoj.eachLayer(function(layer) {
 
         // get leaflet ids for every shape in this county's layer
+        console.log(layer);
         those_layer_ids = Object.keys(layer._layers);
 
         // for each shape making up this county,
