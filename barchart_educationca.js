@@ -30,7 +30,7 @@ function columnChart(k,mycountymap,mycensusmap) {
         geoidValue = function(d) { return d[geoidkey]; },
         xScale = d3.scale.ordinal(),
         yScale = d3.scale.linear(),
-        yAxis = d3.svg.axis().scale(yScale).orient("left").tickFormat(function9d) { return Math.round(d) + "%";}),
+        yAxis = d3.svg.axis().scale(yScale).orient("left").tickFormat(function(d) { return Math.round(d) + "%"; }),
         xAxis = d3.svg.axis().scale(xScale);
 
 
