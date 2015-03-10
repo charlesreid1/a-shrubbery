@@ -113,6 +113,8 @@ function doClick() {
     // http://en.wikipedia.org/wiki/Carolina_blue
     red = '#56A0D3';
 
+    console.log(this);
+
     these_layer_ids = Object.keys(this._layers);
 
 
@@ -158,8 +160,6 @@ function doClick() {
         if( layer['_options'] ){
 
             these_layer_ids.forEach( function(this_layer_id) {
-
-                console.log(this_layer_id);
 
                 those_layer_ids.forEach( function(that_layer_id) {
 
