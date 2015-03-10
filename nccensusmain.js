@@ -104,6 +104,7 @@ function doMouseOut() {
 function doClick() {
 
     var county = this.feature.properties.name;
+    var geo_id = this.feature.properties.geoid;
 
     var $tooltip = $('.county');
     $tooltip.text("County: "+county).show();
@@ -113,9 +114,9 @@ function doClick() {
     // http://en.wikipedia.org/wiki/Carolina_blue
     red = '#56A0D3';
 
-    console.log(this);
+    these_layer_ids = Object.keys(this._map._layers);
 
-    these_layer_ids = Object.keys(this._layers);
+    console.log(these_layer_ids);
 
 
 
