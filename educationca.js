@@ -744,7 +744,13 @@ function doCountyClick() {
                     }
                 })
                 .attr("fill",function(d) {
-                    return greenColor(Math.random());
+                    if(d.properties['Gender_Imbalance']>0) {
+                        return gender_imbalance_scale.range()[0];
+                    } else if(d.properties['Gender_Imbalance']<0) {
+                        return gender_imbalance_scale.range()[1];
+                    } else {
+                        return '';
+                    }
                 })
                 .on("mouseover",doScatterMouseOver)
                 .on("mouseout", doScatterMouseOut)
