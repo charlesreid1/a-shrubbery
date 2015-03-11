@@ -120,8 +120,6 @@ function doClick() {
 
     this_layer_id = this._leaflet_id;
 
-    //console.log(geoj);
-
     // First, make sure no counties are red.
     // Restore any previously red counties
     // to their original color.

@@ -21,7 +21,7 @@ function columnChart(k,mycountymap,mycensusmap) {
     var xkey = k[0],
         ykey = k[1];
     var geoidkey = 'geoid';
-    var margin = {top: 30, right: 10, bottom: 50, left: 50},
+    var margin = {top: 30, right: 10, bottom: 50, left: 60},
         width = 10,
         height = 10,
         xRoundBands = 0.1,
@@ -35,6 +35,7 @@ function columnChart(k,mycountymap,mycensusmap) {
 
 
     function chart(selection) {
+
       selection.each(function(data) {
 
         // if we sort, 
@@ -169,6 +170,24 @@ function columnChart(k,mycountymap,mycensusmap) {
       });
 
 
+
+      // Axis labels
+      var svg = d3.select("#barchart").selectAll("svg");
+
+      var yax_label = "Percent Difference in Mean Education Levels by Gender";
+      var yax_xloc = 0 - (height/2);
+      var yax_yloc = 0;//margin['left'];
+      svg.append("text")
+          .attr("class", "axislabel")
+          .attr("id","yaxislabel")
+          .attr("text-anchor", "middle")
+          .attr("x",yax_xloc)
+          .attr("y",yax_yloc)
+          .attr("dy", "1em")
+          .attr("transform", "rotate(-90)")
+          .text(yax_label);
+
+
       // add textblock with instructions
       var svg = d3.select("#barchart").selectAll("svg"),
           xshft = 100,
@@ -188,6 +207,7 @@ function columnChart(k,mycountymap,mycensusmap) {
           .attr("width",100)
           .attr("height",100)
           .call(tb);
+
     }
 
 
@@ -289,61 +309,12 @@ function columnChart(k,mycountymap,mycensusmap) {
         // --------------------------
         // Step 1-B: 
         // Add information about selected county
-        // to text box 
+        // to info box on bar chart
 
-        // Select the svg element, if it exists.
-        var svg = d3.select("#barchart").selectAll("svg");
-        
-        // calling textBlock() returns the function object textBlock().my
-        // via which we set the "label" property of the textBlock outer func
-        //var tb = d3.textBlock();
-        //var tb = d3.textBlock().label(function(d) {
-        //    return d.label;
-        //});
-        // First, remove old labels
-        svg.selectAll("g.lab").remove();
 
-        //
-        // d.properties is a single dict.
-        // we need to say [d.properties]
-        // instead of d.properties
-        //
-        print_pop  = function(z) { return "Name: "+z['name'] };
-        print_mean = function(z) { 
-            rounded = Math.round(z['Total_Ed_Mean']*100)/100;
-            lab = "Mean Education Level: "+rounded;
-            return lab;
-        };
-        print_var = function(z) {
-            rounded = Math.round(z['Total_Ed_Var']*100)/100;
-            lab = "Education Level Variance: "+rounded;
-            return lab;
-        };
-        print_gender = function(z) {
-           rounded = Math.round(z['Gender_Imbalance']*100)/100; 
-           lab = "Gender Imbalance: "+rounded;
-            return lab;
-        };
-        var print_functions = [print_pop,print_mean,print_var,print_gender];
-        var x_shifts = [200,200,200,200];
-        var y_shifts = [100,140,180,220];
-        var i = 0;
+        write_labels(d.properties)
 
-        var item = svg.selectAll("rect.lab")
-            .data([d.properties])
-            .enter();
 
-        print_functions.forEach(function(printfunction) {
-            var tb = d3.textBlock().label(printfunction);
-            item.append("g")
-                .attr("transform", function(d) { 
-                    return "translate("+x_shifts[i]+","+y_shifts[i]+")"; })
-                .classed({'lab':true})
-                .attr("width",100)
-                .attr("height",100)
-                .call(tb);
-            i = i + 1;
-        });
 
         // --------------------------
         // Step 2: 
@@ -673,9 +644,6 @@ function columnChart(k,mycountymap,mycensusmap) {
         });
     
     }
-
-
-
 
 
     // The x-accessor for the path generator; xScale ∘ xValue.
