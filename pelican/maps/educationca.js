@@ -506,7 +506,7 @@ function doCountyClick() {
 
 
     // -------------------------------------
-    // Step 2.5: Bar Chart
+    // Step 2.5-B
     //
     // Highlight the bar on the bar chart
     // corresponding to this county.
@@ -516,6 +516,13 @@ function doCountyClick() {
         .classed({'selected':false});
     d3.selectAll(".bar[geoid='"+this_geoid+"']")
         .classed({'selected':true});
+
+    // Step 2.5 C
+    //
+    // Update tooltip
+    //d3.select('div[id="barchart"]')
+    //    .call()
+    write_labels(this.feature.properties);
 
 
 
@@ -737,7 +744,13 @@ function doCountyClick() {
                     }
                 })
                 .attr("fill",function(d) {
-                    return greenColor(Math.random());
+                    if(d.properties['Gender_Imbalance']>0) {
+                        return gender_imbalance_scale.range()[0];
+                    } else if(d.properties['Gender_Imbalance']<0) {
+                        return gender_imbalance_scale.range()[1];
+                    } else {
+                        return '';
+                    }
                 })
                 .on("mouseover",doScatterMouseOver)
                 .on("mouseout", doScatterMouseOut)
