@@ -138,14 +138,44 @@
 
                 		<article>
 <header>
-      <h1 class="entry-title">Hello World</h1>
+      <h1 class="entry-title">Munging Census Data</h1>
     <p class="meta">
-<time datetime="2015-02-28T20:34:00-08:00" pubdate>Sat 28 February 2015</time>    </p>
+<time datetime="2015-03-10T20:34:00-07:00" pubdate>Tue 10 March 2015</time>    </p>
 </header>
 
 <p>===============================</p>
 
-  <div class="entry-content"><p>ohai</p></div>
+  <div class="entry-content"><p>Recently I put the finishing touches on my <a href="http://charlesreid1.github.io/a-shrubbery/educationca/">"California Education Levels by 
+Census Tract"</a> map. 
+This map is part of my project to learn D3 by creating 
+ten D3 charts.</p>
+<p>The first D3 chart+map that I completed was
+<a href="http://charlesreid1.github.io/a-shrubbery/triplepie">"Commute Methods by Poverty Status in California"</a>.</p>
+<p>I figured I would write up a post giving a rundown of the kind of 
+munging and processing of census data that is going on behind the 
+scenes to make this map. While I am not computing anything terribly
+fancy, you can imagine doing some much more intricate statistical
+analyses (as I plan to do) of the spatial data using more sophisticated
+algorithms.</p>
+<h2>The Census Data</h2>
+<p>We begin with the census data, which was obtained through the 
+Census Reporter API to US Census Bureau data. This makes all of the
+information in the Census available to everyone with a few key strokes.
+After overcoming my initial feelings of being completely 
+overwhelmed by how much data I had access to, I started
+searching for interesting-sounding tables of data with 
+keyword searches.</p>
+<p>I soon found table B15002, which was education level by gender
+for every census tract. THat meant it gave a breakdown of the 
+total population over 25 years of age considered; the male and 
+female populations of each category of education level; and a 
+wide range of different education levels specified.</p>
+<p>My first step was to reduce the number of categories of 
+education level to a 1-to-5 scale: 1 (less than high school)
+to 5 (Ph.D./medical school/law school). While this was 
+somewhat arbitrary, it was dome mainly to implement a 
+transform of the original data.</p>
+<p>(To be continued...)</p></div>
                 		</article>
             </div>
             <div class="well">
@@ -161,7 +191,7 @@
 <div id="blog-archives">
     <h3>Blog Archives:</h3>
     <ul>
-                    <li class="archive"><a href="/a-shrubbery/hello-world.html">Hello World</a></li>
+                    <li class="archive"><a href="/a-shrubbery/munging-census-data.html">Munging Census Data</a></li>
     </ul>
 </div>
         </div>
