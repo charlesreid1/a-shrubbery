@@ -369,8 +369,7 @@ var scattersvg = d3.select("div#scatterplot").append("svg")
 function doCountyMouseOver() {
     this.bringToFront();
     this.setStyle({
-        weight: 3,
-        fillOpacity:myMouseOverThickFillOpacity
+        weight: 3
     });
 
     var this_geoid = this.feature.properties['geoid'];
@@ -382,9 +381,7 @@ function doCountyMouseOver() {
 function doCountyMouseOut() {
     this.bringToBack();
     this.setStyle({
-        weight: 1,
-        opacity:myMouseOutFillOpacity,
-        fillOpacity:myMouseOutFillOpacity
+        weight: 1
     });
 
     var this_geoid = this.feature.properties['geoid'];
@@ -625,15 +622,8 @@ function doCountyClick() {
 
             // -------
             // 1. Remove the previous census tracts layer here
-            map_census.eachLayer(function(layer){
-                if(layer._tiles) {
-                    var a = 0;
-                } else {
-                    // this also removes census_geoj, 
-                    // i.e., the layer we're trying to add,
-                    // so we have to re-add it in a few lines...
-                    map_census.removeLayer(layer);
-                }
+            census_geoj.eachLayer(function(layer) {
+                census_geoj.removeLayer(layer);
             });
             census_geoj.addTo(map_census);
             census_geoj.addData(data);
@@ -1185,6 +1175,7 @@ function doCensusClick() {
 
     var this_geoid = this.feature.properties['geoid'];
     var this_leafletid = this._leaflet_id;
+
 
     census_geoj.eachLayer(function(layer){
 

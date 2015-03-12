@@ -129,14 +129,17 @@ via http://jsfiddle.net/jcc5srs3/6/
   fill: #5b77a0;
 }
 
-.bar:hover, .bar.active, .bar.selected {
-  stroke: #000;
+.bar:hover, .bar.active {
+  stroke: #222;
   weight: 1.0;
 }
 
-.bar:hover, .bar.active {
-  fill: green;
+.bar.selected {
+    stroke: #222;
+    weight: 2.0;
+    fill: green;
 }
+
 
 
 
