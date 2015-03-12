@@ -1650,7 +1650,7 @@ function doScatterMouseClick(d) {
                 if(options['fillColor']) {
                     // Get the county's current color.
                     orig_fillColor = options['fillColor'];
-                    if(options['fillColor']===red) {
+                    if(options['fillColor']===red3) {
                         layer.setStyle({
                                 'fillColor'   : options['originalFillColor'],
                                 'fillOpacity' : myFillOpacity
