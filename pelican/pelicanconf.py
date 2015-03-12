@@ -105,7 +105,7 @@ TEMPLATE_PAGES['nccensus3.js']   = 'nccensus3.js'
 TEMPLATE_PAGES['nccensusmain.js'] = 'nccensusmain.js'
 
 TEMPLATE_PAGES['educationaz.html']  = 'educationaz/index.html'
-TEMPLATE_PAGES['educationaz.js']    = 'educationaz.js'
+#TEMPLATE_PAGES['educationaz.js']    = 'educationaz.js'
 
 TEMPLATE_PAGES['educationca.html']  = 'educationca/index.html'
 TEMPLATE_PAGES['educationca.js']    = 'educationca.js'
@@ -121,15 +121,15 @@ TEMPLATE_PAGES['educationca.js']    = 'educationca.js'
 #
 #TEMPLATE_PAGES['educationut.html']  = 'educationut/index.html'
 #TEMPLATE_PAGES['educationut.js']    = 'educationut.js'
-#
-#TEMPLATE_PAGES['educationwa.html']  = 'educationwa/index.html'
-#TEMPLATE_PAGES['educationwa.js']    = 'educationwa.js'
 
+TEMPLATE_PAGES['educationwa.html']  = 'educationwa/index.html'
+
+TEMPLATE_PAGES['education.js']    = 'education.js'
 TEMPLATE_PAGES['education.css']   = 'education.css'
 
-TEMPLATE_PAGES['barchart_educationca.js'] = 'barchart_educationca.js'
-TEMPLATE_PAGES['textblock_educationca.js'] = 'textblock_educationca.js'
-TEMPLATE_PAGES['writelabels_educationca.js'] = 'writelabels_educationca.js'
+TEMPLATE_PAGES['barchart_education.js'] = 'barchart_education.js'
+TEMPLATE_PAGES['textblock_education.js'] = 'textblock_education.js'
+TEMPLATE_PAGES['writelabels_education.js'] = 'writelabels_education.js'
 
 TEMPLATE_PAGES['buttons.html']  = 'buttons/index.html'
 TEMPLATE_PAGES['buttons.js']    = 'buttons.js'
@@ -138,7 +138,8 @@ TEMPLATE_PAGES['buttons.js']    = 'buttons.js'
 
 # Add all the geojson for education maps
 geojson_paths = ["maps/educationca.geojson",
-                 "maps/educationaz.geojson"]
+                 "maps/educationaz.geojson",
+                 "maps/educationwa.geojson"]
 for geojson_path in geojson_paths:
     EXTRA_TEMPLATES_PATHS += [geojson_path]
     for f in os.listdir(geojson_path):

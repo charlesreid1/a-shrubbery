@@ -792,10 +792,10 @@ function doCountyClick() {
                 .attr("fill",function(d) {
                     if(d.properties['Gender_Imbalance']>0) {
                         return gender_imbalance_scale.range()[0];
-                    } else if(d.properties['Gender_Imbalance']<0) {
+                    } else if(d.properties['Gender_Imbalance']<=0) {
                         return gender_imbalance_scale.range()[1];
                     } else {
-                        return '';
+                        return gender_imbalance_scale.range()[1];
                     }
                 })
                 .on("mouseover",doScatterMouseOver)
