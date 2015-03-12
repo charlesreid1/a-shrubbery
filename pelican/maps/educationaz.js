@@ -1122,7 +1122,8 @@ d3.selection.prototype.moveToBack = function() {
 ///////////////////////////////////////////////////////////////
 // Link census tract map to D3 scatterplot
 
-function doCensusMouseOver() {
+function doCensusMouseOver(d) {
+
     this.bringToFront();
     this.setStyle({
         weight: 2.0,
@@ -1134,11 +1135,9 @@ function doCensusMouseOver() {
     // --------------------------
     // Add census tract circle outline 
     // make scatterplot dot active
-    d3.selectAll("circle[geoid='"+geo_id+"']")
+    d3.selectAll("circle[geoid='"+tract_geo_id+"']")
         .classed({'active':true,
-                  'inactive':false,
-                  'scattercircles':true})
-        .style("opacity",myMouseOverThickFillOpacity);
+                  'inactive':false});
 }
 
 function doCensusMouseOut() {
@@ -1154,13 +1153,9 @@ function doCensusMouseOut() {
 
     // --------------------------
     // make scatterplot dot inactive
-    d3.selectAll("circle[geoid='"+geo_id+"']")
+    d3.selectAll("circle[geoid='"+tract_geo_id+"']")
         .classed({'active':false,
-                  'inactive':true})
-        .style("opacity",function(z) {
-           return myMouseOverThickFillOpacity;
-        });
-
+                  'inactive':true});
 }
 
 
@@ -1294,7 +1289,7 @@ function doCensusClick() {
     // -------
     // Step 2A: remove hiliting
     // (restore original color from object's properties)
-    d3.selectAll("circle[fill='"+red2+"']")
+    d3.selectAll("circle.selected")
         .classed({"selected":false,
                   "notselected":true})
         .attr("fill",function(d) { 
@@ -1310,8 +1305,7 @@ function doCensusClick() {
     d3.selectAll("circle[geoid='"+tract_geo_id+"']")
         .each(function(d){
             d.properties['originalFill'] = this.attributes.fill.value;
-        });
-    d3.selectAll("circle[geoid='"+geo_id+"']")
+        })
         .classed({'active':true,
                   'inactive':false,
                   'selected':true,
@@ -1325,6 +1319,7 @@ function doCensusClick() {
 //
 //
 function doScatterMouseOver(d) {
+
     geo_id = d.properties['geoid'];
 
     // make scatterplot dot active
