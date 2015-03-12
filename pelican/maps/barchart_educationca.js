@@ -70,7 +70,11 @@ function columnChart(k,mycountymap,mycensusmap) {
             .domain(d3.extent(scale.map(function(s) { return s[1];} )))
             .range([height - margin.top - margin.bottom, 0])
             .nice();
-            
+
+        // expand the y domain a bit more
+        var ydom = yScale.domain();
+        ydom[1] = ydom[1]*1.4;
+        yScale.domain(ydom);
 
         // Select the svg element, if it exists.
         var svg = d3.select(this).selectAll("svg").data([data]);
@@ -279,12 +283,12 @@ function columnChart(k,mycountymap,mycensusmap) {
         // so highlight scatter plot point
         // then highlight corresponding census tract
     
-        // get leaflet layer based on geoid
-    
+        var red3 = '#df65b0';
+
         var tract  = d.properties.name;
         var geo_id = d.properties['geoid'];
 
-        red3 = '#df65b0';
+
 
 
         // --------------------------
@@ -310,8 +314,6 @@ function columnChart(k,mycountymap,mycensusmap) {
         // Step 1-B: 
         // Add information about selected county
         // to info box on bar chart
-
-
         write_labels(d.properties)
 
 
@@ -319,7 +321,59 @@ function columnChart(k,mycountymap,mycensusmap) {
         // --------------------------
         // Step 2: 
         // Highlight county on county map
-        //
+
+        var this_geoid = d.properties['geoid'];
+
+        geoj.eachLayer(function(layer) {
+            that_geoid = layer.feature.properties['geoid'];
+
+            options = layer['options'];
+
+            if(this_geoid==that_geoid) {
+
+                // ----------
+                // Make the county the user clicked red
+                if(options['fillColor']){
+
+                    // Get the county's current color.
+                    orig_fillColor = options['fillColor'];
+
+                    // Check if county is already red.
+                    // If not, make it red.
+                    if( orig_fillColor===red3) {
+                        var a=0;
+
+                    } else {
+                        // set style to red 
+                        layer.setStyle({
+                            'fillColor' : red3,
+                            'fillOpacity' : myThickFillOpacity,
+                            'originalFillColor' : orig_fillColor
+                        });
+                    }
+                }
+
+            } else {
+
+                // ----------
+                // Remove existing highlight
+                if(layer.options['fillColor']) {
+                    // Get the county's current color.
+                    orig_fillColor = options['fillColor'];
+                    if(options['fillColor']===red3) {
+                        layer.setStyle({
+                                'fillColor'   : options['originalFillColor'],
+                                'fillOpacity' : myFillOpacity
+                            });
+                    }
+                }
+
+            }
+
+        });
+
+
+        /*
         this_layer_id = d3.select(this).attr("leafletid");
         mycountymap.eachLayer(function(layer) {
     
@@ -353,6 +407,7 @@ function columnChart(k,mycountymap,mycensusmap) {
             }
     
         });
+        */
 
 
         // -------------------------------------
@@ -363,7 +418,7 @@ function columnChart(k,mycountymap,mycensusmap) {
         // and form that into a Census Reporter API URL.
 
         //censusurl = "http://api.censusreporter.org/1.0/geo/show/tiger2013?geo_ids=140|"+geo_id;
-        var censusurl = prefix + "educationca" + geo_id + ".geo.json";
+        var censusurl = prefix + "education" + st + geo_id + ".geo.json";
 
 
         // initialize empty GeoJson
@@ -494,10 +549,6 @@ function columnChart(k,mycountymap,mycensusmap) {
 
                 // -------
                 // 2) Add new dots
-                var greenColor = d3.scale.linear()
-                    .domain([0, 1])
-                    .range(["#ada", "#595"]);
-
 
                 var xkey = 'Total_Ed_Mean';
                 var xlabel = 'Average Education Level';
@@ -556,7 +607,13 @@ function columnChart(k,mycountymap,mycensusmap) {
                         }
                     })
                     .attr("fill",function(d) {
-                        return greenColor(Math.random());
+                        if(d.properties['Gender_Imbalance']>0) {
+                            return gender_imbalance_scale.range()[0];
+                        } else if(d.properties['Gender_Imbalance']<0) {
+                            return gender_imbalance_scale.range()[1];
+                        } else {
+                            return '';
+                        }
                     })
                     .on("mouseover",doScatterMouseOver)
                     .on("mouseout", doScatterMouseOut)

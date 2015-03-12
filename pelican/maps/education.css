@@ -33,6 +33,10 @@ circle.active {
 
 circle.inactive {
     stroke: none;
+}
+
+circle.selected {
+    stroke: black;
     stroke-width: 1;
 }
 

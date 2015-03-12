@@ -1,1 +1,1 @@
-var prefix = "/a-shrubbery/";
+var prefix = "/";

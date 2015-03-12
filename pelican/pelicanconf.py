@@ -4,6 +4,9 @@ from __future__ import unicode_literals
 
 from util import *
 
+import re
+import os
+
 SITEURL = ''
 
 AUTHOR = u'charlesreid1'
@@ -101,24 +104,46 @@ TEMPLATE_PAGES['nccensus2.js']   = 'nccensus2.js'
 TEMPLATE_PAGES['nccensus3.js']   = 'nccensus3.js'
 TEMPLATE_PAGES['nccensusmain.js'] = 'nccensusmain.js'
 
+TEMPLATE_PAGES['educationaz.html']  = 'educationaz/index.html'
+TEMPLATE_PAGES['educationaz.js']    = 'educationaz.js'
+
 TEMPLATE_PAGES['educationca.html']  = 'educationca/index.html'
-TEMPLATE_PAGES['educationca.css']   = 'educationca.css'
 TEMPLATE_PAGES['educationca.js']    = 'educationca.js'
+
+#TEMPLATE_PAGES['educationma.html']  = 'educationma/index.html'
+#TEMPLATE_PAGES['educationma.js']    = 'educationma.js'
+#
+#TEMPLATE_PAGES['educationnc.html']  = 'educationnc/index.html'
+#TEMPLATE_PAGES['educationnc.js']    = 'educationnc.js'
+#
+#TEMPLATE_PAGES['educationor.html']  = 'educationor/index.html'
+#TEMPLATE_PAGES['educationor.js']    = 'educationor.js'
+#
+#TEMPLATE_PAGES['educationut.html']  = 'educationut/index.html'
+#TEMPLATE_PAGES['educationut.js']    = 'educationut.js'
+#
+#TEMPLATE_PAGES['educationwa.html']  = 'educationwa/index.html'
+#TEMPLATE_PAGES['educationwa.js']    = 'educationwa.js'
+
+TEMPLATE_PAGES['education.css']   = 'education.css'
+
 TEMPLATE_PAGES['barchart_educationca.js'] = 'barchart_educationca.js'
 TEMPLATE_PAGES['textblock_educationca.js'] = 'textblock_educationca.js'
+TEMPLATE_PAGES['writelabels_educationca.js'] = 'writelabels_educationca.js'
 
 TEMPLATE_PAGES['buttons.html']  = 'buttons/index.html'
 TEMPLATE_PAGES['buttons.js']    = 'buttons.js'
 
 
 
-# Add all the geojson for education ca map
-geojson_path = "maps/educationca.geojson"
-EXTRA_TEMPLATES_PATHS += [geojson_path]
-import os
-for f in os.listdir(geojson_path):
-    if f.endswith(".json"):
-        TEMPLATE_PAGES["educationca.geojson/"+f] = f
+# Add all the geojson for education maps
+geojson_paths = ["maps/educationca.geojson",
+                 "maps/educationaz.geojson"]
+for geojson_path in geojson_paths:
+    EXTRA_TEMPLATES_PATHS += [geojson_path]
+    for f in os.listdir(geojson_path):
+        if f.endswith(".json"):
+            TEMPLATE_PAGES[f] = f
 
 
 TEMPLATE_PAGES['test.html']  = 'test.html'

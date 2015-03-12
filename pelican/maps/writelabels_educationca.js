@@ -34,7 +34,7 @@ function write_labels(properties) {
     };
     var print_functions = [print_pop,print_mean,print_var,print_gender];
     var x_shifts = [200,200,200,200];
-    var y_shifts = [100,140,180,220];
+    var y_shifts = [60,100,140,180];
     var i = 0;
 
     var item = svg.selectAll("rect.lab")
