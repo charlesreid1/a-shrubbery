@@ -3,6 +3,7 @@ PageStyle: clear
 save_as: index.html
 
 
+<a name="education"></a>
 # Mapping Education Levels for State Census Tracts
 
 <img width="300px" src="images/splash_educationca.png" alt="Education Levels in California Census Tracts" />
@@ -29,7 +30,7 @@ Click to see education levels by census tracts for the following states:
 
 <a class="btn btn-info btn-large" href="educationor/">Oregon &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
-<a class="btn btn-info btn-large" href="educationut/">Utah nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+<a class="btn btn-info btn-large" href="educationut/">Utah &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
 <a class="btn btn-info btn-large" href="educationwa/">Washington &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 

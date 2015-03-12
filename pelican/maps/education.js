@@ -423,52 +423,128 @@ function doCountyClick() {
     var this_geoid = this.feature.properties['geoid'];
     var this_leafletid = this._leaflet_id;
 
+
+
+    //////////////////////////////
+    // Step 1 and Step 2
+    //
+    // For each geojson layer:
+    //
+    // Highlight the clicked layer
+    // De-highlight the not-clicked layer
+
     geoj.eachLayer(function(layer) {
 
         that_geoid = layer.feature.properties['geoid'];
 
         options = layer['options'];
 
+        /////////////
+        // ok, this is what was making
+        // everything behave so strangely:
+        //
+        // if a state or a county has multiple-entity 
+        // geographic entities, it formulates things
+        // a little differently in Leaflet.
+        // i.e., for multi-entity census map,
+        // there is a _layers attribute that 
+        // contains each layer for each leaflet
+        // for this geoid.
+
+        layers = layer['_layers'];
+
+        // we'll check if there's an options,
+        // and if not, there should be a _layers.
+
+
         if(this_geoid==that_geoid) {
+            // this is our geoid!!!
 
-            // ----------
-            // Make the county the user clicked red
-            if(options['fillColor']){
 
-                // Get the county's current color.
-                orig_fillColor = options['fillColor'];
+            if(options) {
+                // ----------
+                // Make the county the user clicked red
+                if(options['fillColor']){
 
-                // Check if county is already red.
-                // If not, make it red.
-                if( orig_fillColor===red) {
-                    var a=0;
+                    // Get the county's current color.
+                    orig_fillColor = options['fillColor'];
 
-                } else {
-                    // set style to red 
-                    layer.setStyle({
-                        'fillColor' : red,
-                        'fillOpacity' : myThickFillOpacity,
-                        'originalFillColor' : orig_fillColor
-                    });
+                    // Check if county is already red.
+                    // If not, make it red.
+                    if( orig_fillColor===red) {
+                        var a=0;
+
+                    } else {
+                        // set style to red 
+                        layer.setStyle({
+                            'fillColor' : red,
+                            'fillOpacity' : myThickFillOpacity,
+                            'originalFillColor' : orig_fillColor
+                        });
+                    }
                 }
+            } else if(layers) {
+                // ----------
+                // Make each layer of the county the user clicked red
+                layer_ids = Object.keys(layers);
+                layer_ids.forEach(function(layer_id) { 
+                    mylayer = layers[layer_id];
+                    options = mylayer['options'];
+                    if(options) {
+                        if(options['fillColor']) {
+                            orig_fillColor = options['fillColor'];
+
+                            if(orig_fillColor==red) {
+                                var a=0;
+                            } else {
+                                mylayer.setStyle({
+                                    'fillColor' : red,
+                                    'fillOpacity' : myThickFillOpacity,
+                                    'originalFillColor' : orig_fillColor
+                                });
+                            }
+                        }
+                    }
+                });
             }
+
 
         } else {
+            // not our geoid...
 
+            if(options) {
+                // ----------
+                // Make the county the user clicked red
 
-            // ----------
-            // Remove existing highlight
-            if(layer.options['fillColor']) {
-                // Get the county's current color.
-                orig_fillColor = options['fillColor'];
-                if(options['fillColor']===red) {
-                    layer.setStyle({
-                            'fillColor'   : options['originalFillColor'],
-                            'fillOpacity' : myFillOpacity
-                        });
+                // ----------
+                // Remove existing highlight
+                if(options['fillColor']) {
+                    // Get the county's current color.
+                    orig_fillColor = options['fillColor'];
+                    if(options['fillColor']===red) {
+                        layer.setStyle({
+                                'fillColor'   : options['originalFillColor'],
+                                'fillOpacity' : myFillOpacity
+                            });
+                    }
                 }
+            } else if(layers) {
+                // ----------
+                // De-hilite each entity of each county 
+                layer_ids = Object.keys(layers);
+                layer_ids.forEach(function(layer_id) { 
+                    mylayer = layers[layer_id];
+                    myoptions = mylayer['options'];
+                    if(myoptions) {
+                        if(myoptions['originalFillColor']){
+                            mylayer.setStyle({
+                                    'fillColor'   : myoptions['originalFillColor'],
+                                    'fillOpacity' : myFillOpacity
+                            });
+                        }
+                    }
+                });
             }
-
         }
 
     });
@@ -1186,50 +1262,103 @@ function doCensusClick() {
 
         options = layer['options'];
 
+        // first, check if there's an options.
+        // if not, our map has multiple leaflet entities per geoid,
+        // so we need to loop over each layer.
+        // 
+        // if there's no options, there should be a layers.
+        //
+        layers = layer['_layers'];
+
         if(this_geoid==that_geoid) {
 
-            // ----------
-            // Make the county the user clicked red
-            if(options['fillColor']){
+            if(options) {
+                // ----------
+                // Make the county the user clicked red
+                if(options['fillColor']){
 
-                // Get the county's current color.
-                orig_fillColor = options['fillColor'];
+                    // Get the county's current color.
+                    orig_fillColor = options['fillColor'];
 
-                // Check if county is already red.
-                // If not, make it red.
-                if( orig_fillColor===red2) {
-                    var a=0;
+                    // Check if county is already red.
+                    // If not, make it red.
+                    if( orig_fillColor===red2) {
+                        var a=0;
 
-                } else {
-                    // set style to red 
-                    layer.setStyle({
-                        'fillColor' : red2,
-                        'fillOpacity' : myThickFillOpacity,
-                        'originalFillColor' : orig_fillColor
-                    });
+                    } else {
+                        // set style to red 
+                        layer.setStyle({
+                            'fillColor' : red2,
+                            'fillOpacity' : myThickFillOpacity,
+                            'originalFillColor' : orig_fillColor
+                        });
+                    }
                 }
+            } else if(layers) {
+                // ----------
+                // Make each layer of the county the user clicked red
+                layer_ids = Object.keys(layers);
+                layer_ids.forEach(function(layer_id) { 
+                    mylayer = layers[layer_id];
+                    options = mylayer['options'];
+                    if(options) {
+                        if(options['fillColor']) {
+                            orig_fillColor = options['fillColor'];
+
+                            if(orig_fillColor==red2) {
+                                var a=0;
+                            } else {
+                                mylayer.setStyle({
+                                    'fillColor' : red2,
+                                    'fillOpacity' : myThickFillOpacity,
+                                    'originalFillColor' : orig_fillColor
+                                });
+                            }
+                        }
+                    }
+                });
             }
+
 
         } else {
+            // not our geoid...
 
+            if(options) {
+                // ----------
+                // Make the county the user clicked red
 
-            // ----------
-            // Remove existing highlight
-            if(layer.options['fillColor']) {
-                // Get the county's current color.
-                orig_fillColor = options['fillColor'];
-                if(options['fillColor']===red2) {
-                    layer.setStyle({
-                            'fillColor'   : options['originalFillColor'],
-                            'fillOpacity' : myFillOpacity
-                        });
+                // ----------
+                // Remove existing highlight
+                if(options['fillColor']) {
+                    // Get the county's current color.
+                    orig_fillColor = options['fillColor'];
+                    if(options['fillColor']===red2) {
+                        layer.setStyle({
+                                'fillColor'   : options['originalFillColor'],
+                                'fillOpacity' : myFillOpacity
+                            });
+                    }
                 }
+            } else if(layers) {
+                // ----------
+                // De-hilite each entity of each county 
+                layer_ids = Object.keys(layers);
+                layer_ids.forEach(function(layer_id) { 
+                    mylayer = layers[layer_id];
+                    myoptions = mylayer['options'];
+                    if(myoptions) {
+                        if(myoptions['originalFillColor']){
+                            mylayer.setStyle({
+                                    'fillColor'   : myoptions['originalFillColor'],
+                                    'fillOpacity' : myFillOpacity
+                            });
+                        }
+                    }
+                });
             }
-
         }
 
     });
-
 
 
     /*

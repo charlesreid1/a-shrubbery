@@ -29,7 +29,7 @@ function write_labels(properties) {
     };
     print_gender = function(z) {
        rounded = Math.round(z['Gender_Imbalance']*100)/100; 
-       lab = "Gender Imbalance: "+rounded;
+       lab = "Gender Imbalance: "+rounded+" %";
         return lab;
     };
     var print_functions = [print_pop,print_mean,print_var,print_gender];

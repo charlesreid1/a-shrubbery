@@ -127,6 +127,10 @@ TEMPLATE_PAGES['buttons.js']    = 'buttons.js'
 # Add all the geojson for education maps
 geojson_paths = ["maps/educationca.geojson",
                  "maps/educationaz.geojson",
+                 "maps/educationma.geojson",
+                 "maps/educationnc.geojson",
+                 "maps/educationor.geojson",
+                 "maps/educationut.geojson",
                  "maps/educationwa.geojson"]
 for geojson_path in geojson_paths:
     EXTRA_TEMPLATES_PATHS += [geojson_path]
