@@ -3,16 +3,35 @@ PageStyle: clear
 save_as: index.html
 
 
-# Mapping Education Levels in California Census Tracts
+# Mapping Education Levels for State Census Tracts
 
 <img width="300px" src="images/splash_educationca.png" alt="Education Levels in California Census Tracts" />
 
-**Description**: 
+**Description**: This map displays census spatial data about education and gender, broken down by census tract.
+The map is able to span a huge range of scales because there are actually two maps on the page, and both maps 
+are interactive and zoomable. There are also interactive D3 charts and infographs to highlight several
+interesting aspects of the data.
 
 **Data**: The GeoJson data used to create the state, county, and census tract layers 
 comes from the US Census Bureau and is accessed using the Census Reporter API. 
+I originally wrote the script for California, then slightly re-factored it to 
+work for a number of other states.
 
-<a class="btn btn-info btn-large" href="educationca/">See Education Levels in CA Census Tracts &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+Click to see education levels by census tracts for the following states:
+
+<a class="btn btn-info btn-large" href="educationca/">California &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<a class="btn btn-info btn-large" href="educationaz/">Arizona &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<a class="btn btn-info btn-large" href="educationma/">Massachusetts &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<a class="btn btn-info btn-large" href="educationnc/">North Carolina &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<a class="btn btn-info btn-large" href="educationor/">Oregon &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<a class="btn btn-info btn-large" href="educationut/">Utah nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+
+<a class="btn btn-info btn-large" href="educationwa/">Washington &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
 
 <br />
 
