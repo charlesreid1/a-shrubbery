@@ -11,7 +11,7 @@ SITEURL = ''
 
 AUTHOR = u'charlesreid1'
 SITENAME = u'A Shrubbery'
-SITEURL = '/a-shrubbery'
+#SITEURL = '/a-shrubbery'
 
 make_common_js('maps/common.js',SITEURL)
 
@@ -48,6 +48,13 @@ TEMPLATE_PAGES = {'blog.html':'blog.html'}
 
 
 EXTRA_TEMPLATES_PATHS = ['maps']
+
+
+
+PLUGINS = ['liquid_tags','liquid_tags.include_code','liquid_tags.include_html','liquid_tags.notebook','render_math']
+EXTRA_HEADER = open('_nb_header.html').read().decode('utf-8')
+
+
 
 ###########################################
 # Maps
