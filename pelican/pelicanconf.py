@@ -105,23 +105,11 @@ TEMPLATE_PAGES['nccensus3.js']   = 'nccensus3.js'
 TEMPLATE_PAGES['nccensusmain.js'] = 'nccensusmain.js'
 
 TEMPLATE_PAGES['educationaz.html']  = 'educationaz/index.html'
-#TEMPLATE_PAGES['educationaz.js']    = 'educationaz.js'
-
 TEMPLATE_PAGES['educationca.html']  = 'educationca/index.html'
-TEMPLATE_PAGES['educationca.js']    = 'educationca.js'
-
-#TEMPLATE_PAGES['educationma.html']  = 'educationma/index.html'
-#TEMPLATE_PAGES['educationma.js']    = 'educationma.js'
-#
-#TEMPLATE_PAGES['educationnc.html']  = 'educationnc/index.html'
-#TEMPLATE_PAGES['educationnc.js']    = 'educationnc.js'
-#
-#TEMPLATE_PAGES['educationor.html']  = 'educationor/index.html'
-#TEMPLATE_PAGES['educationor.js']    = 'educationor.js'
-#
-#TEMPLATE_PAGES['educationut.html']  = 'educationut/index.html'
-#TEMPLATE_PAGES['educationut.js']    = 'educationut.js'
-
+TEMPLATE_PAGES['educationma.html']  = 'educationma/index.html'
+TEMPLATE_PAGES['educationnc.html']  = 'educationnc/index.html'
+TEMPLATE_PAGES['educationor.html']  = 'educationor/index.html'
+TEMPLATE_PAGES['educationut.html']  = 'educationut/index.html'
 TEMPLATE_PAGES['educationwa.html']  = 'educationwa/index.html'
 
 TEMPLATE_PAGES['education.js']    = 'education.js'

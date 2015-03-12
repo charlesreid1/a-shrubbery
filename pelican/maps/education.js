@@ -194,7 +194,7 @@ var rooturl = prefix + "education"+st+".geo.json"
 // Take care of census map next:
 //
 
-var map_census = L.map('education_census');//.setView([37.7, -119.5], 7); 
+var map_census = L.map('education_census');
 
 var basemapViewer2 = L.tileLayer('http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiY2hhcmxlc3JlaWQxIiwiYSI6ImpreUJGM3MifQ.w5rSM7MjHv-SnOnt3gcqHA',{ 
     maxZoom: 18,
