@@ -315,10 +315,110 @@ function columnChart(k,mycountymap,mycensusmap) {
 
 
         // --------------------------
-        // Step 2: 
+        // Step 2/3: 
+        //
         // Highlight county on county map
+        // De-highlight everything else
+
+        geoj.eachLayer(function(layer) {
+    
+            that_geoid = layer.feature.properties['geoid'];
+
+            options = layer['options'];
+            layers = layer['_layers'];
+
+            if(this_geoid==that_geoid) {
+
+                if(options) {
+                    // ----------
+                    // Make the county the user clicked red
+                    if(options['fillColor']){
+
+                        // Get the county's current color.
+                        orig_fillColor = options['fillColor'];
+
+                        // Check if county is already red.
+                        // If not, make it red.
+                        if( orig_fillColor===red) {
+                            var a=0;
+
+                        } else {
+                            // set style to red 
+                            layer.setStyle({
+                                'fillColor' : red,
+                                'fillOpacity' : myThickFillOpacity,
+                                'originalFillColor' : orig_fillColor
+                            });
+                        }
+                    }
+                } else if(layers) {
+                    // ----------
+                    // Make each layer of the county the user clicked red
+                    layer_ids = Object.keys(layers);
+                    layer_ids.forEach(function(layer_id) { 
+                        mylayer = layers[layer_id];
+                        options = mylayer['options'];
+                        if(options) {
+                            if(options['fillColor']) {
+                                orig_fillColor = options['fillColor'];
+
+                                if(orig_fillColor==red) {
+                                    var a=0;
+                                } else {
+                                    mylayer.setStyle({
+                                        'fillColor' : red,
+                                        'fillOpacity' : myThickFillOpacity,
+                                        'originalFillColor' : orig_fillColor
+                                    });
+                                }
+                            }
+                        }
+                    });
+                }
+
+            } else {
+                // not our geoid...
+
+                if(options) {
+                    // ----------
+                    // Make the county the user clicked red
+
+                    // ----------
+                    // Remove existing highlight
+                    if(options['fillColor']) {
+                        // Get the county's current color.
+                        orig_fillColor = options['fillColor'];
+                        if(options['fillColor']===red) {
+                            layer.setStyle({
+                                    'fillColor'   : options['originalFillColor'],
+                                    'fillOpacity' : myFillOpacity
+                                });
+                        }
+                    }
+                } else if(layers) {
+                    // ----------
+                    // De-hilite each entity of each county 
+                    layer_ids = Object.keys(layers);
+                    layer_ids.forEach(function(layer_id) { 
+                        mylayer = layers[layer_id];
+                        myoptions = mylayer['options'];
+                        if(myoptions) {
+                            if(myoptions['originalFillColor']){
+                                mylayer.setStyle({
+                                        'fillColor'   : myoptions['originalFillColor'],
+                                        'fillOpacity' : myFillOpacity
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
 
+
+
+        /*
         geoj.eachLayer(function(layer) {
 
             that_geoid = layer.feature.properties['geoid'];
@@ -368,6 +468,7 @@ function columnChart(k,mycountymap,mycensusmap) {
             }
 
         });
+        */
 
 
 
