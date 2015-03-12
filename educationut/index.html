@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>A Shrubbery</title>
+    <meta name="author" content="charlesreid1">
+
+
+    <!-- http://t.co/dKP3o1e -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+      <link href="/a-shrubbery/favicon.png" rel="icon">
+
+
+
+    <!--
+    my CSS styles
+    -->
+    <link href="/a-shrubbery/theme/css/bootstrap.css"       rel="stylesheet" type="text/css">
+    <link href="/a-shrubbery/theme/css/sandstone.css"       rel="stylesheet" type="text/css"/>
+    <link href="/a-shrubbery/theme/css/navbar.css"          rel="stylesheet" type="text/css"/>
+    <link href="/a-shrubbery/theme/css/main.css"            rel="stylesheet" type="text/css"/>
+
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+          rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+          rel="stylesheet" type="text/css"/>
+
+    <link href="/a-shrubbery/theme/css/pygment.css" rel="stylesheet" type="text/css"/>
+
+    <script src="/a-shrubbery/theme/js/jquery.min.js"></script>
+    <script src="/a-shrubbery/theme/js/bootstrap.min.js"></script>
+
+
+
+    <!-- map header -->
+
+	<!-- load the leaflet library -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+	<!-- load my style sheet -->
+    <link rel="stylesheet" type="text/css" href="/a-shrubbery/mapstyles.css">
+
+	<!-- load common vars -->
+    <script src="/a-shrubbery/common.js"></script>
+
+    <!-- end map header -->
+
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <!--
+            http://www.w3schools.com/bootstrap/bootstrap_case_navigation.asp
+            -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span> 
+            </button>
+            <a class="navbar-brand" href="/a-shrubbery/index.html" style="margin-right:20px;">A Shrubbery</a>
+        </div>
+        <div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+
+                    <li class="spacer">
+                        <p>&nbsp;</p>
+                    </li>
+
+
+                    <li>
+                        <a href="/a-shrubbery/about.html">About</a>
+                    </li>
+
+
+                    <li class="spacer">
+                        <p>&nbsp;</p>
+                    </li>
+
+
+                    <li>
+                        <a href="/a-shrubbery/index.html">All Maps</a>
+                    </li>
+
+
+                    <li class="spacer">
+                        <p>&nbsp;</p>
+                    </li>
+
+
+                    <li>
+                        <a href="/a-shrubbery/blog.html">Blog</a>
+                    </li>
+
+
+                    <li class="spacer">
+                        <p>&nbsp;</p>
+                    </li>
+
+
+                    <li>
+                        <a href="/a-shrubbery/author.html">Author</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+
+<!-- Main jumbotron -->
+<div class="jumbotron">
+    <div class="container">
+        <h1><i class="fa fa-leaf"></i>&nbsp;A Shrubbery</h1>
+        <!--
+        <h1>A Shrubbery&nbsp;<i class="fa fa-leaf"></i></h1>
+        -->
+        <p>Building a page of map leaflets using Leaflet.js and D3.js</p>
+        <p><a class="btn btn-info btn-lg btn-large" 
+            href="/a-shrubbery/about.html" role="button">Learn More About It &nbsp;&nbsp;&nbsp; <i class="fa fa-arrow-circle-right"></i></a></p>
+    </div>
+</div>
+
+
+<div class="container" id="bodycontainer">
+
+
+<script type="text/javascript">
+    var state = "Utah";
+    var st = "ut";
+</script>
+
+<link href="/a-shrubbery/theme/css/non-responsive.css" rel="stylesheet" type="text/css" >
+
+<link href="/a-shrubbery/education.css" rel="stylesheet" type="text/css" >
+
+<h1><b>Utah</b></h1>
+
+<h2><b>Education Levels in Utah Census Tracts</b></h2>
+
+<div class="row">
+
+    <div class="col-xs-4">
+        <a href="#howtouse" class="btn btn-large btn-success">How to use this map &nbsp; <i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+
+</div>
+
+<p>&nbsp;</p>
+
+
+<div class="row">
+
+    <div class="col-xs-6">
+        <h3><b><div class="state">Select County: </div></b></h3>
+    </div>
+
+    <div class="col-xs-6">
+        <h3><b><div class="state">Gender Imbalance in Education Level: </div></b></h3>
+    </div>
+
+</div>
+
+
+
+<div class="row">
+
+    <div class="col-xs-6">
+        <div id="education_county_scale"></div>
+        <div id="education_county"
+            style="height: 400px;"></div>
+    </div>
+
+    <div class="col-xs-6">
+        <div id="barchartscale"></div>
+        <div id="barchart" ></div>
+    </div>
+
+</div>
+
+<div class="somespace"></div>
+
+
+<div class="row">
+
+    <div class="col-xs-6">
+        <h3><b>Census Tracts for County:</b></h3>
+        <h3><b><div class="county">&nbsp;</div></b></h3>
+        <div id="education_census_scale"></div>
+    </div>
+
+    <div class="col-xs-6">
+        <h3><b>Education Levels: Mean vs Variance</b></h3>
+        <h3><b><div class="census"></div></b></h3>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-xs-6">
+        <div id="education_census"
+            style="height: 400px;"></div>
+    </div>
+
+
+    <div class="col-xs-6">
+        <div id="scatterplot"></div>
+    </div>
+
+</div>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<a name="howtouse"></a>
+<h2><b>How to use this map</b></h2>
+
+<div class="row">
+    <div class="col-xs-4">
+        <img class="howtouse" src="/a-shrubbery/images/a-shrubbery-screenshot-1.jpg" alt="Screenshot of project web page, 1" />
+    </div>
+    <div class="col-xs-8">
+        <p>&nbsp;</p>
+        <p><b>County Education Levels</b></p>
+        <p>Begin with the county map in the upper left hand corner. This map has a color overlay that represents
+        mean education levels for that county (the data is from the US Census, via the Census Reporter API). 
+        The dark blue regions indicate areas that are, on average, more well-educated people, while yellow areas indicate
+        that well-educated people are lacking.
+        </p>
+        <p>As you hover over each county, you will see the corresponding bar on the bar chart on the right highlighted. When you
+        click on a particular county, you can see that its bar is selected. You will also notice that when you click on a 
+        particular county, it loads a map of all census tracts in that county in the map below.
+        <p>We'll cover the bar chart next.
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-8">
+        <p>&nbsp;</p>
+        <p><b>Gender Imbalance in Education Levels</b></p>
+        <p>The bar chart labeled "Gender Imbalance" shows the imbalance in average education levels by gender. The census data
+        from which this map was created broke down the population by education levels as well as by gender, so this allows 
+        for a mean education level to be computed for the total population (the quantity that is mapped on the left), 
+        as well as a mean education level for males and for females. The percentage difference in education levels 
+        between the two genders is plotted on the bar chart.
+        </p>
+    </div>
+    <div class="col-xs-4">
+        <img class="howtouse" src="/a-shrubbery/images/a-shrubbery-screenshot-2.jpg" alt="Screenshot of project web page, 2" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-4">
+        <img class="howtouse" src="/a-shrubbery/images/a-shrubbery-screenshot-3.jpg" alt="Screenshot of project web page, 3" />
+    </div>
+    <div class="col-xs-8">
+        <p>&nbsp;</p>
+        <p><b>Census Tract Education Levels</b></p>
+        <p>In the bottom two maps, census data is broken down at a tract-by-tract level, rather than at the county-by-county 
+        level of the top two maps.
+        </p>
+        <p>The map on the bottom has the same color scale as the map above, and shows the same quantity:
+        the average education level for the population of that census tract. The census tract map shows a 
+        much finer-grained picture of how people of different education levels aggregate geographically.
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-8">
+        <p>&nbsp;</p>
+        <p><b>Education Level Means vs Variances</b></p>
+        <p>The scatter plot shows each census tract's mean education level versus the variance in education level. 
+        The variance gives a sense of the degree of diversity of a census tract. A tract that is more diverse
+        is more likely to have pockets of people at every education level. 
+        </p>
+    </div>
+    <div class="col-xs-4">
+        <img class="howtouse" src="/a-shrubbery/images/a-shrubbery-screenshot-4.jpg" alt="Screenshot of project web page, 4" />
+    </div>
+</div>
+
+
+<!-- ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js" type="text/javascript"> </script>
+<script src="/a-shrubbery/theme/js/leaflet.ajax.min.js" type="text/javascript"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+<script src="/a-shrubbery/theme/js/d3.legend.js"></script>
+<script src="/a-shrubbery/theme/js/d3.spacedlegend.js"></script>
+<script src="/a-shrubbery/textblock_education.js" type="text/javascript"> </script>
+<script src="/a-shrubbery/barchart_education.js" type="text/javascript"> </script>
+<script src="/a-shrubbery/writelabels_education.js" type="text/javascript"> </script>
+<script src="/a-shrubbery/education.js" type="text/javascript"> </script>
+
+
+
+
+</div><!--container-->
+
+<div class="container text-center">
+    <p>&nbsp;</p>
+    <p>
+    Made with <i class="fa fa-fire-extinguisher fa-2x"></i> by <a href="http://charlesreid1.com">charlesreid1</a>.
+    </p>
+    <p>&nbsp;</p>
+</div>
+
+
+</body>
+</html>
+
