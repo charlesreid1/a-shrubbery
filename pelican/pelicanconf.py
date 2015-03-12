@@ -11,7 +11,7 @@ SITEURL = ''
 
 AUTHOR = u'charlesreid1'
 SITENAME = u'A Shrubbery'
-#SITEURL = '/a-shrubbery'
+SITEURL = '/a-shrubbery'
 
 make_common_js('maps/common.js',SITEURL)
 
