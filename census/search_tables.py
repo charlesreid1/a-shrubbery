@@ -13,8 +13,9 @@ logging.basicConfig(level=logging.INFO,
 # --------------------------
 
 
+term = 'housing'
 
-url = "http://api.censusreporter.org/1.0/table/search?q=military" 
+url = "http://api.censusreporter.org/1.0/table/search?q="+term
 
 results = json.load(urllib2.urlopen(url))
 

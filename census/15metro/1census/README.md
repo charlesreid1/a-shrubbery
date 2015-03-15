@@ -8,7 +8,15 @@ In order to know how to call the API,
 and what to do with the results it returns,
 we have to decide on a data scheme.
 
-## The Data Schema
+## MongoDB
+
+To run mongodb,
+
+```
+$ mongod --config ./mongod.conf
+```
+
+## Data Sources
 
 The data will be used for two distinct purposes: 
 maps (with Leaflet.js), and charts (with D3.js).
@@ -77,8 +85,79 @@ We will be using MongoDB on the backend to store all of
 this data and make it available for our statistical modeling
 endeavors.
 
-### GeoJson with MongoDB
+### The MongoDB Schema
 
+The MongoDB database will have two tables, corresponding
+to the two types of data:
+
+* Geometry table - stores information about geometry (but not properties) of geographic entities
+* Properties table - stores properties (but not geometry) of each geographic entity
+
+This separation allows for faster access for the D3 charts.
+
+### Geometry Table: Storing GeoJson with MongoDB
+
+In order to store the data in this split way,
+and to make it easier to index,
+we format the GeoJson a bit differently than it
+is returned by the REST API.
+
+The REST API will return data that looks like this:
+
+```
+{
+    "type" : "MultiPolygon",
+    "features" : [
+                    {"geometry" : ...,
+                     "type" : ...,
+                     "properties" : ...
+                    },
+                    {"geometry" : ...,
+                     "type" : ...,
+                     "properties" : ...
+                    },
+                    ...
+                ]
+}
+```
+
+(Here, properties is basically empty, but when we get data
+from census data tables, this field will contain the resulting 
+table quantities.)
+
+What we want to do is to wrap the MongoDB documents
+to be the dictionary array contained in "features".
+
+What we'll do is, store each of those dictionaries 
+(indexed by geoid, geometry, type, and properties) in the
+MongoDB Geometry table. When we search for records,
+we will pass search criteria, and MongoDB will return
+a list of features.
+
+We can then wrap that call to MongoDB 
+and put the results into a dictionary 
+with the "type" and "features" keys,
+which is the format that Leaflet.js expects.
+
+### Geometry Table: Pseudocode
+
+Some pseudocode for the above operation:
+
+```
+getJsonFromMongo(search_parameters):
+    
+    d = {}
+    d['type'] = 'MutiPolygon'
+
+    for record in mongodb.search():
+
+        # here, record contains ["geometry","type","properties"]
+        features.append( record )
+    
+    d['features'] = features
+
+    return d
+```
 
 
 

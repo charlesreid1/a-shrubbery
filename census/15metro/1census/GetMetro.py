@@ -46,6 +46,21 @@ def main():
         metro_geoids = [metro['properties']['geoid'] for metro in metro_data]
         metro_names  = [metro['properties']['name']  for metro in metro_data]
 
+        # (Pdb) p len(metros)
+        # 2
+        # (Pdb) p metros.keys()
+        # [u'type', u'features']
+
+        # (Pdb) p len(metros['features'])
+        # 1102
+        # (Pdb) p metros['features'][0].keys()
+        # [u'geometry', u'type', u'properties']
+
+
+
+
+        import pdb; pdb.set_trace()
+
         print "Doing",metro_name
         with open(str(ii)+".file","w") as f:
             f.write(metro_name)
