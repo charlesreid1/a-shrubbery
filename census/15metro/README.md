@@ -14,11 +14,9 @@ and Flask (maybe Node.js) and MongoDB on the backend.
 
 ## The Layout
 
-Navigate by topic (listed below
+Navigating by topic 
 
-buttons on top
-
-![asdf](img/layout.png)
+Each of the 15 metro areas, per topic
 
 
 ### Topics
@@ -34,14 +32,14 @@ The topics buttons will include:
 * Industries
 
 
-## Step 1: Extracting Census Data
+## Step 1A: Extracting Census Data
 
 This step uses the Census Reporter API to interface with the data,
 extract relevant tables and quantities, process it (compute any 
 convenient, basic derived quantities).
 
 
-## Step 2: JSON Storage and Access
+## Step 1B: JSON Storage and Access
 
 This involes setting up the JSON to be in a MongoDB 
 (alternatively, could dump the data to an Amazon S3 bucket).
