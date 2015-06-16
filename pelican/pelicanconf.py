@@ -50,9 +50,13 @@ TEMPLATE_PAGES = {'blog.html':'blog.html'}
 EXTRA_TEMPLATES_PATHS = ['maps']
 
 
+HOME = os.environ.get('HOME')
 
-PLUGINS = ['liquid_tags','liquid_tags.include_code','liquid_tags.include_html','liquid_tags.notebook','render_math']
-EXTRA_HEADER = open('_nb_header.html').read().decode('utf-8')
+PLUGIN_PATHS = [HOME+'/codes/pelican-plugins/',
+                HOME+'/codes/pelican-ipynb/']
+
+#PLUGINS = ['liquid_tags','liquid_tags.include_code','liquid_tags.include_html','liquid_tags.notebook','render_math']
+#EXTRA_HEADER = open('_nb_header.html').read().decode('utf-8')
 
 
 
